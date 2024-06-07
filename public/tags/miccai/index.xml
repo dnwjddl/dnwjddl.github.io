@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MICCAI | Hugo Academic CV Theme</title>
+    <link>http://localhost:1313/tags/miccai/</link>
+      <atom:link href="http://localhost:1313/tags/miccai/index.xml" rel="self" type="application/rss+xml" />
+    <description>MICCAI</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 14 May 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>http://localhost:1313/media/icon_hu68170e94a17a2a43d6dcb45cf0e8e589_3079_512x512_fill_lanczos_center_3.png</url>
+      <title>MICCAI</title>
+      <link>http://localhost:1313/tags/miccai/</link>
+    </image>
+    
+    <item>
+      <title>🎉 One paper EARLY ACCEPTED for MICCAI 2024 (top 11% of submission)</title>
+      <link>http://localhost:1313/post/cxrl/</link>
+      <pubDate>Tue, 14 May 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/cxrl/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;👉 &lt;a href=&#34;https://arxiv.org/pdf/2403.06516&#34;&gt;&lt;strong&gt;Paper&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;📚 &lt;a href=&#34;https://github.com/MICV-yonsei/CXRL&#34;&gt;&lt;strong&gt;Github Page&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;💡 &lt;a href=&#34;https://micv-yonsei.github.io/cxrl2024/&#34;&gt;&lt;strong&gt;Project Page&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;🥳 I&amp;rsquo;m excited to announce that our paper, &lt;strong&gt;&amp;ldquo;Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning&amp;rdquo;&lt;/strong&gt; has been &lt;mark&gt;EARLY ACCEPTED&lt;/mark&gt; at &lt;strong&gt;MICCAI 2024&lt;/strong&gt;! This puts us in the top 11% of all submissions.&lt;/p&gt;
+&lt;p&gt;Our work is the first to use reinforcement learning for diffusion model-based text-to-medical image generation.
+A truly rewarding experience!&lt;/p&gt;
+&lt;p&gt;Congrats to my co-first author Chanyoung Kim🎉&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CXRL</title>
+      <link>http://localhost:1313/project/cxrl/</link>
+      <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/project/cxrl/</guid>
+      <description>&lt;p&gt;[MICCAI&#39;24] Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

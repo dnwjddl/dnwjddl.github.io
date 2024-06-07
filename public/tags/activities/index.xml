@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Activities | Hugo Academic CV Theme</title>
+    <link>http://localhost:1313/tags/activities/</link>
+      <atom:link href="http://localhost:1313/tags/activities/index.xml" rel="self" type="application/rss+xml" />
+    <description>Activities</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>http://localhost:1313/media/icon_hu68170e94a17a2a43d6dcb45cf0e8e589_3079_512x512_fill_lanczos_center_3.png</url>
+      <title>Activities</title>
+      <link>http://localhost:1313/tags/activities/</link>
+    </image>
+    
+    <item>
+      <title>🏫 Join MICV Lab in Yonsei University!</title>
+      <link>http://localhost:1313/post/micv/</link>
+      <pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/micv/</guid>
+      <description>&lt;p&gt;I joined Medical Imaging and Computer Vision Lab (&lt;a href=&#34;https://micv.yonsei.ac.kr/&#34;&gt;MICV&lt;/a&gt;), advised by Professor Seong Jae Hwang🙌&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

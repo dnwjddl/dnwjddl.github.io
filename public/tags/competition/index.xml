@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Competition | Hugo Academic CV Theme</title>
+    <link>http://localhost:1313/tags/competition/</link>
+      <atom:link href="http://localhost:1313/tags/competition/index.xml" rel="self" type="application/rss+xml" />
+    <description>Competition</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 07 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>http://localhost:1313/media/icon_hu68170e94a17a2a43d6dcb45cf0e8e589_3079_512x512_fill_lanczos_center_3.png</url>
+      <title>Competition</title>
+      <link>http://localhost:1313/tags/competition/</link>
+    </image>
+    
+    <item>
+      <title>MAIC</title>
+      <link>http://localhost:1313/project/maic/</link>
+      <pubDate>Tue, 07 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/project/maic/</guid>
+      <description>&lt;p&gt;[SNUH MAIC Robotic Surgery AI Challenge] Segmentation of surgical tools using prostate cancer robot surgery video&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Image Inpainting</title>
+      <link>http://localhost:1313/project/inpainting/</link>
+      <pubDate>Sun, 14 Feb 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/project/inpainting/</guid>
+      <description>&lt;p&gt;[AI Competition] Development of painting cultural heritage restoration technology based on inpainting technique&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Motion Estimation</title>
+      <link>http://localhost:1313/project/handa/</link>
+      <pubDate>Tue, 09 Feb 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/project/handa/</guid>
+      <description>&lt;p&gt;[SW-centered university joint hackathon] 🔩 + 💻 = Handa Team&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MuTube</title>
+      <link>http://localhost:1313/project/mutube/</link>
+      <pubDate>Sun, 20 Dec 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/project/mutube/</guid>
+      <description>&lt;p&gt;[AI Competition] Playlist-based song recommendation system&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
