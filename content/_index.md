@@ -113,7 +113,7 @@ sections:
       title: Awards
       username: admin
 
-- block: collection
+  - block: collection
     id: project
     content:
       title: Selected Projects
