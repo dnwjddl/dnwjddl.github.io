@@ -53,7 +53,7 @@ url_code: 'https://github.com/MICV-yonsei/Cobra'
 # url_poster: ''
 url_project: 'https://micv-yonsei.github.io/cobra2024/'
 # url_slides: ''
-url_source: 'https://github.com/MICV-yonsei/Cobra'
+url_source: 'https://micv-yonsei.github.io/cobra2024/'
 # url_video: 'https://youtube.com'
 
 # Featured image
