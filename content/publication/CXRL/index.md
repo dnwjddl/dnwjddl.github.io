@@ -56,7 +56,7 @@ url_code: 'https://github.com/MICV-yonsei/CXRL'
 # url_poster: ''
 url_project: 'https://micv-yonsei.github.io/cxrl2024/'
 # url_slides: ''
-url_source: 'https://github.com/MICV-yonsei/CXRL'
+url_source: 'https://micv-yonsei.github.io/cxrl2024/'
 # url_video: 'https://youtube.com'
 
 # Featured image
