@@ -1,6 +1,6 @@
 ---
 # Leave the homepage title empty to use the site title
-title: ""
+title: "Woojung Han"
 date: 2022-10-24
 type: landing
 
@@ -32,19 +32,6 @@ sections:
           parallax: false
 
   - block: collection
-    id: papers
-    content:
-      title: Publications
-      filters:
-        folders:
-          - publication
-        featured_only: true
-    design:
-      view: article-grid
-      columns: 2
-  
-
-  - block: collection
     id: news
     content:
       title: Recent News
@@ -73,6 +60,19 @@ sections:
       # Reduce spacing
       spacing:
         padding: [0, 0, 0, 0]
+    
+  - block: collection
+    id: papers
+    content:
+      title: Publications
+      filters:
+        folders:
+          - publication
+        featured_only: true
+    design:
+      view: article-grid
+      columns: 2
+
 
   # - block: markdown
   #   content:
@@ -112,6 +112,19 @@ sections:
     content:
       title: Awards
       username: admin
+
+- block: collection
+    id: project
+    content:
+      title: Selected Projects
+      text: I enjoy making things. Here are a selection of projects that I have worked on over the years.
+      filters:
+        folders:
+          - project
+    design:
+      view: article-grid
+      fill_image: false
+      columns: 3
 
   # - block: collection
   #   id: talks
