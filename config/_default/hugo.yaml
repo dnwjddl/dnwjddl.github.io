@@ -6,7 +6,7 @@
 # Website name
 title: Hugo Academic CV Theme
 # Website URL
-baseURL: 'dnwjddl.github.io'
+baseURL: 'https://dnwjddl.github.io'
 
 ############################
 ## LANGUAGE
