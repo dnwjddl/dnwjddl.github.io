@@ -50,20 +50,6 @@ sections:
       # Reduce spacing
       spacing:
         padding: [0, 0, 0, 0]
-    
-  - block: collection
-    id: papers
-    content:
-      title: Publications
-      filters:
-        folders:
-          - publication
-        featured_only: true
-    design:
-      view: article-grid
-      columns: 2
-      css_class: "block-separator"
-
 
   # - block: markdown
   #   content:
@@ -79,8 +65,9 @@ sections:
   #     columns: '1'
   
   - block: collection
+    id: papers
     content:
-      title: Recent Publications
+      title: Publications
       text: ""
       filters:
         folders:
@@ -89,6 +76,20 @@ sections:
     design:
       view: citation
       css_class: "block-separator"
+
+  - block: collection
+    id: recent-publication
+    content:
+      title: Recent Publications
+      filters:
+        folders:
+          - publication
+        featured_only: true
+    design:
+      view: article-grid
+      columns: 2
+      css_class: "block-separator"
+
 
   - block: resume-experience
     id: experience
