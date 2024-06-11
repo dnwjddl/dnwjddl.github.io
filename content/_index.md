@@ -22,14 +22,6 @@ sections:
       css_class: white
       background:
         color: grey
-        image:
-          # Add your image background to `assets/media/`.
-          filename: bg.jpg
-          filters:
-            brightness: 1.0
-          size: cover
-          position: center
-          parallax: false
 
   - block: collection
     id: news
