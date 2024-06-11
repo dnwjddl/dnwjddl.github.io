@@ -30,9 +30,6 @@ organizations:
 # Social network links
 # Need to use another icon? Simply download the SVG icon to your `assets/media/icons/` folder.
 profiles:
-  - icon: at-symbol
-    url: 'dnwjddl@yonsei.ac.kr'
-    label: E-mail Me
   - icon: brands/instagram
     url: https://www.instagram.com/dn_wjddl_/ 
   - icon: brands/github
@@ -192,8 +189,8 @@ awards:
 
 ## About Me
 
-I am M.S./Ph.D. student in Yonsei University, advised by Professor Seong Jae Hwang. 
+I am M.S./Ph.D. student in Yonsei University, advised by [Professor Seong Jae Hwang](https://micv-yonsei.github.io/). 
 
 Currently, I'm interested in Segmentation, Diffusion model for medical imaging and understanding the interaction of vision and language.
 
-I'm looking for someone I can work well with and who shares a similar mindset. Feel free to reach out.
+I'm looking for someone I can work well with and who shares a similar mindset. Feel free to reach out (dnwjddl@yonsei.ac.kr).
