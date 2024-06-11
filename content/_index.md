@@ -7,6 +7,7 @@ type: landing
 design:
   # Default section spacing
   spacing: "6rem"
+  css_class: "block-separator"
 
 sections:
   - block: resume-biography-3
@@ -45,6 +46,7 @@ sections:
     design:
       # Choose a layout view
       view: date-title-summary
+      css_class: "block-separator"
       # Reduce spacing
       spacing:
         padding: [0, 0, 0, 0]
@@ -60,6 +62,7 @@ sections:
     design:
       view: article-grid
       columns: 2
+      css_class: "block-separator"
 
 
   # - block: markdown
@@ -85,6 +88,7 @@ sections:
         exclude_featured: false
     design:
       view: citation
+      css_class: "block-separator"
 
   - block: resume-experience
     id: experience
@@ -95,6 +99,7 @@ sections:
       date_format: 'January 2006'
       # Education or Experience section first?
       is_education_first: false
+      css_class: "block-separator"
 
   - block: resume-awards
     content:
@@ -113,6 +118,7 @@ sections:
       view: article-grid
       fill_image: false
       columns: 3
+      css_class: "block-separator"
 
   # - block: collection
   #   id: talks
