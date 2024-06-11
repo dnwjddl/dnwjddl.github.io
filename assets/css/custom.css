@@ -11,8 +11,6 @@ nav {
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: #ffffff;
-    color: #1a1a1a;
     padding: 1em 0;
     text-align: center;
 }
@@ -29,7 +27,6 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #000000;
     text-decoration: none;
 }
 
