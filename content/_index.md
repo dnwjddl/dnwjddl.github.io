@@ -18,10 +18,6 @@ sections:
       button:
         text: Download CV
         url: uploads/CV_MICV.pdf
-    design:
-      css_class: white
-      background:
-        color: grey
 
   - block: collection
     id: news
