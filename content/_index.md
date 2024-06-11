@@ -19,6 +19,8 @@ sections:
       button:
         text: Download CV
         url: uploads/CV_MICV.pdf
+      design:
+        css_class: "block-separator"
 
   - block: collection
     id: news
@@ -48,8 +50,6 @@ sections:
       view: date-title-summary
       css_class: "block-separator"
       # Reduce spacing
-      spacing:
-        padding: [0, 0, 0, 0]
 
   # - block: markdown
   #   content:
@@ -106,6 +106,8 @@ sections:
     content:
       title: Awards
       username: admin
+    design:
+      css_class: "block-separator"
 
   - block: collection
     id: projects
