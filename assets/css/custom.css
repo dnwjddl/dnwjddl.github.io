@@ -32,10 +32,19 @@ nav ul li a {
 }
 
 /* Custom CSS for block separators */
+/* .block-separator {
+  padding-bottom: 1rem; /* Adjust this to move the border lower */
+  margin-bottom: 2rem;  /* Adjust this to add space below the separator */
+  border-bottom: 2px solid #e0e0e0; /* Change the color and thickness as needed */
+} */
+
 .block-separator {
   padding-bottom: 1rem; /* Adjust this to move the border lower */
   margin-bottom: 2rem;  /* Adjust this to add space below the separator */
   border-bottom: 2px solid #e0e0e0; /* Change the color and thickness as needed */
+  width: 50%; /* Adjust the width as needed to make it shorter */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Dark mode support */
