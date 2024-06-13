@@ -1,5 +1,5 @@
 ---
-title: blog
+title: Blog
 summary: paper-review
 type: landing
 
