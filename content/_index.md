@@ -91,37 +91,37 @@ sections:
       css_class: "block-separator"
 
 
-  - block: resume-experience
-    id: experience
-    content:
-      username: admin
-    design:
-      # Hugo date format
-      date_format: 'January 2006'
-      # Education or Experience section first?
-      is_education_first: false
-      css_class: "block-separator"
+#   - block: resume-experience
+#     id: experience
+#     content:
+#       username: admin
+#     design:
+#       # Hugo date format
+#       date_format: 'January 2006'
+#       # Education or Experience section first?
+#       is_education_first: false
+#       css_class: "block-separator"
 
-  - block: resume-awards
-    content:
-      title: Awards
-      username: admin
-    design:
-      css_class: "block-separator"
+#   - block: resume-awards
+#     content:
+#       title: Awards
+#       username: admin
+#     design:
+#       css_class: "block-separator"
 
-  - block: collection
-    id: projects
-    content:
-      title: Selected Projects
-      text: I enjoy making things. Here are a selection of projects that I have worked on over the years.
-      filters:
-        folders:
-          - project
-    design:
-      view: article-grid
-      fill_image: false
-      columns: 3
-      css_class: "block-separator"
+#   - block: collection
+#     id: projects
+#     content:
+#       title: Selected Projects
+#       text: I enjoy making things. Here are a selection of projects that I have worked on over the years.
+#       filters:
+#         folders:
+#           - project
+#     design:
+#       view: article-grid
+#       fill_image: false
+#       columns: 3
+#       css_class: "block-separator"
 
   # - block: collection
   #   id: talks
