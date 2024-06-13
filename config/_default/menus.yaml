@@ -25,7 +25,7 @@ main:
   - name: Projects
     url: /#projects
     weight: 30
-  - name: blog
+  - name: Blog
     url: /#blog
     weight: 40
   # - name: Teaching
