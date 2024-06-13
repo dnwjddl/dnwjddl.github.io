@@ -20,13 +20,13 @@ main:
     url: /#recent-publication
     weight: 14
   - name: Experience
-    url: /#experience
+    url: experience/
     weight: 20
   - name: Projects
-    url: /#projects
+    url: projects/
     weight: 30
   - name: Blog
-    url: /#blog
+    url: blog/
     weight: 40
   - name: Teaching
     url: teaching/
