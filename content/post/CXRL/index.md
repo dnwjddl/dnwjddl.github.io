@@ -1,5 +1,5 @@
 ---
-title: 🎉 One paper EARLY ACCEPTED for MICCAI 2024 (top 11% of submission)
+title: 🎉 One paper EARLY ACCEPTED & SPOTLIGHT for MICCAI 2024 (top 3.4% of submission)
 summary: <Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning> Paper accepted for MICCAI 2024
 date: 2024-05-14
 # Featured image
@@ -22,7 +22,7 @@ tags:
 - 📚 [**Github Page**](https://github.com/MICV-yonsei/CXRL)
 - 💡 [**Project Page**](https://micv-yonsei.github.io/cxrl2024/)
 
-🥳 I'm excited to announce that our paper, **"Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning"** has been <mark>EARLY ACCEPTED</mark> at **MICCAI 2024**! This puts us in the top 11% of all submissions. 
+🥳 I'm excited to announce that our paper, **"Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning"** has been <mark>EARLY ACCEPTED</mark> and <mark>SPOTLIGHT</mark> at **MICCAI 2024**! This puts us in the top 3.4% of all submissions. 
 
 Our work is the first to use reinforcement learning for diffusion model-based text-to-medical image generation. 
 A truly rewarding experience!
