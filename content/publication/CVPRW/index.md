@@ -1,8 +1,8 @@
 ---
 title: 'EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation'
 authors:
-  - Chanyoung Kim
-  - admin
+  - Chanyoung Kim*
+  - admin-coauthor
   - Dayun Ju
   - Seong Jae Hwang
 

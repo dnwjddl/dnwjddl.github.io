@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MICCAI | Woojung Han</title>
-    <link>https://dnwjddl.github.io/tags/miccai/</link>
-      <atom:link href="https://dnwjddl.github.io/tags/miccai/index.xml" rel="self" type="application/rss+xml" />
+    <link>http://localhost:1313/tags/miccai/</link>
+      <atom:link href="http://localhost:1313/tags/miccai/index.xml" rel="self" type="application/rss+xml" />
     <description>MICCAI</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 14 May 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
+      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
       <title>MICCAI</title>
-      <link>https://dnwjddl.github.io/tags/miccai/</link>
+      <link>http://localhost:1313/tags/miccai/</link>
     </image>
     
     <item>
       <title>🎉 One paper EARLY ACCEPTED &amp; SPOTLIGHT for MICCAI 2024 (top 3.4% of submission)</title>
-      <link>https://dnwjddl.github.io/post/cxrl/</link>
+      <link>http://localhost:1313/post/cxrl/</link>
       <pubDate>Tue, 14 May 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/post/cxrl/</guid>
+      <guid>http://localhost:1313/post/cxrl/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;👉 
 &lt;/li&gt;
@@ -34,9 +34,9 @@ A truly rewarding experience!&lt;/p&gt;
     
     <item>
       <title>CXRL</title>
-      <link>https://dnwjddl.github.io/project/cxrl/</link>
+      <link>http://localhost:1313/project/cxrl/</link>
       <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/project/cxrl/</guid>
+      <guid>http://localhost:1313/project/cxrl/</guid>
       <description>&lt;p&gt;[MICCAI&#39;24] Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning&lt;/p&gt;</description>
     </item>
     

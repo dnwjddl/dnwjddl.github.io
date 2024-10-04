@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Paper-Conference | Woojung Han</title>
-    <link>https://dnwjddl.github.io/publication_types/paper-conference/</link>
-      <atom:link href="https://dnwjddl.github.io/publication_types/paper-conference/index.xml" rel="self" type="application/rss+xml" />
+    <link>http://localhost:1313/publication_types/paper-conference/</link>
+      <atom:link href="http://localhost:1313/publication_types/paper-conference/index.xml" rel="self" type="application/rss+xml" />
     <description>Paper-Conference</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 14 May 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
+      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
       <title>Paper-Conference</title>
-      <link>https://dnwjddl.github.io/publication_types/paper-conference/</link>
+      <link>http://localhost:1313/publication_types/paper-conference/</link>
     </image>
     
     <item>
       <title>Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning</title>
-      <link>https://dnwjddl.github.io/publication/cxrl/</link>
+      <link>http://localhost:1313/publication/cxrl/</link>
       <pubDate>Tue, 14 May 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/publication/cxrl/</guid>
+      <guid>http://localhost:1313/publication/cxrl/</guid>
       <description>&lt;!-- 
 
 
@@ -56,9 +56,9 @@ Add the publication&#39;s **full text** or **supplementary notes** here. You can
     
     <item>
       <title>EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation</title>
-      <link>https://dnwjddl.github.io/publication/eagle/</link>
+      <link>http://localhost:1313/publication/eagle/</link>
       <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/publication/eagle/</guid>
+      <guid>http://localhost:1313/publication/eagle/</guid>
       <description>&lt;!-- 
 
 

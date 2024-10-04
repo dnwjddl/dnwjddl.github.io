@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Paper-Preprint | Woojung Han</title>
-    <link>https://dnwjddl.github.io/publication_types/paper-preprint/</link>
-      <atom:link href="https://dnwjddl.github.io/publication_types/paper-preprint/index.xml" rel="self" type="application/rss+xml" />
+    <link>http://localhost:1313/publication_types/paper-preprint/</link>
+      <atom:link href="http://localhost:1313/publication_types/paper-preprint/index.xml" rel="self" type="application/rss+xml" />
     <description>Paper-Preprint</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 21 Aug 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
+      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
       <title>Paper-Preprint</title>
-      <link>https://dnwjddl.github.io/publication_types/paper-preprint/</link>
+      <link>http://localhost:1313/publication_types/paper-preprint/</link>
     </image>
     
     <item>
       <title>Complementary Branch Fusing Class and Semantic Knowledge for Robust Weakly Supervised Semantic Segmentation</title>
-      <link>https://dnwjddl.github.io/publication/cobra/</link>
+      <link>http://localhost:1313/publication/cobra/</link>
       <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/publication/cobra/</guid>
+      <guid>http://localhost:1313/publication/cobra/</guid>
       <description>&lt;!-- 
 
 
