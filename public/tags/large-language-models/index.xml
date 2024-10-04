@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Large Language Models | Woojung Han</title>
-    <link>http://localhost:1313/tags/large-language-models/</link>
-      <atom:link href="http://localhost:1313/tags/large-language-models/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://dnwjddl.github.io/tags/large-language-models/</link>
+      <atom:link href="https://dnwjddl.github.io/tags/large-language-models/index.xml" rel="self" type="application/rss+xml" />
     <description>Large Language Models</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 07 Apr 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
       <title>Large Language Models</title>
-      <link>http://localhost:1313/tags/large-language-models/</link>
+      <link>https://dnwjddl.github.io/tags/large-language-models/</link>
     </image>
     
     <item>
       <title>An example preprint / working paper</title>
-      <link>http://localhost:1313/publication/preprint/</link>
+      <link>https://dnwjddl.github.io/publication/preprint/</link>
       <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/publication/preprint/</guid>
+      <guid>https://dnwjddl.github.io/publication/preprint/</guid>
       <description>&lt;p&gt;This work is driven by the results in my 
  on LLMs.&lt;/p&gt;
 &lt;div class=&#34;flex px-4 py-3 mb-6 rounded-md bg-primary-100 dark:bg-primary-900&#34;&gt;

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MAIC | Woojung Han</title>
-    <link>http://localhost:1313/tags/maic/</link>
-      <atom:link href="http://localhost:1313/tags/maic/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://dnwjddl.github.io/tags/maic/</link>
+      <atom:link href="https://dnwjddl.github.io/tags/maic/index.xml" rel="self" type="application/rss+xml" />
     <description>MAIC</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 07 Dec 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
       <title>MAIC</title>
-      <link>http://localhost:1313/tags/maic/</link>
+      <link>https://dnwjddl.github.io/tags/maic/</link>
     </image>
     
     <item>
       <title>MAIC</title>
-      <link>http://localhost:1313/project/maic/</link>
+      <link>https://dnwjddl.github.io/project/maic/</link>
       <pubDate>Tue, 07 Dec 2021 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/project/maic/</guid>
+      <guid>https://dnwjddl.github.io/project/maic/</guid>
       <description>&lt;p&gt;[SNUH MAIC Robotic Surgery AI Challenge] Segmentation of surgical tools using prostate cancer robot surgery video&lt;/p&gt;</description>
     </item>
     

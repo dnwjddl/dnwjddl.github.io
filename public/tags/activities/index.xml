@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Activities | Woojung Han</title>
-    <link>http://localhost:1313/tags/activities/</link>
-      <atom:link href="http://localhost:1313/tags/activities/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://dnwjddl.github.io/tags/activities/</link>
+      <atom:link href="https://dnwjddl.github.io/tags/activities/index.xml" rel="self" type="application/rss+xml" />
     <description>Activities</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
       <title>Activities</title>
-      <link>http://localhost:1313/tags/activities/</link>
+      <link>https://dnwjddl.github.io/tags/activities/</link>
     </image>
     
     <item>
       <title>🏫 Join MICV Lab in Yonsei University!</title>
-      <link>http://localhost:1313/post/micv/</link>
+      <link>https://dnwjddl.github.io/post/micv/</link>
       <pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/micv/</guid>
+      <guid>https://dnwjddl.github.io/post/micv/</guid>
       <description>&lt;p&gt;I joined Medical Imaging and Computer Vision Lab (
 ), advised by Professor Seong Jae Hwang🙌&lt;/p&gt;
 </description>

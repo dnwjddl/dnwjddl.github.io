@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CVPR | Woojung Han</title>
-    <link>http://localhost:1313/tags/cvpr/</link>
-      <atom:link href="http://localhost:1313/tags/cvpr/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://dnwjddl.github.io/tags/cvpr/</link>
+      <atom:link href="https://dnwjddl.github.io/tags/cvpr/index.xml" rel="self" type="application/rss+xml" />
     <description>CVPR</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 28 Feb 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
       <title>CVPR</title>
-      <link>http://localhost:1313/tags/cvpr/</link>
+      <link>https://dnwjddl.github.io/tags/cvpr/</link>
     </image>
     
     <item>
       <title>🎉 One paper ACCEPTED for CVPR 2024 HIGHLIGHT (top 2.8% of submission)</title>
-      <link>http://localhost:1313/post/eagle/</link>
+      <link>https://dnwjddl.github.io/post/eagle/</link>
       <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/eagle/</guid>
+      <guid>https://dnwjddl.github.io/post/eagle/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;👉 
 &lt;/li&gt;
@@ -34,9 +34,9 @@
     
     <item>
       <title>EAGLE</title>
-      <link>http://localhost:1313/project/eagle/</link>
+      <link>https://dnwjddl.github.io/project/eagle/</link>
       <pubDate>Sat, 24 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/project/eagle/</guid>
+      <guid>https://dnwjddl.github.io/project/eagle/</guid>
       <description>&lt;p&gt;[CVPR&#39;24] EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation&lt;/p&gt;</description>
     </item>
     

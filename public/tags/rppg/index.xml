@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>RPPG | Woojung Han</title>
-    <link>http://localhost:1313/tags/rppg/</link>
-      <atom:link href="http://localhost:1313/tags/rppg/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://dnwjddl.github.io/tags/rppg/</link>
+      <atom:link href="https://dnwjddl.github.io/tags/rppg/index.xml" rel="self" type="application/rss+xml" />
     <description>RPPG</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 20 Mar 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
       <title>RPPG</title>
-      <link>http://localhost:1313/tags/rppg/</link>
+      <link>https://dnwjddl.github.io/tags/rppg/</link>
     </image>
     
     <item>
       <title>Effect of Time Window Size for Converting Frequency Domain in Real-Time Remote Photoplethysmography Extraction</title>
-      <link>http://localhost:1313/publication/ihci/</link>
+      <link>https://dnwjddl.github.io/publication/ihci/</link>
       <pubDate>Sat, 20 Mar 2021 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/publication/ihci/</guid>
+      <guid>https://dnwjddl.github.io/publication/ihci/</guid>
       <description></description>
     </item>
     
