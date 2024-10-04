@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CXRL | Woojung Han</title>
-    <link>http://localhost:1313/tags/cxrl/</link>
-      <atom:link href="http://localhost:1313/tags/cxrl/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://dnwjddl.github.io/tags/cxrl/</link>
+      <atom:link href="https://dnwjddl.github.io/tags/cxrl/index.xml" rel="self" type="application/rss+xml" />
     <description>CXRL</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 11 Mar 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
       <title>CXRL</title>
-      <link>http://localhost:1313/tags/cxrl/</link>
+      <link>https://dnwjddl.github.io/tags/cxrl/</link>
     </image>
     
     <item>
       <title>CXRL</title>
-      <link>http://localhost:1313/project/cxrl/</link>
+      <link>https://dnwjddl.github.io/project/cxrl/</link>
       <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/project/cxrl/</guid>
+      <guid>https://dnwjddl.github.io/project/cxrl/</guid>
       <description>&lt;p&gt;[MICCAI&#39;24] Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning&lt;/p&gt;</description>
     </item>
     

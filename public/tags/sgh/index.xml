@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>SGH | Woojung Han</title>
-    <link>http://localhost:1313/tags/sgh/</link>
-      <atom:link href="http://localhost:1313/tags/sgh/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://dnwjddl.github.io/tags/sgh/</link>
+      <atom:link href="https://dnwjddl.github.io/tags/sgh/index.xml" rel="self" type="application/rss+xml" />
     <description>SGH</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 13 Jun 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
       <title>SGH</title>
-      <link>http://localhost:1313/tags/sgh/</link>
+      <link>https://dnwjddl.github.io/tags/sgh/</link>
     </image>
     
     <item>
       <title>Imagine That! Abstract-to-Intricate Text-to-Image Synthesis with Scene Graph Hallucination Diffusion</title>
-      <link>http://localhost:1313/blog/240613_sgh/</link>
+      <link>https://dnwjddl.github.io/blog/240613_sgh/</link>
       <pubDate>Thu, 13 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/blog/240613_sgh/</guid>
+      <guid>https://dnwjddl.github.io/blog/240613_sgh/</guid>
       <description>&lt;p&gt;
 &lt;/p&gt;
 &lt;!-- &lt;details class=&#34;spoiler &#34;  id=&#34;spoiler-0&#34;&gt;

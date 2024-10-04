@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Segmentation | Woojung Han</title>
-    <link>http://localhost:1313/tags/segmentation/</link>
-      <atom:link href="http://localhost:1313/tags/segmentation/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://dnwjddl.github.io/tags/segmentation/</link>
+      <atom:link href="https://dnwjddl.github.io/tags/segmentation/index.xml" rel="self" type="application/rss+xml" />
     <description>Segmentation</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 21 Aug 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
       <title>Segmentation</title>
-      <link>http://localhost:1313/tags/segmentation/</link>
+      <link>https://dnwjddl.github.io/tags/segmentation/</link>
     </image>
     
     <item>
       <title>Complementary Branch Fusing Class and Semantic Knowledge for Robust Weakly Supervised Semantic Segmentation</title>
-      <link>http://localhost:1313/publication/cobra/</link>
+      <link>https://dnwjddl.github.io/publication/cobra/</link>
       <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/publication/cobra/</guid>
+      <guid>https://dnwjddl.github.io/publication/cobra/</guid>
       <description>&lt;!-- 
 
 
@@ -56,17 +56,17 @@ Add the publication&#39;s **full text** or **supplementary notes** here. You can
     
     <item>
       <title>EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation</title>
-      <link>http://localhost:1313/publication/cvprw/</link>
+      <link>https://dnwjddl.github.io/publication/cvprw/</link>
       <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/publication/cvprw/</guid>
+      <guid>https://dnwjddl.github.io/publication/cvprw/</guid>
       <description></description>
     </item>
     
     <item>
       <title>EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation</title>
-      <link>http://localhost:1313/publication/eagle/</link>
+      <link>https://dnwjddl.github.io/publication/eagle/</link>
       <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/publication/eagle/</guid>
+      <guid>https://dnwjddl.github.io/publication/eagle/</guid>
       <description>&lt;!-- 
 
 

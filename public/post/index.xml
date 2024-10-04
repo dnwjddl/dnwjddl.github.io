@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blog | Woojung Han</title>
-    <link>http://localhost:1313/post/</link>
-      <atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://dnwjddl.github.io/post/</link>
+      <atom:link href="https://dnwjddl.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Blog</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 21 Aug 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
       <title>Blog</title>
-      <link>http://localhost:1313/post/</link>
+      <link>https://dnwjddl.github.io/post/</link>
     </image>
     
     <item>
       <title>🎉 One paper accepted for Pattern Recognition Journal (Impact Factor = 7.5)</title>
-      <link>http://localhost:1313/post/cobra/</link>
+      <link>https://dnwjddl.github.io/post/cobra/</link>
       <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/cobra/</guid>
+      <guid>https://dnwjddl.github.io/post/cobra/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;👉 
 &lt;/li&gt;
@@ -32,9 +32,9 @@
     
     <item>
       <title>🎉 One paper EARLY ACCEPTED &amp; SPOTLIGHT for MICCAI 2024 (top 3.4% of submission)</title>
-      <link>http://localhost:1313/post/cxrl/</link>
+      <link>https://dnwjddl.github.io/post/cxrl/</link>
       <pubDate>Tue, 14 May 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/cxrl/</guid>
+      <guid>https://dnwjddl.github.io/post/cxrl/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;👉 
 &lt;/li&gt;
@@ -52,9 +52,9 @@ A truly rewarding experience!&lt;/p&gt;
     
     <item>
       <title>🎉 One paper ACCEPTED for CVPR 2024 HIGHLIGHT (top 2.8% of submission)</title>
-      <link>http://localhost:1313/post/eagle/</link>
+      <link>https://dnwjddl.github.io/post/eagle/</link>
       <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/eagle/</guid>
+      <guid>https://dnwjddl.github.io/post/eagle/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;👉 
 &lt;/li&gt;
@@ -72,9 +72,9 @@ A truly rewarding experience!&lt;/p&gt;
     
     <item>
       <title>🏫 Join MICV Lab in Yonsei University!</title>
-      <link>http://localhost:1313/post/micv/</link>
+      <link>https://dnwjddl.github.io/post/micv/</link>
       <pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/micv/</guid>
+      <guid>https://dnwjddl.github.io/post/micv/</guid>
       <description>&lt;p&gt;I joined Medical Imaging and Computer Vision Lab (
 ), advised by Professor Seong Jae Hwang🙌&lt;/p&gt;
 </description>

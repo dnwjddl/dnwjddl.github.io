@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Medical Imaging | Woojung Han</title>
-    <link>http://localhost:1313/tags/medical-imaging/</link>
-      <atom:link href="http://localhost:1313/tags/medical-imaging/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://dnwjddl.github.io/tags/medical-imaging/</link>
+      <atom:link href="https://dnwjddl.github.io/tags/medical-imaging/index.xml" rel="self" type="application/rss+xml" />
     <description>Medical Imaging</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 14 May 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
       <title>Medical Imaging</title>
-      <link>http://localhost:1313/tags/medical-imaging/</link>
+      <link>https://dnwjddl.github.io/tags/medical-imaging/</link>
     </image>
     
     <item>
       <title>Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning</title>
-      <link>http://localhost:1313/publication/cxrl/</link>
+      <link>https://dnwjddl.github.io/publication/cxrl/</link>
       <pubDate>Tue, 14 May 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/publication/cxrl/</guid>
+      <guid>https://dnwjddl.github.io/publication/cxrl/</guid>
       <description>&lt;!-- 
 
 
