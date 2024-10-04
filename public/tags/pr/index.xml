@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PR | Woojung Han</title>
+    <link>http://localhost:1313/tags/pr/</link>
+      <atom:link href="http://localhost:1313/tags/pr/index.xml" rel="self" type="application/rss+xml" />
+    <description>PR</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 21 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
+      <title>PR</title>
+      <link>http://localhost:1313/tags/pr/</link>
+    </image>
+    
+    <item>
+      <title>🎉 One paper accepted for Pattern Recognition Journal (Impact Factor&#39;:&#39; 7.5)</title>
+      <link>http://localhost:1313/post/cobra/</link>
+      <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/cobra/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;👉 
+&lt;/li&gt;
+&lt;li&gt;📚 
+&lt;/li&gt;
+&lt;li&gt;💡 
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;🥳 I&amp;rsquo;m excited to announce that our paper, &lt;strong&gt;&amp;ldquo;Complementary Branch Fusing Class and Semantic Knowledge for Robust Weakly Supervised Semantic Segmentation&amp;rdquo;&lt;/strong&gt; has been accepted at &lt;strong&gt;Pattern Recognition (PR)&lt;/strong&gt;, which has an Impact Factor of 7.5!&lt;/p&gt;
+&lt;p&gt;Congrats to all our collaborators🎉&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

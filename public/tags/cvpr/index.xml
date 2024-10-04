@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>CVPR | Hugo Academic CV Theme</title>
+    <title>CVPR | Woojung Han</title>
     <link>http://localhost:1313/tags/cvpr/</link>
       <atom:link href="http://localhost:1313/tags/cvpr/index.xml" rel="self" type="application/rss+xml" />
     <description>CVPR</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 28 Feb 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu68170e94a17a2a43d6dcb45cf0e8e589_3079_512x512_fill_lanczos_center_3.png</url>
+      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
       <title>CVPR</title>
       <link>http://localhost:1313/tags/cvpr/</link>
     </image>
@@ -18,9 +18,12 @@
       <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/post/eagle/</guid>
       <description>&lt;ul&gt;
-&lt;li&gt;👉 &lt;a href=&#34;https://arxiv.org/pdf/2403.01482&#34;&gt;&lt;strong&gt;Paper&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;📚 &lt;a href=&#34;https://github.com/MICV-yonsei/EAGLE&#34;&gt;&lt;strong&gt;Github Page&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;💡 &lt;a href=&#34;https://micv-yonsei.github.io/eagle2024/&#34;&gt;&lt;strong&gt;Project Page&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;👉 
+&lt;/li&gt;
+&lt;li&gt;📚 
+&lt;/li&gt;
+&lt;li&gt;💡 
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;🥳 Happy to share that our work, &amp;ldquo;EAGLE🦅: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation&amp;rdquo; has been accepted at CVPR 2024!&lt;/p&gt;
 &lt;p&gt;Our EAGLE was chosen for CVPR 2024 &lt;mark&gt;HIGHLIGHT&lt;/mark&gt; paper, a notable top 2.8% of total submissions.&lt;/p&gt;

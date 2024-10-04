@@ -1,0 +1,12 @@
+/* Custom CSS for block separators */
+.block-separator {
+  border-bottom: 2px solid #e0e0e0; /* Change the color and thickness as needed */
+  margin-bottom: 1rem; /* Adjust spacing as needed */
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .block-separator {
+    border-bottom: 2px solid #555555; /* Dark mode border color */
+  }
+}

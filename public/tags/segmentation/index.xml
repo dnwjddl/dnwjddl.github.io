@@ -1,30 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Segmentation | Hugo Academic CV Theme</title>
+    <title>Segmentation | Woojung Han</title>
     <link>http://localhost:1313/tags/segmentation/</link>
       <atom:link href="http://localhost:1313/tags/segmentation/index.xml" rel="self" type="application/rss+xml" />
     <description>Segmentation</description>
-    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 28 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 21 Aug 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://localhost:1313/media/icon_hu68170e94a17a2a43d6dcb45cf0e8e589_3079_512x512_fill_lanczos_center_3.png</url>
+      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
       <title>Segmentation</title>
       <link>http://localhost:1313/tags/segmentation/</link>
     </image>
     
     <item>
-      <title>EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation</title>
-      <link>http://localhost:1313/publication/cvprw/</link>
-      <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/publication/cvprw/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation</title>
-      <link>http://localhost:1313/publication/eagle/</link>
-      <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/publication/eagle/</guid>
+      <title>Complementary Branch Fusing Class and Semantic Knowledge for Robust Weakly Supervised Semantic Segmentation</title>
+      <link>http://localhost:1313/publication/cobra/</link>
+      <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/publication/cobra/</guid>
       <description>&lt;!-- 
 
 
@@ -63,10 +55,18 @@ Add the publication&#39;s **full text** or **supplementary notes** here. You can
     </item>
     
     <item>
-      <title>CoBra: Complementary Branch Fusing Class and Semantic Knowledge for Robust Weakly Supervised Semantic Segmentation</title>
-      <link>http://localhost:1313/publication/cobra/</link>
-      <pubDate>Sun, 28 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/publication/cobra/</guid>
+      <title>EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation</title>
+      <link>http://localhost:1313/publication/cvprw/</link>
+      <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/publication/cvprw/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation</title>
+      <link>http://localhost:1313/publication/eagle/</link>
+      <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/publication/eagle/</guid>
       <description>&lt;!-- 
 
 

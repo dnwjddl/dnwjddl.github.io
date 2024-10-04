@@ -1,5 +1,5 @@
 ---
-title: 🎉 One paper accepted for Pattern Recognition Journal (Impact Factor: 7.5)
+title: 🎉 One paper accepted for Pattern Recognition Journal (Impact Factor = 7.5)
 summary: <Complementary Branch Fusing Class and Semantic Knowledge for Robust Weakly Supervised Semantic Segmentation> Paper accepted for Pattern Recognition!
 date: 2024-08-21
 # Featured image
