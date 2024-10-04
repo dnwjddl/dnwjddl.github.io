@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>EAGLE | Woojung Han</title>
-    <link>https://dnwjddl.github.io/tags/eagle/</link>
-      <atom:link href="https://dnwjddl.github.io/tags/eagle/index.xml" rel="self" type="application/rss+xml" />
+    <link>http://localhost:1313/tags/eagle/</link>
+      <atom:link href="http://localhost:1313/tags/eagle/index.xml" rel="self" type="application/rss+xml" />
     <description>EAGLE</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 24 Feb 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
+      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
       <title>EAGLE</title>
-      <link>https://dnwjddl.github.io/tags/eagle/</link>
+      <link>http://localhost:1313/tags/eagle/</link>
     </image>
     
     <item>
       <title>EAGLE</title>
-      <link>https://dnwjddl.github.io/project/eagle/</link>
+      <link>http://localhost:1313/project/eagle/</link>
       <pubDate>Sat, 24 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/project/eagle/</guid>
+      <guid>http://localhost:1313/project/eagle/</guid>
       <description>&lt;p&gt;[CVPR&#39;24] EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation&lt;/p&gt;</description>
     </item>
     

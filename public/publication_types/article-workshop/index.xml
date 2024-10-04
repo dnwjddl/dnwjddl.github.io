@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Article-Workshop | Woojung Han</title>
-    <link>https://dnwjddl.github.io/publication_types/article-workshop/</link>
-      <atom:link href="https://dnwjddl.github.io/publication_types/article-workshop/index.xml" rel="self" type="application/rss+xml" />
+    <link>http://localhost:1313/publication_types/article-workshop/</link>
+      <atom:link href="http://localhost:1313/publication_types/article-workshop/index.xml" rel="self" type="application/rss+xml" />
     <description>Article-Workshop</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 28 Feb 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
+      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
       <title>Article-Workshop</title>
-      <link>https://dnwjddl.github.io/publication_types/article-workshop/</link>
+      <link>http://localhost:1313/publication_types/article-workshop/</link>
     </image>
     
     <item>
       <title>EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation</title>
-      <link>https://dnwjddl.github.io/publication/cvprw/</link>
+      <link>http://localhost:1313/publication/cvprw/</link>
       <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/publication/cvprw/</guid>
+      <guid>http://localhost:1313/publication/cvprw/</guid>
       <description></description>
     </item>
     

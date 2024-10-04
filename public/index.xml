@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Woojung Han</title>
-    <link>https://dnwjddl.github.io/</link>
-      <atom:link href="https://dnwjddl.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <link>http://localhost:1313/</link>
+      <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <description>Woojung Han</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 24 Oct 2022 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://dnwjddl.github.io/media/icon_hu16182714360836324805.png</url>
+      <url>http://localhost:1313/media/icon_hu16182714360836324805.png</url>
       <title>Woojung Han</title>
-      <link>https://dnwjddl.github.io/</link>
+      <link>http://localhost:1313/</link>
     </image>
     
     <item>
       <title>Example Talk</title>
-      <link>https://dnwjddl.github.io/event/example/</link>
+      <link>http://localhost:1313/event/example/</link>
       <pubDate>Sat, 01 Jun 2030 13:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/event/example/</guid>
+      <guid>http://localhost:1313/event/example/</guid>
       <description>&lt;div class=&#34;flex px-4 py-3 mb-6 rounded-md bg-primary-100 dark:bg-primary-900&#34;&gt;
 &lt;span class=&#34;pr-3 pt-1 text-primary-600 dark:text-primary-300&#34;&gt;
   &lt;svg height=&#34;24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34;&gt;&lt;path fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; stroke-width=&#34;1.5&#34; d=&#34;m11.25 11.25l.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0a9 9 0 0 1 18 0m-9-3.75h.008v.008H12z&#34;/&gt;&lt;/svg&gt;
@@ -38,9 +38,9 @@
     
     <item>
       <title>🎉 One paper accepted for Pattern Recognition Journal (Impact Factor = 7.5)</title>
-      <link>https://dnwjddl.github.io/post/cobra/</link>
+      <link>http://localhost:1313/post/cobra/</link>
       <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/post/cobra/</guid>
+      <guid>http://localhost:1313/post/cobra/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;👉 
 &lt;/li&gt;
@@ -56,9 +56,9 @@
     
     <item>
       <title>Complementary Branch Fusing Class and Semantic Knowledge for Robust Weakly Supervised Semantic Segmentation</title>
-      <link>https://dnwjddl.github.io/publication/cobra/</link>
+      <link>http://localhost:1313/publication/cobra/</link>
       <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/publication/cobra/</guid>
+      <guid>http://localhost:1313/publication/cobra/</guid>
       <description>&lt;!-- 
 
 
@@ -98,9 +98,9 @@ Add the publication&#39;s **full text** or **supplementary notes** here. You can
     
     <item>
       <title>Imagine That! Abstract-to-Intricate Text-to-Image Synthesis with Scene Graph Hallucination Diffusion</title>
-      <link>https://dnwjddl.github.io/blog/240613_sgh/</link>
+      <link>http://localhost:1313/blog/240613_sgh/</link>
       <pubDate>Thu, 13 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/blog/240613_sgh/</guid>
+      <guid>http://localhost:1313/blog/240613_sgh/</guid>
       <description>&lt;p&gt;
 &lt;/p&gt;
 &lt;!-- &lt;details class=&#34;spoiler &#34;  id=&#34;spoiler-0&#34;&gt;
@@ -138,17 +138,17 @@ data.head()
     
     <item>
       <title>Projects</title>
-      <link>https://dnwjddl.github.io/projects/</link>
+      <link>http://localhost:1313/projects/</link>
       <pubDate>Sun, 19 May 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/projects/</guid>
+      <guid>http://localhost:1313/projects/</guid>
       <description></description>
     </item>
     
     <item>
       <title>🎉 One paper EARLY ACCEPTED &amp; SPOTLIGHT for MICCAI 2024 (top 3.4% of submission)</title>
-      <link>https://dnwjddl.github.io/post/cxrl/</link>
+      <link>http://localhost:1313/post/cxrl/</link>
       <pubDate>Tue, 14 May 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/post/cxrl/</guid>
+      <guid>http://localhost:1313/post/cxrl/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;👉 
 &lt;/li&gt;
@@ -166,9 +166,9 @@ A truly rewarding experience!&lt;/p&gt;
     
     <item>
       <title>Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning</title>
-      <link>https://dnwjddl.github.io/publication/cxrl/</link>
+      <link>http://localhost:1313/publication/cxrl/</link>
       <pubDate>Tue, 14 May 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/publication/cxrl/</guid>
+      <guid>http://localhost:1313/publication/cxrl/</guid>
       <description>&lt;!-- 
 
 
@@ -208,9 +208,9 @@ Add the publication&#39;s **full text** or **supplementary notes** here. You can
     
     <item>
       <title>An example preprint / working paper</title>
-      <link>https://dnwjddl.github.io/publication/preprint/</link>
+      <link>http://localhost:1313/publication/preprint/</link>
       <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/publication/preprint/</guid>
+      <guid>http://localhost:1313/publication/preprint/</guid>
       <description>&lt;p&gt;This work is driven by the results in my 
  on LLMs.&lt;/p&gt;
 &lt;div class=&#34;flex px-4 py-3 mb-6 rounded-md bg-primary-100 dark:bg-primary-900&#34;&gt;
@@ -226,17 +226,17 @@ Add the publication&#39;s **full text** or **supplementary notes** here. You can
     
     <item>
       <title>CXRL</title>
-      <link>https://dnwjddl.github.io/project/cxrl/</link>
+      <link>http://localhost:1313/project/cxrl/</link>
       <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/project/cxrl/</guid>
+      <guid>http://localhost:1313/project/cxrl/</guid>
       <description>&lt;p&gt;[MICCAI&#39;24] Advancing Text-Driven Chest X-Ray Generation with Policy-Based Reinforcement Learning&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>🎉 One paper ACCEPTED for CVPR 2024 HIGHLIGHT (top 2.8% of submission)</title>
-      <link>https://dnwjddl.github.io/post/eagle/</link>
+      <link>http://localhost:1313/post/eagle/</link>
       <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/post/eagle/</guid>
+      <guid>http://localhost:1313/post/eagle/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;👉 
 &lt;/li&gt;
@@ -254,17 +254,17 @@ Add the publication&#39;s **full text** or **supplementary notes** here. You can
     
     <item>
       <title>EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation</title>
-      <link>https://dnwjddl.github.io/publication/cvprw/</link>
+      <link>http://localhost:1313/publication/cvprw/</link>
       <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/publication/cvprw/</guid>
+      <guid>http://localhost:1313/publication/cvprw/</guid>
       <description></description>
     </item>
     
     <item>
       <title>EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation</title>
-      <link>https://dnwjddl.github.io/publication/eagle/</link>
+      <link>http://localhost:1313/publication/eagle/</link>
       <pubDate>Wed, 28 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/publication/eagle/</guid>
+      <guid>http://localhost:1313/publication/eagle/</guid>
       <description>&lt;!-- 
 
 
@@ -304,25 +304,25 @@ Add the publication&#39;s **full text** or **supplementary notes** here. You can
     
     <item>
       <title>EAGLE</title>
-      <link>https://dnwjddl.github.io/project/eagle/</link>
+      <link>http://localhost:1313/project/eagle/</link>
       <pubDate>Sat, 24 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/project/eagle/</guid>
+      <guid>http://localhost:1313/project/eagle/</guid>
       <description>&lt;p&gt;[CVPR&#39;24] EAGLE: Eigen Aggregation Learning for Object-Centric Unsupervised Semantic Segmentation&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Experience</title>
-      <link>https://dnwjddl.github.io/experience/</link>
+      <link>http://localhost:1313/experience/</link>
       <pubDate>Tue, 24 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/experience/</guid>
+      <guid>http://localhost:1313/experience/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Learn JavaScript</title>
-      <link>https://dnwjddl.github.io/teaching/js/</link>
+      <link>http://localhost:1313/teaching/js/</link>
       <pubDate>Tue, 24 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/teaching/js/</guid>
+      <guid>http://localhost:1313/teaching/js/</guid>
       <description>&lt;p&gt;
  is designed to give technical content creators a seamless experience. You can focus on the content and the Hugo Blox Builder which this template is built upon handles the rest.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Embed videos, podcasts, code, LaTeX math, and even test students!&lt;/strong&gt;&lt;/p&gt;
@@ -371,7 +371,7 @@ Add the publication&#39;s **full text** or **supplementary notes** here. You can
 
 
 &lt;audio controls &gt;
-  &lt;source src=&#34;https://dnwjddl.github.io/teaching/js/ambient-piano.mp3&#34; type=&#34;audio/mpeg&#34;&gt;
+  &lt;source src=&#34;http://localhost:1313/teaching/js/ambient-piano.mp3&#34; type=&#34;audio/mpeg&#34;&gt;
 &lt;/audio&gt;
 
 &lt;h2 id=&#34;test-students&#34;&gt;Test students&lt;/h2&gt;
@@ -448,9 +448,9 @@ data.head()
     
     <item>
       <title>Learn Python</title>
-      <link>https://dnwjddl.github.io/teaching/python/</link>
+      <link>http://localhost:1313/teaching/python/</link>
       <pubDate>Tue, 24 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/teaching/python/</guid>
+      <guid>http://localhost:1313/teaching/python/</guid>
       <description>&lt;p&gt;
  is designed to give technical content creators a seamless experience. You can focus on the content and the Hugo Blox Builder which this template is built upon handles the rest.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Embed videos, podcasts, code, LaTeX math, and even test students!&lt;/strong&gt;&lt;/p&gt;
@@ -499,7 +499,7 @@ data.head()
 
 
 &lt;audio controls &gt;
-  &lt;source src=&#34;https://dnwjddl.github.io/teaching/python/ambient-piano.mp3&#34; type=&#34;audio/mpeg&#34;&gt;
+  &lt;source src=&#34;http://localhost:1313/teaching/python/ambient-piano.mp3&#34; type=&#34;audio/mpeg&#34;&gt;
 &lt;/audio&gt;
 
 &lt;h2 id=&#34;test-students&#34;&gt;Test students&lt;/h2&gt;
@@ -576,9 +576,9 @@ data.head()
     
     <item>
       <title>🏫 Join MICV Lab in Yonsei University!</title>
-      <link>https://dnwjddl.github.io/post/micv/</link>
+      <link>http://localhost:1313/post/micv/</link>
       <pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/post/micv/</guid>
+      <guid>http://localhost:1313/post/micv/</guid>
       <description>&lt;p&gt;I joined Medical Imaging and Computer Vision Lab (
 ), advised by Professor Seong Jae Hwang🙌&lt;/p&gt;
 </description>
@@ -586,57 +586,57 @@ data.head()
     
     <item>
       <title>MAIC</title>
-      <link>https://dnwjddl.github.io/project/maic/</link>
+      <link>http://localhost:1313/project/maic/</link>
       <pubDate>Tue, 07 Dec 2021 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/project/maic/</guid>
+      <guid>http://localhost:1313/project/maic/</guid>
       <description>&lt;p&gt;[SNUH MAIC Robotic Surgery AI Challenge] Segmentation of surgical tools using prostate cancer robot surgery video&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Lip Reading</title>
-      <link>https://dnwjddl.github.io/project/lip-reading/</link>
+      <link>http://localhost:1313/project/lip-reading/</link>
       <pubDate>Thu, 04 Nov 2021 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/project/lip-reading/</guid>
+      <guid>http://localhost:1313/project/lip-reading/</guid>
       <description>&lt;p&gt;[Graduation Challenge] Lip Reading&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Effect of Time Window Size for Converting Frequency Domain in Real-Time Remote Photoplethysmography Extraction</title>
-      <link>https://dnwjddl.github.io/publication/ihci/</link>
+      <link>http://localhost:1313/publication/ihci/</link>
       <pubDate>Sat, 20 Mar 2021 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/publication/ihci/</guid>
+      <guid>http://localhost:1313/publication/ihci/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Image Inpainting</title>
-      <link>https://dnwjddl.github.io/project/inpainting/</link>
+      <link>http://localhost:1313/project/inpainting/</link>
       <pubDate>Sun, 14 Feb 2021 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/project/inpainting/</guid>
+      <guid>http://localhost:1313/project/inpainting/</guid>
       <description>&lt;p&gt;[AI Competition] Development of painting cultural heritage restoration technology based on inpainting technique&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Motion Estimation</title>
-      <link>https://dnwjddl.github.io/project/handa/</link>
+      <link>http://localhost:1313/project/handa/</link>
       <pubDate>Tue, 09 Feb 2021 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/project/handa/</guid>
+      <guid>http://localhost:1313/project/handa/</guid>
       <description>&lt;p&gt;[SW-centered university joint hackathon] 🔩 + 💻 = Handa Team&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>MuTube</title>
-      <link>https://dnwjddl.github.io/project/mutube/</link>
+      <link>http://localhost:1313/project/mutube/</link>
       <pubDate>Sun, 20 Dec 2020 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/project/mutube/</guid>
+      <guid>http://localhost:1313/project/mutube/</guid>
       <description>&lt;p&gt;[AI Competition] Playlist-based song recommendation system&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>PPG Analysis</title>
-      <link>https://dnwjddl.github.io/project/mutube-copy/</link>
+      <link>http://localhost:1313/project/mutube-copy/</link>
       <pubDate>Sun, 15 Nov 2020 00:00:00 +0000</pubDate>
-      <guid>https://dnwjddl.github.io/project/mutube-copy/</guid>
+      <guid>http://localhost:1313/project/mutube-copy/</guid>
       <description>&lt;p&gt;[Project] Design of image evaluation index based on biosignal-based emotions&lt;/p&gt;</description>
     </item>
     
