@@ -136,17 +136,18 @@
     }
     .ul-papers .description .title a::after {
       content: " ↗";
-      font-size: 0.78em;
-      opacity: 0.45;
+      font-size: 1em;
+      font-weight: 900;
+      color: #6b7280;
       display: inline-block;
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      transition: color 0.2s ease, transform 0.2s ease;
     }
     .ul-papers .description .title a:hover {
       color: #b31b1b;
       background-size: 100% 1.5px;
     }
     .ul-papers .description .title a:hover::after {
-      opacity: 1;
+      color: #b31b1b;
       transform: translate(2px, -2px);
     }
   </style>
