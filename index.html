@@ -69,45 +69,85 @@
     }
     .ul-papers .resources a {
       display: inline-block;
-      padding: 3px 12px;
-      margin: 3px 5px 3px 0;
+      padding: 4px 14px;
+      margin: 4px 6px 4px 0;
       border-radius: 999px;
       font-size: 0.82em;
       font-weight: 600;
       text-decoration: none;
-      border: 1px solid transparent;
-      transition: all 0.18s ease;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
       line-height: 1.4;
+      box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.14),
+        0 1px 2px rgba(0, 0, 0, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    }
+    .ul-papers .resources a:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 8px 16px rgba(0, 0, 0, 0.20),
+        0 3px 6px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .ul-papers .resources a:active {
+      transform: translateY(0);
+      box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.25);
     }
     .ul-papers .resources a.btn-paper {
-      background: #e8f0fe;
-      color: #1967d2;
-      border-color: #c6dafc;
+      background: linear-gradient(180deg, #3a3a3a 0%, #111111 100%);
+      color: #ffffff;
+      border-color: rgba(0, 0, 0, 0.6);
     }
     .ul-papers .resources a.btn-paper:hover {
-      background: #1967d2;
+      background: linear-gradient(180deg, #4a4a4a 0%, #1f1f1f 100%);
       color: #ffffff;
-      transform: translateY(-1px);
     }
     .ul-papers .resources a.btn-arxiv {
-      background: #fdecea;
+      background: linear-gradient(180deg, #fff0ee 0%, #f8d3d0 100%);
       color: #b31b1b;
-      border-color: #f5c6c5;
+      border-color: #eaa8a5;
     }
     .ul-papers .resources a.btn-arxiv:hover {
-      background: #b31b1b;
+      background: linear-gradient(180deg, #d63634 0%, #a51717 100%);
       color: #ffffff;
-      transform: translateY(-1px);
+      border-color: #8a1414;
     }
     .ul-papers .resources a.btn-code {
-      background: #f1f3f4;
+      background: linear-gradient(180deg, #ffffff 0%, #dfe3e6 100%);
       color: #24292e;
-      border-color: #d0d4d8;
+      border-color: #c5cad0;
     }
     .ul-papers .resources a.btn-code:hover {
-      background: #24292e;
+      background: linear-gradient(180deg, #444d56 0%, #1b1f23 100%);
       color: #ffffff;
-      transform: translateY(-1px);
+      border-color: #0d1015;
+    }
+    .ul-papers .description .title a {
+      color: #1a1a1a;
+      text-decoration: none;
+      background-image: linear-gradient(currentColor, currentColor);
+      background-size: 0% 1.5px;
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      transition: background-size 0.3s ease, color 0.2s ease;
+      padding-bottom: 1px;
+    }
+    .ul-papers .description .title a::after {
+      content: " ↗";
+      font-size: 0.78em;
+      opacity: 0.45;
+      display: inline-block;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .ul-papers .description .title a:hover {
+      color: #b31b1b;
+      background-size: 100% 1.5px;
+    }
+    .ul-papers .description .title a:hover::after {
+      opacity: 1;
+      transform: translate(2px, -2px);
     }
   </style>
 </head>
