@@ -153,6 +153,7 @@
       transform: translate(2px, -2px);
     }
     .publication-filter {
+      position: relative;
       margin: 14px 0 22px 0;
       display: inline-flex;
       gap: 4px;
@@ -163,7 +164,25 @@
         inset 0 1px 3px rgba(0, 0, 0, 0.08),
         inset 0 0 0 1px rgba(0, 0, 0, 0.04);
     }
+    .filter-slider {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      height: calc(100% - 10px);
+      width: 0;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow:
+        0 2px 5px rgba(0, 0, 0, 0.10),
+        0 1px 2px rgba(0, 0, 0, 0.06);
+      transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+                  width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 0;
+      pointer-events: none;
+    }
     .pub-filter-btn {
+      position: relative;
+      z-index: 1;
       padding: 7px 20px;
       border: none;
       background: transparent;
@@ -172,20 +191,13 @@
       color: #6b7280;
       border-radius: 8px;
       cursor: pointer;
-      transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+      transition: color 0.18s ease;
       letter-spacing: 0.2px;
     }
     .pub-filter-btn:hover {
       color: #1f2937;
     }
     .pub-filter-btn.active {
-      background: #ffffff;
-      color: #111827;
-      box-shadow:
-        0 2px 5px rgba(0, 0, 0, 0.10),
-        0 1px 2px rgba(0, 0, 0, 0.06);
-    }
-    .pub-filter-btn.active:hover {
       color: #111827;
     }
   </style>
@@ -437,6 +449,7 @@
     <div class="col-lg-12">
       <h1>Publications</h1>
       <div class="publication-filter">
+        <span class="filter-slider" aria-hidden="true"></span>
         <button class="pub-filter-btn active" data-filter="all" type="button">All</button>
         <button class="pub-filter-btn" data-filter="first" type="button">First Author</button>
       </div>
@@ -768,13 +781,31 @@ Segmentation</a></p>
 
 <script>
   (function() {
-    document.addEventListener('DOMContentLoaded', function() {
+    function init() {
       var btns = document.querySelectorAll('.pub-filter-btn');
       var items = document.querySelectorAll('.ul-papers > li');
+      var slider = document.querySelector('.filter-slider');
+
+      function updateSlider(animate) {
+        var activeBtn = document.querySelector('.pub-filter-btn.active');
+        if (!slider || !activeBtn) return;
+        if (!animate) {
+          slider.style.transition = 'none';
+        }
+        slider.style.width = activeBtn.offsetWidth + 'px';
+        slider.style.left = activeBtn.offsetLeft + 'px';
+        if (!animate) {
+          // Force reflow then re-enable transition
+          slider.offsetWidth;
+          slider.style.transition = '';
+        }
+      }
+
       btns.forEach(function(btn) {
         btn.addEventListener('click', function() {
           btns.forEach(function(b) { b.classList.remove('active'); });
           btn.classList.add('active');
+          updateSlider(true);
           var filter = btn.getAttribute('data-filter');
           items.forEach(function(li) {
             if (filter === 'all' || li.classList.contains('first-author')) {
@@ -785,7 +816,19 @@ Segmentation</a></p>
           });
         });
       });
-    });
+
+      updateSlider(false);
+      window.addEventListener('resize', function() { updateSlider(true); });
+      window.addEventListener('load', function() { updateSlider(false); });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function() { updateSlider(false); });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   })();
 </script>
 
