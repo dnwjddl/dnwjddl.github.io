@@ -1,3 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="90">🍀</text>
+  <!-- Ears -->
+  <path d="M22 28 L18 14 L36 22 Z" fill="#f8a5c2" stroke="#e785a8" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M78 28 L82 14 L64 22 Z" fill="#f8a5c2" stroke="#e785a8" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M24 24 L22 17 L31 21 Z" fill="#f48fb1"/>
+  <path d="M76 24 L78 17 L69 21 Z" fill="#f48fb1"/>
+
+  <!-- Face -->
+  <circle cx="50" cy="55" r="34" fill="#fbc2d4" stroke="#e785a8" stroke-width="1.8"/>
+
+  <!-- Cheeks -->
+  <ellipse cx="28" cy="62" rx="6" ry="4" fill="#f48fb1" opacity="0.6"/>
+  <ellipse cx="72" cy="62" rx="6" ry="4" fill="#f48fb1" opacity="0.6"/>
+
+  <!-- Eyes -->
+  <ellipse cx="38" cy="48" rx="3" ry="4" fill="#2b2b2b"/>
+  <ellipse cx="62" cy="48" rx="3" ry="4" fill="#2b2b2b"/>
+  <circle cx="39" cy="46.5" r="1" fill="#ffffff"/>
+  <circle cx="63" cy="46.5" r="1" fill="#ffffff"/>
+
+  <!-- Snout -->
+  <ellipse cx="50" cy="64" rx="14" ry="10" fill="#f8a5c2" stroke="#e785a8" stroke-width="1.5"/>
+  <ellipse cx="44" cy="64" rx="2.2" ry="3.2" fill="#2b2b2b"/>
+  <ellipse cx="56" cy="64" rx="2.2" ry="3.2" fill="#2b2b2b"/>
 </svg>
