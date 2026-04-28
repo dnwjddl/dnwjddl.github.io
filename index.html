@@ -67,6 +67,48 @@
       box-sizing: border-box;
       display: block;
     }
+    .ul-papers .resources a {
+      display: inline-block;
+      padding: 3px 12px;
+      margin: 3px 5px 3px 0;
+      border-radius: 999px;
+      font-size: 0.82em;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: all 0.18s ease;
+      line-height: 1.4;
+    }
+    .ul-papers .resources a.btn-paper {
+      background: #e8f0fe;
+      color: #1967d2;
+      border-color: #c6dafc;
+    }
+    .ul-papers .resources a.btn-paper:hover {
+      background: #1967d2;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .ul-papers .resources a.btn-arxiv {
+      background: #fdecea;
+      color: #b31b1b;
+      border-color: #f5c6c5;
+    }
+    .ul-papers .resources a.btn-arxiv:hover {
+      background: #b31b1b;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .ul-papers .resources a.btn-code {
+      background: #f1f3f4;
+      color: #24292e;
+      border-color: #d0d4d8;
+    }
+    .ul-papers .resources a.btn-code:hover {
+      background: #24292e;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 
@@ -338,9 +380,7 @@
               <p class="authors">Seil Kang, <b>Woojung Han</b>, Junhyeok Kim, Jinyeong Kim, Youngeun Kim, Seong Jae Hwang</p>
               <p class="venue">Technical Report</p>
               <p class="resources">
-                [
-                  <a href="https://arxiv.org/pdf/2604.16587">arXiv</a>
-                ]
+                <a class="btn-arxiv" href="https://arxiv.org/pdf/2604.16587">arXiv</a>
               </p>
             </div>
           </li>
@@ -354,9 +394,7 @@
               <p class="authors">Youngjun Jun, Seil Kang, <b>Woojung Han</b>, Seong Jae Hwang</p>
               <p class="venue">CVPR 2026 <span style="color:#dc143c">Highlight</span></p>
               <p class="resources">
-                [
-                  <a href="https://arxiv.org/abs/2603.02919">arXiv</a>
-                ]
+                <a class="btn-arxiv" href="https://arxiv.org/abs/2603.02919">arXiv</a>
               </p>
             </div>
           </li>
@@ -370,12 +408,8 @@
               <p class="authors"><b>Woojung Han*</b>,Seil Kang*, Dayun Ju, Seong Jae Hwang</p>
               <p class="venue">NeurIPS 2025</p>
               <p class="resources">
-                [
-                  <!-- <a href="https://micv-yonsei.github.io/cass/">project</a> / -->
-                  <!-- <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Kim_EAGLE_Eigen_Aggregation_Learning_for_Object-Centric_Unsupervised_Semantic_Segmentation_CVPR_2024_paper.html">paper</a> / -->
-                  <a href="https://arxiv.org/pdf/2510.03886">arXiv</a> /
-                  <a href="https://github.com/dnwjddl/tora">code</a>
-                ]
+                <a class="btn-arxiv" href="https://arxiv.org/pdf/2510.03886">arXiv</a>
+                <a class="btn-code" href="https://github.com/dnwjddl/tora">code</a>
               </p>
             </div>
           </li>
@@ -388,12 +422,8 @@
               <p class="authors">Yeonkyung Lee, <b>Woojung Han</b>, Youngjun Jun, Hyeonmin Kim, Jungkyung Cho, Seong Jae Hwang</p>
               <p class="venue">MICCAI 2025 <span style="color:#2962ff">EARLY ACCEPTED</span></p>
               <p class="resources">
-                [
-                  <!--<a href="https://micv-yonsei.github.io/cass/">project</a> / -->
-                  <!-- <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Kim_EAGLE_Eigen_Aggregation_Learning_for_Object-Centric_Unsupervised_Semantic_Segmentation_CVPR_2024_paper.html">paper</a> / -->
-                  <a href="https://arxiv.org/pdf/2505.12233">arXiv</a> /
-                  <a href="https://github.com/MICV-yonsei/PRETI">code</a>
-                ]
+                <a class="btn-arxiv" href="https://arxiv.org/pdf/2505.12233">arXiv</a>
+                <a class="btn-code" href="https://github.com/MICV-yonsei/PRETI">code</a>
               </p>
             </div>
           </li>
@@ -406,12 +436,7 @@
               <p class="authors">Chanyoung Kim*, Dayun Ju*, Jinyeong Kim, <b>Woojung Han</b>, Roberto Alcover-Couso, Seong Jae Hwang</p>
               <p class="venue">MICCAI 2025 <span style="color:#2962ff">EARLY ACCEPTED</span></p>
               <p class="resources">
-                [
-                  <!-- <a href="https://micv-yonsei.github.io/">project</a> / -->
-                  <!--<a href="https://openaccess.thecvf.com/content/CVPR2024/html/Kim_EAGLE_Eigen_Aggregation_Learning_for_Object-Centric_Unsupervised_Semantic_Segmentation_CVPR_2024_paper.html">paper</a> / -->
-                  <a href="https://arxiv.org/pdf/2503.08346">arXiv</a>
-                  <!-- <a href="">code</a> -->
-                ]
+                <a class="btn-arxiv" href="https://arxiv.org/pdf/2503.08346">arXiv</a>
               </p>
             </div>
           </li>
@@ -425,12 +450,9 @@
               <p class="authors"><span style="color:#dc143c">Short version at "3rd Workshop on Generative Models for Computer Vision" Workshop @ CVPR 2025</span></p>
               <p class="venue">CVPR 2025</p>
               <p class="resources">
-                [
-                  <a href="https://micv-yonsei.github.io/storm2025/">project</a> /
-                  <a href="https://openaccess.thecvf.com/content/CVPR2025/html/Han_Spatial_Transport_Optimization_by_Repositioning_Attention_Map_for_Training-Free_Text-to-Image_CVPR_2025_paper">paper</a> /
-                  <a href="https://arxiv.org/pdf/2503.22168">arXiv</a> /
-                  <a href="https://github.com/MICV-yonsei/STORM">code</a>
-                ]
+                <a class="btn-paper" href="https://openaccess.thecvf.com/content/CVPR2025/html/Han_Spatial_Transport_Optimization_by_Repositioning_Attention_Map_for_Training-Free_Text-to-Image_CVPR_2025_paper">CVPR</a>
+                <a class="btn-arxiv" href="https://arxiv.org/pdf/2503.22168">arXiv</a>
+                <a class="btn-code" href="https://github.com/MICV-yonsei/STORM">code</a>
               </p>
             </div>
           </li>
@@ -443,12 +465,8 @@
               <p class="authors">Chanyoung Kim, Dayun Ju, <b>Woojung Han</b>, Ming-Hsuan Yang, Seong Jae Hwang</p>
               <p class="venue">CVPR 2025</p>
               <p class="resources">
-                [
-                  <a href="https://micv-yonsei.github.io/cass/">project</a> /
-                  <a href="https://openaccess.thecvf.com/content/CVPR2025/html/Kim_Distilling_Spectral_Graph_for_O[…]ware_Open-Vocabulary_Semantic_Segmentation_CVPR_2025_paper">paper</a> /
-                  <a href="https://arxiv.org/pdf/2411.17150">arXiv</a>
-                  <!-- <a href="https://github.com/MICV-yonsei/EAGLE">code</a> -->
-                ]
+                <a class="btn-paper" href="https://openaccess.thecvf.com/content/CVPR2025/html/Kim_Distilling_Spectral_Graph_for_O[…]ware_Open-Vocabulary_Semantic_Segmentation_CVPR_2025_paper">CVPR</a>
+                <a class="btn-arxiv" href="https://arxiv.org/pdf/2411.17150">arXiv</a>
               </p>
             </div>
           </li>
@@ -464,12 +482,9 @@
               <p class="venue">CVPR 2024 <span style="color:#dc143c">Highlight</span> (Acceptance Rate < 2.8%)</p>
               <p class="authors"><span style="color:#dc143c">Short version at "Causal and Object-Centric Representations for Robotics" Workshop @ CVPR 2024</span></p>
               <p class="resources">
-                [
-                  <a href="https://micv-yonsei.github.io/eagle2024/">project</a> /
-                  <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Kim_EAGLE_Eigen_Aggregation_Learning_for_Object-Centric_Unsupervised_Semantic_Segmentation_CVPR_2024_paper.html">paper</a> /
-                  <a href="https://arxiv.org/pdf/2403.01482.pdf">arXiv</a> /
-                  <a href="https://github.com/MICV-yonsei/EAGLE">code</a>
-                ]
+                <a class="btn-paper" href="https://openaccess.thecvf.com/content/CVPR2024/html/Kim_EAGLE_Eigen_Aggregation_Learning_for_Object-Centric_Unsupervised_Semantic_Segmentation_CVPR_2024_paper.html">CVPR</a>
+                <a class="btn-arxiv" href="https://arxiv.org/pdf/2403.01482.pdf">arXiv</a>
+                <a class="btn-code" href="https://github.com/MICV-yonsei/EAGLE">code</a>
               </p>
             </div>
           </li>
@@ -483,11 +498,8 @@
               <p class="authors"><b>Woojung Han*</b>, Chanyoung Kim*, Dayun Ju, Yumin Shim, Seong Jae Hwang</p>
               <p class="venue">MICCAI 2024 <span style="color:#dc143c">Spotlight</span> (Acceptance Rate < 3.4%)</p>
               <p class="resources">
-                [
-                  <a href="https://micv-yonsei.github.io/cxrl2024/">project</a> /
-                  <a href="https://arxiv.org/abs/2403.06516">arXiv</a> /
-                  <a href="https://github.com/MICV-yonsei/CXRL">code</a>
-                ]
+                <a class="btn-arxiv" href="https://arxiv.org/abs/2403.06516">arXiv</a>
+                <a class="btn-code" href="https://github.com/MICV-yonsei/CXRL">code</a>
               </p>
             </div>
           </li>
@@ -505,12 +517,8 @@ Segmentation</a></p>
             <p class="venue">Pattern Recognition (Impact Factor: 7.5)</p>
               <p class="resources">
             <p class="resources">
-              [
-              
-               <a href="https://www.sciencedirect.com/science/article/pii/S0031320324006733">paper</a> /
-                <a href="https://arxiv.org/pdf/2403.08801">arXiv</a> /
-               <a href="https://micv-yonsei.github.io/cobra2024/">page</a> 
-              ]
+                <a class="btn-paper" href="https://www.sciencedirect.com/science/article/pii/S0031320324006733">PR</a>
+                <a class="btn-arxiv" href="https://arxiv.org/pdf/2403.08801">arXiv</a>
             </p>
           </div>
         </li>
