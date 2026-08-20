@@ -244,6 +244,29 @@ Ponder는 이 "보면서 생각하기"를 encoder 쪽에 둔다: LLM이 patch를
   <li><b>선택 확장</b>: (a) 출력 측 latent reasoning(VideoLatent식)과 결합 — E6, (b) 신뢰도 낮으면 해당 사건 구간의 비주얼 토큰 재열람 — 최소 형태로만 (Scribe와의 차별 유지).</li>
 </ul>
 
+<h3>두 번째 설계 — Ponder-B: surprise 없이 (Ordered Thoughts + Truncation)</h3>
+<div class="card">
+<p class="small"><b>동기.</b> surprise 게이트(Ponder-A)는 predictor 학습·임계 튜닝·event boundary 검증까지 부대 비용이 크다. Ponder-B는 "언제 생각할지"의 결정 기계를 제거하고, 결정을 "<b>어디서 자를지</b>"라는 싼 문제로 치환한다.</p>
+<ul class="small">
+  <li><b>방출</b>: M_max개(예: 64) learnable thought query가 영상/세그먼트 feature에 cross-attention하는 <b>1-pass 병렬 readout</b> — 순환·AR·게이트 없음.</li>
+  <li><b>순서 학습</b>: <b>nested tail-drop</b> — 학습 시 절단점 m을 랜덤 샘플해 앞 m개 thought만으로 answer CE를 최적화. gradient가 중요 정보를 앞 slot으로 밀어 thought가 <b>중요도 순으로 정렬</b>됨 (Matryoshka·VaporTok taildrop·Progressive Compression의 prefix-유효 원리).</li>
+  <li><b>개수 결정 (추론, 모델 추가 없음)</b>: ① 에너지 컷 — slot attention 질량이 순서 따라 감소, 임계 τ 아래에서 절단 · ② prototype 중복 제거(MetaSlot식) — 같은 프로토타입 slot 병합, 개수 = 서로 다른 내용 수 · ③ anytime 모드 — 앞 k개만 사용 (서빙 budget 즉응).</li>
+  <li><b>timestamp는 공짜</b>: 각 slot의 attention 분포에서 시간 중심·범위 추출 → surprise 없이 M-RoPE 좌표 부여.</li>
+  <li><b>학습 목적함수</b>: answer CE + diversity + (선택) predictive-state — predictor를 완전히 빼면 감독은 QA쌍만으로 충분.</li>
+</ul>
+<div class="tbl-wrap"><table style="min-width:640px">
+<thead><tr><th></th><th>Ponder-A (surprise-gated)</th><th>Ponder-B (ordered+truncate)</th></tr></thead>
+<tbody>
+<tr><td class="m">언제/얼마나의 결정</td><td>예측 오차 게이트 (사건이 결정)</td><td>절단점 (중요도 순서 + 컷 규칙)</td></tr>
+<tr><td class="m">추가 부품</td><td>predictor + 순환 상태 + 게이트</td><td>query slot + tail-drop 학습만</td></tr>
+<tr><td class="m">스트리밍</td><td>자연스러움 (온라인)</td><td>세그먼트 단위로 완화</td></tr>
+<tr><td class="m">인지과학 스토리</td><td>event segmentation</td><td>중요도 순 사고 / anytime 표현</td></tr>
+<tr><td class="m">검증 부담</td><td>event boundary 일치(E2) 필요</td><td>count-내용 상관만으로 충분</td></tr>
+<tr><td class="m">부가 성질</td><td>—</td><td><b>prefix-유효 anytime</b> — 기존 "predictive anytime video representation" 브리프와 직결</td></tr>
+</tbody></table></div>
+<p class="small"><b>전략</b>: 구현·검증이 싼 B를 먼저 세워 "thoughts-not-patches" 자체를 입증하고, A(게이트)는 B 위의 업그레이드/ablation으로 배치 — A가 B를 못 이기면 B 단독으로도 논문 성립.</p>
+</div>
+
 <div class="card">
 <b>왜 "지각 요약"이 아니라 "예측 상태"인가 (핵심 설계 논거)</b>
 <p class="small">Video-XL·Quicksviewer·LARP의 summary 토큰은 "지금까지 본 것을 잘 담기"(재구성 지향)를 배운다. Ponder의 thought는 "<b>앞으로 올 것을 설명하기에 충분한 최소 상태</b>"를 배운다 — world model의 상태 정의 그 자체다. 이 차이가 만드는 것: ① 재구성에 필요한 지엽적 외형은 버려지고 인과·동역학 구조가 남는다 → <b>reasoning 벤치마크에 유리</b>하다는 가설(E1·E5에서 검증), ② 예측 오차라는 게이트 신호가 목적함수에서 공짜로 나온다 → 별도 saliency 모듈 불필요, ③ 사건 경계 = 예측 실패 지점이라는 인지과학(event segmentation theory)적 근거.</p>
@@ -274,7 +297,8 @@ Ponder는 이 "보면서 생각하기"를 encoder 쪽에 둔다: LLM이 patch를
 <div class="exp">
 <h3>E3 — Ablations</h3>
 <ul class="small">
-  <li>게이트: event-gated vs 고정 stride 방출 vs 무작위 방출 (같은 평균 M)</li>
+  <li><b>A vs B</b>: surprise-gated(A) vs ordered+truncate(B) vs 고정 stride vs 무작위 방출 — 같은 평균 M에서 정면 비교 (B가 기본, A는 업그레이드 가설)</li>
+  <li>B의 컷 규칙: 에너지 컷 vs prototype 중복 제거 vs 고정 k (anytime)</li>
   <li>목적함수: predictive-state 제거(align만) / diversity 제거 / answer CE 제거 — 각각 collapse·성능 기여 분리</li>
   <li>predictor horizon k, 임계 z-score, M_max, thought 차원</li>
   <li>summary-지향 학습(재구성 loss)으로 바꿨을 때 reasoning 벤치 하락 여부 — "예측 상태 > 지각 요약" 가설의 직접 검증</li>
@@ -310,7 +334,7 @@ Ponder는 이 "보면서 생각하기"를 encoder 쪽에 둔다: LLM이 patch를
 <ul class="small">
   <li><b>Host</b>: Qwen2.5-VL-7B (VideoLatent과 직접 비교 가능) + LLaVA-OneVision-7B (압축 baseline과 비교 가능) — 기존 video-llm-eval 하네스 재사용.</li>
   <li><b>모듈</b>: 2–4층 transformer(~50–100M) + GRU식 순환 상태 + M_max=64 thought slot.</li>
-  <li><b>학습</b>: Stage 1 — predictive-state + diversity만 (LLM 미사용, 자기지도; 대규모 무라벨 영상 사용 가능). Stage 2 — projector + answer CE (LLaVA-Video-178K QA). Stage 3 — rate 항 활성화로 M 압축.</li>
+  <li><b>학습 (B 우선)</b>: Stage 1 — thought query + tail-drop + answer CE (LLaVA-Video-178K QA; predictor 불필요). Stage 2 — diversity + (선택) predictive-state 추가로 A 업그레이드 검증. Stage 3 — rate/절단 정책 정교화.</li>
   <li><b>데이터</b>: 무라벨 영상 (Stage 1) + LLaVA-Video-178K (Stage 2) — CoT·캡션 생성 불필요가 그대로 비용 절감.</li>
 </ul>
 
