@@ -267,6 +267,25 @@ kbd{background:var(--drop-bg);border-radius:4px;padding:1px 6px;font-size:.85em}
 
 <!-- ================= METHOD SKETCH ================= -->
 <h2><span class="num">4</span>방법 스케치 (부품과 출처)</h2>
+
+<div class="card">
+<b>2단 구성: Scribe-Lite → Scribe-Full</b>
+<p class="small">"encoder 내부 수정"과 "플러그인", "0.5B 헤드"와 "가벼운 encoder"는 서로 당기는 요구다. 두 버전으로 분리해 4개 요구(대폭 감축 · 가벼움 · 플러그인 · temporal reasoning)를 모두 충족한다.</p>
+<ul class="small">
+  <li><span class="badge b-vis">Scribe-Lite</span> <b>(플러그인 버전 — 1차 논문)</b>: frozen SigLIP 출력과 frozen LLM <i>사이</i>에 라우터 + 필기 헤드만 학습해 삽입. 헤드는 2–4층 cross-attn(~50–100M)으로 시작(0.5B는 ablation). SigLIP 기반 host(LLaVA-OneVision, LLaVA-Video)에는 그대로 이식, 타 LLM에는 소형 정렬 adapter만 추가. KVTP·LangDC가 이 수준의 "학습된 플러그인"이 성립함을 입증. → dynamic + 대폭 감축 + temporal + 플러그인 달성.</li>
+  <li><span class="badge b-note">Scribe-Full</span> <b>(encoder-internal — 후속)</b>: Lite에서 검증된 라우팅을 Grafting으로 SigLIP 중간층 <i>안</i>에 이식해, 버려질 토큰이 encoder 뒷단 연산조차 쓰지 않게 함(EarlyTom·LiteFrame의 "병목은 ViT" 논거). 선택적으로 LiteFrame식 distilled student로 encoder 자체 축소. → "가벼운 encoder"까지 달성.</li>
+  <li><b>논문 전략</b>: Lite로 아이디어(2축 라우팅·혼합 표현) 검증 → Full로 효율 완성. Lite의 라우팅 통계가 Full의 삽입 층/압축률 설계 근거가 됨.</li>
+</ul>
+</div>
+
+<div class="card">
+<b>Temporal reasoning이 되는 세 겹의 경로</b>
+<ul class="small">
+  <li><b>(a) Encoder가 motion을 안다</b> — 라우팅 신호가 temporal predictor라서, 이미지 encoder 프레임별 처리의 고질적 약점(motion 무지)을 압축 신호가 부수적으로 보완.</li>
+  <li><b>(b) 순서가 명시적 텍스트가 된다</b> — note가 예측 오차 피크에서 잘린 사건 단위 + timestamp로 나오므로 ("0:12 A가 넘어짐 → 0:30 B 도착"), LLM이 프레임 나열에서 순서를 암묵 추론하는 것보다 temporal ordering에 유리할 수 있음. TempCompass·TOMATO로 검증하는 가설 (E2).</li>
+  <li><b>(c) 미세 동작은 비주얼 + 재열람이 방어</b> — 서술로 구분 안 되는 동작 차이는 유지 브랜치와 deferral이 담당.</li>
+</ul>
+</div>
 <ul>
   <li><b>삽입 위치</b>: SigLIP 중간층 (근거: Perception Encoder, NeurIPS 2025 Oral — 최적 feature는 중간층). 이식 절차: Grafting (NeurIPS 2025 Oral) — activation 회귀 후 경량 미세조정.</li>
   <li><b>신호 1 — 예측 가능성</b>: SigLIP feature 위 경량 k-step latent predictor (TD-JEPA, ICLR 2026 Oral). 같은 점수를 학습 시 loss 가중(Rho-1)과 추론 시 drop 기준으로 공용.</li>
@@ -364,9 +383,10 @@ kbd{background:var(--drop-bg);border-radius:4px;padding:1px 6px;font-size:.85em}
 
 <h3>구현 계획 (1차 세팅)</h3>
 <ul class="small">
-  <li><b>Host</b>: LLaVA-OneVision-7B (Qwen2 + SigLIP-SO400M) — training-free baseline들과 직접 비교 가능한 표준 테스트베드. 2차로 Qwen2.5-VL-7B 이식.</li>
-  <li><b>캡셔닝 expert</b>: Qwen2.5-0.5B (LangDC 레시피 참고). <b>Temporal predictor</b>: 2–4층 transformer, SigLIP feature 공간.</li>
-  <li><b>학습 단계</b>: Stage 1 — 라우터/predictor/expert만 (backbone frozen, Grafting식 activation 회귀). Stage 2 — 중간층 이후 + projector 미세조정 (REPA 보조 loss). Stage 3 — rate 항 활성화 + curriculum (고정비율 → adaptive).</li>
+  <li><b>Host</b>: LLaVA-OneVision-7B (Qwen2 + SigLIP-SO400M) — training-free baseline들과 직접 비교 가능한 표준 테스트베드. 2차로 Qwen2.5-VL-7B 이식(플러그인 이식성 실험 겸용).</li>
+  <li><b>필기 헤드</b>: 1차는 2–4층 cross-attn(~50–100M, Lite 기본), ablation으로 Qwen2.5-0.5B 초기화(LangDC 레시피). <b>Temporal predictor</b>: 2–4층 transformer, SigLIP feature 공간.</li>
+  <li><b>학습 단계 (Lite)</b>: Stage 1 — 라우터/predictor/필기 헤드만 (host 완전 frozen = 플러그인 보장). Stage 2 — rate 항 활성화 + curriculum (고정비율 → adaptive). Stage 3(선택) — projector 미세조정으로 상한 확인.</li>
+  <li><b>학습 단계 (Full, 후속)</b>: Lite의 라우팅을 Grafting식 activation 회귀로 SigLIP 중간층에 이식 → REPA 보조 loss로 미세조정 → (선택) distilled student encoder.</li>
   <li><b>데이터</b>: LLaVA-Video-178K + 필기 감독용 dense caption 데이터 (ShareGPT4Video / LLaVA-Video 캡션 재활용).</li>
 </ul>
 
