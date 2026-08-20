@@ -275,11 +275,13 @@ kbd{background:var(--drop-bg);border-radius:4px;padding:1px 6px;font-size:.85em}
   <li><b>필기 형식</b>: timestamp가 붙은 soft caption 토큰 (이산 텍스트의 gradient 문제 회피, 해석은 부가 디코딩으로). LLM 입력은 시간 순 interleave: <kbd>[note t0–t14] [note t15–t20] [vis t21] [vis t21] [note t22–t60] …</kbd></li>
   <li><b>필기 비용 설계 (텍스트화는 공짜가 아니다 — video-as-text 계보의 사망 원인 ③에 대한 답)</b>:
     <ul class="small">
-      <li><b>캡셔너는 추론 시점에 없다.</b> 진짜 캡셔너(VLM)는 <i>학습 때만</i> offline teacher로 사용 — 학습 데이터에 dense caption을 미리 생성해 두고(또는 LLaVA-Video-178K·ShareGPT4Video의 기존 캡션 재활용), 추론 시 필기는 학습된 경량 헤드가 생성한다.</li>
-      <li><b>Non-autoregressive 1-pass readout.</b> 캡셔닝이 비싼 진짜 이유는 AR 디코딩(순차 생성)이다. 필기 헤드는 m개의 note slot이 구간의 SigLIP 중간층 feature에 cross-attention하는 <i>단일 forward</i>로 soft note를 뽑는다 — 픽셀 재인코딩도, 순차 생성도 없음.</li>
+      <li><b>전제 진단</b> — LLoVi 계보의 캡셔닝이 비쌌던 이유는 정확히 두 가지다: (a) 클립마다 <i>별도 VLM</i>(7B급, 자체 vision encoder 포함)을 호출해 픽셀을 재인코딩하고, (b) 캡션을 <i>autoregressive로 순차 생성</i>한다. 아래 설계는 이 둘을 각각 제거한다.</li>
+      <li><b>캡셔너는 추론 시점에 없다.</b> 진짜 캡셔너(VLM)는 <i>학습 때만</i> offline teacher로 사용 — 학습 데이터에 dense caption을 미리 생성해 두고(또는 LLaVA-Video-178K·ShareGPT4Video의 기존 캡션 재활용), 추론 시 필기는 학습된 경량 헤드가 생성한다. → (a) 제거</li>
+      <li><b>Non-autoregressive 1-pass readout.</b> 필기 헤드는 m개의 note slot이 구간의 SigLIP 중간층 feature에 cross-attention하는 <i>단일 forward</i>로 soft note를 뽑는다 — 픽셀 재인코딩도, 순차 생성도 없음. → (b) 제거</li>
       <li><b>헤드 크기와 초기화</b>: Qwen2.5-0.5B 초기화(host LLM인 Qwen2와 tokenizer/embedding 공간 공유 → note를 LLM embedding 공간에 정렬하는 비용 최소) 또는 2–4층 cross-attn 헤드. describability 점수는 같은 헤드의 confidence/재구성 오차에서 부산물로 나옴 — 별도 모듈 불필요.</li>
       <li><b>FLOPs 수지</b>: 7B LLM prefill에서 비주얼 토큰 N개를 빼면 forward당 ≈2·7B·N FLOPs 절약. 0.5B 헤드가 구간 feature 위에서 m≪N개의 note를 1-pass로 만드는 비용은 ≈2·0.5B·(구간 토큰 수+m) — 14× 작은 모델 × AR 없음 × 서술 가능 구간에만 적용이라 큰 마진으로 남는 장사. E7에서 실측.</li>
-      <li><b>Amortization</b>: 필기는 question-agnostic → 영상당 1회 계산, 다중 질문/멀티턴에서 KV와 함께 재사용 (query-aware 압축과의 결정적 차이).</li>
+      <li><b>Amortization</b>: 필기는 question-agnostic → 영상당 1회 계산, 다중 질문/멀티턴에서 KV와 함께 재사용 (query-aware 압축과의 결정적 차이 — 질문이 늘수록 비용 격차가 벌어짐).</li>
+      <li><b>한 줄 요약</b>: "캡셔닝을 싸게 한다"가 아니라 <b>"캡셔닝을 학습 시점으로 밀어내고, 추론에는 0.5B 헤드의 1-pass readout만 남긴다"</b> — video-as-text 계보의 효율 역전을 구조적으로 피하는 설계.</li>
     </ul>
   </li>
   <li><b>학습 목적함수</b>: InfoTok (ICLR 2026 Oral)식 rate–distortion — distortion = CTD distillation(teacher SigLIP 충실도) + LLM likelihood, rate = λ·기대 토큰 수. REPA 정렬로 가속, 약→강→adaptive curriculum (Progressive Distillation).</li>
