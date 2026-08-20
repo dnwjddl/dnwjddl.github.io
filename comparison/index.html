@@ -95,8 +95,8 @@ html[data-lang="en"] .ko{display:none}
       <span class="en">Methods that dynamically reduce or allocate visual tokens before the LLM prefill stage — where the dynamism comes from (modified encoder vs. post-hoc), and whether the token count is automatically content-adaptive or a predetermined budget where only the selection is dynamic.</span>
     </p>
     <p class="meta">
-      <span class="ko">최종 갱신: 2026-08-19 · 근거: 각 논문 arXiv/공식 저장소 + TMLR 2026 토큰 압축 서베이(arXiv:2507.20198) 및 관련 awesome-list 교차 검증</span>
-      <span class="en">Last updated 2026-08-19 · Sources: each paper's arXiv page / official repo, cross-checked against the TMLR 2026 token-compression survey (arXiv:2507.20198) and related awesome-lists</span>
+      <span class="ko">최종 갱신: 2026-08-19 (v2 — 2026년 1–8월 arXiv 스윕 반영, 약 90편) · 근거: 각 논문 arXiv/공식 저장소 + TMLR 2026 토큰 압축 서베이(arXiv:2507.20198) 및 관련 awesome-list 교차 검증</span>
+      <span class="en">Last updated 2026-08-19 (v2 — Jan–Aug 2026 arXiv sweep folded in; ~90 methods) · Sources: each paper's arXiv page / official repo, cross-checked against the TMLR 2026 token-compression survey (arXiv:2507.20198) and related awesome-lists</span>
     </p>
   </div>
   <div class="lang-switch" role="group" aria-label="Language">
@@ -106,8 +106,8 @@ html[data-lang="en"] .ko{display:none}
 </div>
 
 <div class="scope">
-  <span class="ko"><b>범위.</b> "prefill 전"은 비주얼 토큰이 LLM에 들어가기 전 단계(vision encoder 내부·출력, projector/connector, frame selection)에서 토큰이 줄어드는 것을 뜻한다. FastV처럼 LLM layer 안에서 pruning하는 방법과 KV cache/decoding 단계 방법은 §6에 경계 사례로만 정리했다. 학습 기준은 "scratch부터 새로 학습한 것만 제외" — training-free(post-hoc)와 pretrained encoder+LLM 위에 모듈을 fine-tune한 것 모두 포함.</span>
-  <span class="en"><b>Scope.</b> "Before prefill" means token reduction happening before visual tokens enter the LLM (inside/at the output of the vision encoder, at the projector/connector, or via frame selection). Methods that prune inside LLM layers (e.g., FastV) and KV-cache/decoding-stage methods are listed only as boundary cases in §6. Training criterion: everything except from-scratch training is in scope — both training-free (post-hoc) methods and modules fine-tuned on pretrained encoder+LLM.</span>
+  <span class="ko"><b>범위.</b> "prefill 전"은 비주얼 토큰이 LLM에 들어가기 전 단계(vision encoder 내부·출력, projector/connector, frame selection)에서 토큰이 줄어드는 것을 뜻한다. FastV처럼 LLM layer 안에서 pruning하는 방법과 KV cache/decoding 단계 방법은 §7에 경계 사례로만 정리했다. 학습 기준은 "scratch부터 새로 학습한 것만 제외" — training-free(post-hoc)와 pretrained encoder+LLM 위에 모듈을 fine-tune한 것 모두 포함.</span>
+  <span class="en"><b>Scope.</b> "Before prefill" means token reduction happening before visual tokens enter the LLM (inside/at the output of the vision encoder, at the projector/connector, or via frame selection). Methods that prune inside LLM layers (e.g., FastV) and KV-cache/decoding-stage methods are listed only as boundary cases in §7. Training criterion: everything except from-scratch training is in scope — both training-free (post-hoc) methods and modules fine-tuned on pretrained encoder+LLM.</span>
 </div>
 
 <div class="legend">
@@ -309,6 +309,258 @@ html[data-lang="en"] .ko{display:none}
   <td class="small">LLaVA-v1.6-7B/34B (CLIP-L)</td>
   <td class="nowrap"><a href="https://github.com/contrastive/FreeVideoLLM">GitHub</a></td>
 </tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2605.10050">EchoPrune</a><span class="venue">arXiv 2026.05</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">budget 고정, 선택은 query+echo 기반</span><span class="en">fixed budget; query+echo-driven selection</span></div></td>
+  <td><span class="ko">이전 프레임 이웃으로 재구성 가능한 토큰을 "temporal echo"로 보고 제거 + query 관련도 점수 (같은 budget으로 최대 20× 프레임)</span><span class="en">Tokens reconstructable from the previous frame's neighborhood are "temporal echoes" and pruned, plus query relevance (up to 20× more frames per budget)</span></td>
+  <td class="small">LLaVA-OneVision, Qwen2.5-VL, Qwen3-VL</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2603.22911">ForestPrune</a><span class="venue">CVPR 2026 Findings</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">고비율(90%) 고정, forest 구조는 adaptive</span><span class="en">high fixed ratio (90%); forest structure adaptive</span></div></td>
+  <td><span class="ko">프레임 간 토큰을 의미·공간·시간 제약의 forest로 모델링, 트리 깊이·노드 역할 기준 pruning</span><span class="en">Models cross-frame tokens as forests under semantic/spatial/temporal constraints; prunes by tree depth and node role</span></td>
+  <td class="small">LLaVA-Video, LLaVA-OneVision</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2605.30010">EarlyTom</a><span class="venue">CVPR 2026</span></td>
+  <td class="stage"><span class="ko">encoder 층 내 프레임 병합 + 출력단 선택 (§4 참조)</span><span class="en">frame merging inside encoder layers + selection at output (see §4)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">유지율 10–25% 설정</span><span class="en">retention 10–25% preset</span></div></td>
+  <td><span class="ko">인코딩 도중에 중복 정보를 압축(인코딩 후가 아니라) 후 공간 토큰 선택 — TTFT 최대 2.65× 단축</span><span class="en">Compresses redundancy during (not after) vision encoding, then selects spatial tokens — up to 2.65× TTFT reduction</span></td>
+  <td class="small">LLaVA-OneVision-0.5B/7B, LLaVA-Video-7B, Qwen2.5-VL-7B</td>
+  <td class="nowrap"><a href="https://github.com/viridisGreen/EarlyTom">GitHub</a></td>
+</tr>
+<tr data-tags="TF ADAPTIVE">
+  <td class="m">MeToM<span class="venue">CVPR 2026 (arXiv 없음)</span></td>
+  <td class="stage"><span class="ko">hybrid: 토큰화/인코딩 중 병합 + in-LLM 병합</span><span class="en">hybrid: merging during tokenization/encoding + in-LLM merging</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">codec metadata(residual·GoP)로 프레임별 budget 자동 결정</span><span class="en">per-frame budgets from codec metadata (residuals, GoP)</span></div></td>
+  <td><span class="ko">압축 비디오의 내재 metadata(residual=공간 밀도, GoP 크기=장면 복잡도)로 정보 밀도 기반 병합 (2.65× 가속)</span><span class="en">Uses intrinsic compressed-video metadata (residual = spatial density; GoP = scene complexity) for density-driven merging (2.65× speedup)</span></td>
+  <td class="small"><span class="ko">host 미확인 (CVF 공개본만 존재)</span><span class="en">hosts unconfirmed (CVF openaccess only)</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="FT ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2608.01271">ONCE (Global Codebook)</a><span class="venue">arXiv 2026.08</span></td>
+  <td class="stage"><span class="ko">pre-LLM (codebook lookup + aggregation)</span><span class="en">pre-LLM (codebook lookup + aggregation)</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">코드북만 오프라인 1회 학습, backbone frozen</span><span class="en">only the codebook trained once offline; backbone frozen</span></div></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">영상별 active codeword 집합 → 출력 길이 가변</span><span class="en">per-video active codeword set → variable length</span></div></td>
+  <td><span class="ko">frozen feature 위에 frequency-aware 전역 코드북을 한 번 학습, 추론 시 lookup으로 모델 무관 압축</span><span class="en">Learns a frequency-aware global codebook once on frozen features; model-agnostic compression by lookup at inference</span></td>
+  <td class="small">LLaVA-OneVision-0.5B/7B (+cross-backbone)</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2504.21403">Explore-Then-Select</a><span class="venue">EMNLP 2025</span></td>
+  <td class="stage"><span class="ko">pre-LLM: keyframe 토큰 vs delta-frame 토큰 배분</span><span class="en">pre-LLM: allocation between keyframe vs. delta-frame tokens</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">정적/동적 토큰 배분이 query-dependent</span><span class="en">static/dynamic split is query-dependent</span></div></td>
+  <td><span class="ko">후보 배분들을 탐색한 뒤 query-aware attention 지표로 최적 조합 선택</span><span class="en">Explores candidate allocations, then selects the best with a query-aware attention metric</span></td>
+  <td class="small"><span class="ko">plug-and-play (host 초록 미기재)</span><span class="en">plug-and-play (hosts not named in abstract)</span></td>
+  <td class="nowrap"><a href="https://github.com/ANDgate99/Explore-Then-Select">GitHub</a></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2508.21044">MMG-Vid</a><span class="venue">arXiv 2025.08</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">구간별 marginal gain 최대화 할당</span><span class="en">per-segment marginal-gain allocation</span></div></td>
+  <td><span class="ko">구간 분할 → 유사도 기반 구간별 budget → 프레임 간 고유성·프레임 내 다양성 균형 선택 (75%↓, prefill 3.9×)</span><span class="en">Segment split → similarity-based budgets → selection balancing inter-frame uniqueness and intra-frame diversity (75%↓, 3.9× prefill)</span></td>
+  <td class="small">LLaVA-OneVision-7B</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 예정</span><span class="en">code "soon"</span></span></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2512.00891">STC</a><span class="venue">arXiv 2025.12</span></td>
+  <td class="stage"><span class="ko">스트리밍: ViT feature 재사용(cache) + prefill 직전 pruning — 전부 pre-LLM</span><span class="en">streaming: ViT feature reuse (cache) + pruning just before prefill — all pre-LLM</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span></td>
+  <td><span class="ko">유사 프레임의 encoder feature를 캐시로 재사용하고 시공간 saliency로 pruning (계층적)</span><span class="en">Caches/reuses ViT features of similar streaming frames, then prunes by spatio-temporal saliency (hierarchical)</span></td>
+  <td class="small"><span class="ko">스트리밍 VideoLLM 4종</span><span class="en">4 streaming VideoLLMs</span></td>
+  <td class="nowrap"><a href="https://github.com/lern-to-write/STC">GitHub</a></td>
+</tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2510.18269">StreamingTOM</a><span class="venue">CVPR 2026</span></td>
+  <td class="stage"><span class="ko">hybrid: pre-LLM 프레임별 선택 + 4-bit KV 메모리</span><span class="en">hybrid: pre-LLM per-frame selection + 4-bit KV memory</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">프레임별 budget 고정, 선택은 변화량·saliency 기반</span><span class="en">fixed per-frame budget; change/saliency-driven selection</span></div></td>
+  <td><span class="ko">인과적 프레임별 토큰 선택 후 양자화 KV 메모리에서 on-demand 검색 (KV 15.7× 압축)</span><span class="en">Causal per-frame token selection, then on-demand retrieval from quantized KV memory (15.7× KV compression)</span></td>
+  <td class="small">LLaVA-OneVision-7B</td>
+  <td class="nowrap"><a href="https://github.com/YIGE24/StreamingTOM">GitHub</a></td>
+</tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2507.15428">EgoPrune</a><span class="venue">arXiv 2025.07</span></td>
+  <td class="stage"><span class="ko">pre-LLM (keyframe + ego-motion 정합 필터링)</span><span class="en">pre-LLM (keyframes + ego-motion-aligned filtering)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small">70/50/30%</div></td>
+  <td><span class="ko">ego-motion 프레임 간 perspective transform 정합으로 중복 제거 + MMR로 관련도·다양성 선택 (embodied)</span><span class="en">Perspective-transform alignment removes ego-motion redundancy; MMR balances relevance and diversity (embodied)</span></td>
+  <td class="small">LLaVA-OneVision-7B, VILA-1.5-3B (Jetson)</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2603.28696">AdaptToken</a><span class="venue">arXiv 2026.03</span></td>
+  <td class="stage"><span class="ko">pre-LLM (그룹별 선택; 모델 응답 entropy를 피드백으로 사용)</span><span class="en">pre-LLM (per-group selection; model response entropy as feedback)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">entropy 기반 그룹별 budget + early stopping</span><span class="en">entropy-driven group budgets + early stopping</span></div></td>
+  <td><span class="ko">모델 자체 불확실성(응답 entropy)이 얼마나·어떤 토큰을 유지할지 제어</span><span class="en">The model's own uncertainty (response entropy) controls how many and which tokens survive</span></td>
+  <td class="small">Qwen2.5-VL-7B <span class="ko">외 7B–72B</span><span class="en">and other 7B–72B MLLMs</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2605.15621">LRCP</a><span class="venue">arXiv 2026.05</span></td>
+  <td class="stage"><span class="ko">pre-LLM (LVLM 일반, 비디오 3개 벤치 포함)</span><span class="en">pre-LLM (general LVLM; 3 video benchmarks)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span></td>
+  <td><span class="ko">PCA로 저랭크 "배경" 부분공간 추정, 그로 설명 안 되는(residual 큰) 토큰 유지</span><span class="en">PCA estimates the low-rank "background" subspace; keeps tokens it poorly explains (large residuals)</span></td>
+  <td class="small"><span class="ko">복수 LVLM (초록 미기재)</span><span class="en">multiple LVLMs (unnamed)</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2608.03083">GSTEP</a><span class="venue">ACM MM 2026</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">프레임별 quota 없는 전역 샘플링</span><span class="en">global sampling, no per-frame quota</span></div></td>
+  <td><span class="ko">토큰 단위 시공간 밀도(연속 시간 + 프레임 내 공간)를 만들고 밀도·커버리지 균형으로 전역 샘플링</span><span class="en">Builds token-level spatio-temporal density and globally samples balancing density and coverage</span></td>
+  <td class="small">LLaVA-OneVision-7B</td>
+  <td class="nowrap"><a href="https://github.com/yeluoy/GSTEP">GitHub</a></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2606.02161">InfoMerge</a><span class="venue">arXiv 2026.06</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span></td>
+  <td><span class="ko">Temporal Fingerprint Difference로 구간 중복 평가 + spectral entropy로 구간별 budget 배분 (prefill 4.24×)</span><span class="en">Temporal Fingerprint Difference scores segment redundancy; spectral entropy allocates per-segment budgets (4.24× prefill)</span></td>
+  <td class="small">LLaVA-OneVision-7B</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2605.19322">DynaTok</a><span class="venue">arXiv 2026.05</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">시간→공간 순 dynamic 할당 + 위치 편향 보정</span><span class="en">temporal-then-spatial allocation + positional-bias correction</span></div></td>
+  <td><span class="ko">토큰 분포를 추적하는 경량 메모리 모듈로 시간·공간 배분을 조정</span><span class="en">Lightweight memory modules track token distributions to steer temporal/spatial allocation</span></td>
+  <td class="small">LLaVA-OneVision, LLaVA-Video</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2605.11803">OTT-Vid</a><span class="venue">arXiv 2026.05</span></td>
+  <td class="stage"><span class="ko">pre-LLM (encoder 출력)</span><span class="en">pre-LLM (encoder output)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">프레임 쌍별 압축 가능도로 할당</span><span class="en">allocation by frame-pair compressibility</span></div></td>
+  <td><span class="ko">공간 pruning 후 인접 프레임 간 optimal transport로 시간 중복 토큰 병합</span><span class="en">Spatial pruning, then optimal transport between adjacent frames merges temporally redundant tokens</span></td>
+  <td class="small"><span class="ko">초록 미기재</span><span class="en">not named in abstract</span></td>
+  <td class="nowrap"><a href="https://github.com/minseokii/OTT-Vid">GitHub</a></td>
+</tr>
+<tr data-tags="TF ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2605.22158">ST-SimDiff</a><span class="venue">ICLR 2026</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span></td>
+  <td><span class="ko">시공간 토큰 그래프의 community detection(중복 제거) + 시간 차분 기반 key-event 토큰 선택의 병렬 이중 선택</span><span class="en">Parallel dual selection: community detection on the spatio-temporal token graph (redundancy) + temporal-difference key-event tokens</span></td>
+  <td class="small"><span class="ko">초록 미기재</span><span class="en">not named in abstract</span></td>
+  <td class="nowrap"><a href="https://github.com/bingjunluo/ST-SimDiff">GitHub</a></td>
+</tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2605.22078">ST-GridPool</a><span class="venue">ICLR 2026</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">pooling/gridding 스케줄 고정</span><span class="en">fixed pooling/gridding schedule</span></div></td>
+  <td><span class="ko">Pyramid Temporal Gridding + norm 가중 공간 pooling</span><span class="en">Pyramid Temporal Gridding + norm-weighted spatial pooling</span></td>
+  <td class="small">LLaVA-Video, LLaVA-OneVision</td>
+  <td class="nowrap"><a href="https://github.com/bingjunluo/ST-GridPool">GitHub</a></td>
+</tr>
+<tr data-tags="TF ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2605.07355">TTF</a><span class="venue">arXiv 2026.05</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">threshold 기반 ~67% 제거</span><span class="en">~67% removed by threshold</span></div></td>
+  <td><span class="ko">anchor frame 기준 3×3 local window 유사도 탐색으로 후속 프레임 토큰 융합</span><span class="en">Anchor frame + 3×3 local-window similarity search fuses tokens of subsequent frames</span></td>
+  <td class="small">Qwen3-VL-8B</td>
+  <td class="nowrap"><a href="https://github.com/Cominder/ttf">GitHub</a></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2603.27650">V-CAST</a><span class="venue">arXiv 2026.03</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">의미 전환점/이벤트 경계에 집중 배분</span><span class="en">routed to semantic turns/event boundaries</span></div></td>
+  <td><span class="ko">토큰 스트림을 궤적으로 보고 곡률 기반 시간 할당 + dual-anchor 공간 선택</span><span class="en">Treats the token stream as a trajectory; curvature-guided temporal allocation + dual-anchor spatial selection</span></td>
+  <td class="small">Qwen3-VL-8B-Instruct <span class="ko">외</span><span class="en">et al.</span></td>
+  <td class="nowrap"><a href="https://github.com/xinyouu/V-CAST">GitHub</a></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2603.05663">SemVID</a><span class="venue">ECCV 2026</span></td>
+  <td class="stage"><span class="ko">pre-LLM (temporal grounding용)</span><span class="en">pre-LLM (for temporal grounding)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span></td>
+  <td><span class="ko">object/motion/context 토큰 유형을 "증거 사슬"로 유지, query 관련도·프레임 간 변화 균형 할당 (prefill 5.8×)</span><span class="en">Keeps object/motion/context token types as an "evidence chain"; balances query relevance and inter-frame variation (5.8× prefill)</span></td>
+  <td class="small"><span class="ko">초록 미기재</span><span class="en">not named in abstract</span></td>
+  <td class="nowrap"><a href="https://github.com/JiaqiLi404/SemVID">GitHub</a></td>
+</tr>
+<tr data-tags="TF ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2603.01400">AOT</a><span class="venue">CVPR 2026</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span></td>
+  <td><span class="ko">optimal transport로 pruning된 토큰의 정보를 프레임 내 local-global anchor와 clip 간 keyframe anchor로 집약</span><span class="en">Optimal transport aggregates pruned tokens' information into in-frame local-global anchors and cross-clip keyframe anchors</span></td>
+  <td class="small"><span class="ko">초록 미기재</span><span class="en">not named in abstract</span></td>
+  <td class="nowrap"><a href="https://tyroneli.github.io/AOT">Project</a></td>
+</tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2604.20937">SToP</a><span class="venue">ECCV 2026</span></td>
+  <td class="stage"><span class="ko">pre-LLM (기존 pruner에 add-on)</span><span class="en">pre-LLM (add-on to existing pruners)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span></td>
+  <td><span class="ko">attention-sink(의미 없는) 토큰을 sink score로 억제해 VisionZip·FastVID·HoliTom의 선택 품질 개선</span><span class="en">Suppresses semantically empty attention-sink tokens via a sink score, improving VisionZip/FastVID/HoliTom selection</span></td>
+  <td class="small"><span class="ko">위 pruner들의 host와 동일</span><span class="en">same hosts as the pruners above</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2602.08024">FlashVID</a><span class="venue">ICLR 2026</span></td>
+  <td class="stage">pre-LLM</td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span></td>
+  <td><span class="ko">attention+다양성 기반 토큰 선택 후 트리 기반 시공간 병합</span><span class="en">Attention+diversity token selection, then tree-based spatio-temporal merging</span></td>
+  <td class="small">LLaVA-OneVision, Qwen2.5-VL</td>
+  <td class="nowrap"><a href="https://github.com/Fanziyang-v/FlashVID">GitHub</a></td>
+</tr>
+<tr data-tags="TF ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2602.03615">KTV</a><span class="venue">AAAI 2026</span></td>
+  <td class="stage"><span class="ko">pre-LLM (keyframe 선택 + keyframe별 토큰 pruning)</span><span class="en">pre-LLM (keyframe selection + per-keyframe token pruning)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">60분 영상을 504토큰으로</span><span class="en">a 60-min video in 504 tokens</span></div></td>
+  <td><span class="ko">question-agnostic 클러스터링으로 keyframe 선택 후 중요도·중복 기준 토큰 pruning</span><span class="en">Question-agnostic clustering picks keyframes; importance/redundancy pruning per keyframe</span></td>
+  <td class="small"><span class="ko">초록 미기재</span><span class="en">not named in abstract</span></td>
+  <td class="nowrap"><a href="https://github.com/hktk07/KTV">GitHub</a></td>
+</tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2603.21957">USTC</a><span class="venue">CVPR 2026</span></td>
+  <td class="stage"><span class="ko">주로 pre-LLM (+보조 in-LLM 단계)</span><span class="en">mostly pre-LLM (+secondary in-LLM step)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">초저유지율 ~2%</span><span class="en">ultra-low ~2% retention</span></div></td>
+  <td><span class="ko">전역 attention+유사도 선택 후 미선택 토큰을 클러스터 병합</span><span class="en">Global attention+similarity selection, then cluster-merging of unselected tokens</span></td>
+  <td class="small"><span class="ko">복수 backbone</span><span class="en">multiple backbones</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2607.23445">Omni-Prune</a><span class="venue">arXiv 2026.07</span></td>
+  <td class="stage"><span class="ko">pre-LLM (audio-visual omni)</span><span class="en">pre-LLM (audio-visual omni)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">오디오 saliency 피크 중심 시간 창</span><span class="en">adaptive windows at audio-saliency peaks</span></div></td>
+  <td><span class="ko">encoder attention + query 관련도 통합 점수, K-medoids 대표 선택</span><span class="en">Unified encoder-attention + query-relevance scoring; K-medoids representative selection</span></td>
+  <td class="small"><span class="ko">초록 미기재</span><span class="en">not named in abstract</span></td>
+  <td class="nowrap"><a href="https://github.com/kimberlyii/Omni-Prune">GitHub</a></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2605.20035">SEATS</a><span class="venue">arXiv 2026.05</span></td>
+  <td class="stage"><span class="ko">hybrid: pre-LLM 다양성 선택 + in-LLM 점진 pruning (omni)</span><span class="en">hybrid: pre-LLM diversity selection + in-LLM progressive pruning (omni)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">시간 창·모달리티 간 query 기반 배분</span><span class="en">query-driven across windows and modalities</span></div></td>
+  <td><span class="ko">attention 가중 다양성 선택을 비디오+오디오에 통합 적용</span><span class="en">Attention-weighted diversity selection applied jointly to video+audio</span></td>
+  <td class="small">Qwen2.5-Omni, Qwen3-Omni</td>
+  <td class="nowrap"><a href="https://github.com/xxayt/SEATS">GitHub</a></td>
+</tr>
 </tbody></table></div>
 
 <!-- ============ SECTION 2 ============ -->
@@ -445,6 +697,96 @@ html[data-lang="en"] .ko{display:none}
   <td class="small">Vicuna-7B v1.5 + CLIP ViT-L/14 (LLaMA-VID 기반)</td>
   <td class="nowrap"><a href="https://github.com/fudan-zvg/SlowFocus">GitHub</a></td>
 </tr>
+<tr data-tags="FT FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2512.11534">HFS</a><span class="venue">ACM MM 2026</span></td>
+  <td class="stage"><span class="ko">pre-LLM 프레임 선택 (학습형 selector)</span><span class="en">pre-LLM frame selection (trained selector)</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">student–teacher 상호학습</span><span class="en">student–teacher mutual learning</span></div></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">프레임 budget 고정, 집합 선택은 query-adaptive</span><span class="en">fixed frame budget; query-adaptive set</span></div></td>
+  <td><span class="ko">CoT prompt로 만든 query 벡터로 프레임을 점수화, Gumbel-TopK로 관련도·커버리지·중복의 집합 최적화</span><span class="en">CoT-prompted query vectors score frames; differentiable Gumbel-TopK optimizes the set for relevance/coverage/redundancy</span></td>
+  <td class="small"><span class="ko">SLM+MLLM (초록 미기재)</span><span class="en">SLM+MLLM (unnamed)</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2607.00983">QCA</a><span class="venue">arXiv 2026.07</span></td>
+  <td class="stage"><span class="ko">pre-LLM keyframe 선택</span><span class="en">pre-LLM keyframe selection</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">구간별 keyframe budget이 query·변화량 기반</span><span class="en">per-segment budgets by query relevance + deviation</span></div></td>
+  <td><span class="ko">anchor 선택 후 다양화 (anchor-then-diversify) — LongVideoBench 67.8 @128프레임</span><span class="en">Anchor-then-diversify selection — 67.8 LongVideoBench @128 frames</span></td>
+  <td class="small"><span class="ko">초록 미기재 (KTV와 동일 그룹)</span><span class="en">unnamed (same group as KTV)</span></td>
+  <td class="nowrap"><a href="https://github.com/hktk07/QCA">GitHub</a></td>
+</tr>
+<tr data-tags="TF ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2605.11477">LDDR</a><span class="venue">arXiv 2026.05</span></td>
+  <td class="stage"><span class="ko">pre-LLM 프레임 샘플링 + 프레임별 해상도/토큰 할당</span><span class="en">pre-LLM frame sampling + per-frame resolution/token allocation</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">정보 많은 프레임에 더 많은 토큰</span><span class="en">more tokens to informative frames</span></div></td>
+  <td><span class="ko">query-aware DPP(Group DPP importance)로 프레임을 뽑고 나머지는 downscale/prune</span><span class="en">Query-aware DPP (Group DPP importance) picks frames; others downscaled/pruned</span></td>
+  <td class="small"><span class="ko">오픈·클로즈드 MLLM 다수</span><span class="en">multiple open/closed MLLMs</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="TF ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2603.25072">GIFT</a><span class="venue">arXiv 2026.03</span></td>
+  <td class="stage"><span class="ko">pre-LLM keyframe 선택</span><span class="en">pre-LLM keyframe selection</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">budget 크기에 따라 관련도→시간 문맥으로 기준 이동</span><span class="en">shifts from relevance to temporal context as budget grows</span></div></td>
+  <td><span class="ko">관련도 조건부 방향성 다양성으로 "대체 불가능성" 점수를 전역 최적화</span><span class="en">Globally optimizes an "irreplaceability" score (directed diversity conditioned on relevance)</span></td>
+  <td class="small">LLaVA-Video-7B</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="FT ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2602.22932">MSJoE</a><span class="venue">CVPR 2026</span></td>
+  <td class="stage"><span class="ko">pre-LLM 프레임 샘플링 (MLLM+sampler RL 공동 최적화)</span><span class="en">pre-LLM frame sampling (MLLM + sampler jointly RL-optimized)</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small">RL</div></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span></td>
+  <td><span class="ko">시각 관점 query를 추론해 frozen CLIP embedding과 매칭, 유사도 가중 샘플링</span><span class="en">Reasons visual-perspective queries, matched against frozen CLIP embeddings for similarity-weighted sampling</span></td>
+  <td class="small">CLIP + MLLM<span class="ko"> (미기재)</span><span class="en"> (unnamed)</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="FT ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2602.04094">VideoBrain</a><span class="venue">arXiv 2026.02</span></td>
+  <td class="stage"><span class="ko">pre-LLM adaptive 프레임 획득 (이중 에이전트)</span><span class="en">pre-LLM adaptive frame acquisition (dual agents)</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small">RL</div></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">프레임 30–40% 절감</span><span class="en">30–40% fewer frames</span></div></td>
+  <td><span class="ko">CLIP 의미 검색 + 균일 dense 샘플링 병행, VLM이 정보 충분성 판단</span><span class="en">CLIP semantic retrieval + uniform dense sampling; a VLM judges information sufficiency</span></td>
+  <td class="small"><span class="ko">초록 미기재</span><span class="en">not named in abstract</span></td>
+  <td class="nowrap"><a href="https://github.com/junbo-zou/VideoBrain">GitHub</a></td>
+</tr>
+<tr data-tags="FT ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2603.28610">ResAdapt</a><span class="venue">arXiv 2026.03 (WIP)</span></td>
+  <td class="stage"><span class="ko">가장 앞단: encoding 전 raw pixel에서 프레임별 해상도 배분</span><span class="en">earliest stage: per-frame resolution allocation on raw pixels, before encoding</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">경량 Allocator만 학습 (backbone frozen)</span><span class="en">only a light Allocator trained (backbone frozen)</span></div></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">contextual bandit; 같은 budget에서 16× 프레임</span><span class="en">contextual bandit; 16× frames per budget</span></div></td>
+  <td><span class="ko">Cost-Aware Policy Optimization으로 프레임별 시각 budget을 배분</span><span class="en">Cost-Aware Policy Optimization allocates per-frame visual budgets</span></td>
+  <td class="small"><span class="ko">비디오 QA + temporal grounding</span><span class="en">video QA + temporal grounding</span></td>
+  <td class="nowrap"><a href="https://github.com/Xnhyacinth/ResAdapt">GitHub</a></td>
+</tr>
+<tr data-tags="FT ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2605.26680">DynFrame</a><span class="venue">arXiv 2026.05</span></td>
+  <td class="stage"><span class="ko">agentic: 생성 중 native 토큰으로 시간 창+샘플링 밀도를 지정해 다음 prefill 구성</span><span class="en">agentic: emits temporal window + sampling density as native tokens, feeding the next prefill</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small">SFT + GRPO</div></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span></td>
+  <td><span class="ko">DM-CoT-74k SFT 후 Segment-Decoupled GRPO로 프레임 검색 정책 학습</span><span class="en">SFT on DM-CoT-74k, then Segment-Decoupled GRPO trains the frame-retrieval policy</span></td>
+  <td class="small">DynFrame-4B/8B</td>
+  <td class="nowrap"><a href="https://github.com/zhangguanghao523/DynFrame">GitHub</a></td>
+</tr>
+<tr data-tags="FT ADAPTIVE">
+  <td class="m"><a href="https://openaccess.thecvf.com/content/CVPR2026/papers/Qin_Efficient_Frame_Selection_for_Long_Video_Understanding_via_Reinforcement_Learning_CVPR_2026_paper.pdf">Qin et al. (RL Frame Selection)</a><span class="venue">CVPR 2026 (arXiv 없음)</span></td>
+  <td class="stage"><span class="ko">pre-LLM 경량 프레임 selector</span><span class="en">pre-LLM lightweight frame selector</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small">RL</div></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span></td>
+  <td><span class="ko">관련도 사전학습 + 계층적 조합/프레임 보상 RL</span><span class="en">Relevance pre-training + RL with hierarchical combination/frame-level rewards</span></td>
+  <td class="small"><span class="ko">미기재</span><span class="en">unnamed</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="FT FIXED">
+  <td class="m"><a href="https://github.com/lizhenyu-123/Vista-LLM">Vista-LLM</a><span class="venue">ACL 2026 (arXiv 미확인)</span></td>
+  <td class="stage"><span class="ko">pre-LLM: 학습된 Q-Former "Semantic Scout"가 query 기준 토큰 점수화 (LLM attention 불필요)</span><span class="en">pre-LLM: a trained Q-Former "Semantic Scout" scores tokens by query (no LLM attention needed)</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small">BLIP-2 Q-Former</div></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">90% 감축 budget, 선택 query-adaptive</span><span class="en">90%-reduction budget; query-adaptive selection</span></div></td>
+  <td><span class="ko">~98% 성능 유지로 90% 토큰 제거</span><span class="en">Removes 90% of tokens at ~98% performance</span></td>
+  <td class="small">LLaVA-Video, LLaVA-OneVision, Qwen2.5-VL</td>
+  <td class="nowrap"><a href="https://github.com/lizhenyu-123/Vista-LLM">GitHub</a></td>
+</tr>
 </tbody></table></div>
 
 <!-- ============ SECTION 3 ============ -->
@@ -558,8 +900,8 @@ html[data-lang="en"] .ko{display:none}
   <td class="m"><a href="https://arxiv.org/abs/2504.02438">ViLAMP</a><span class="venue">ICML 2025</span></td>
   <td class="stage"><span class="ko">differential keyframe 선택 + non-keyframe feature 병합 (mixed-precision)</span><span class="en">differential keyframe selection + non-keyframe feature merging ("mixed precision")</span></td>
   <td><span class="badge b-ft">FT</span></td>
-  <td><span class="badge b-mixed">MIXED</span><div class="small"><span class="ko">keyframe=full, 나머지=최소 토큰; 선택은 query-adaptive</span><span class="en">keyframes full, others minimal; selection query-adaptive</span></div></td>
-  <td><span class="ko">query 관련도+시간 구별성으로 keyframe을 뽑고 나머지는 salient feature로 압축 (10K 프레임, A100 1장)</span><span class="en">Query relevance + temporal distinctness pick keyframes; non-keyframes collapse to salient features (10K frames, 1×A100)</span></td>
+  <td><span class="badge b-mixed">MIXED</span><div class="small"><span class="ko">keyframe K=32 고정 + non-keyframe 1토큰 고정 → 총 MK+(N−K)로 입력 길이가 결정; 어떤 프레임인지만 query-adaptive</span><span class="en">K=32 keyframes fixed + non-keyframes fixed to 1 token → total MK+(N−K), input-length-determined; only which frames is query-adaptive</span></div></td>
+  <td><span class="ko">frozen SigLIP 출력 위에서 query 관련도+시간 구별성(τ=0.85)으로 keyframe을 뽑고 non-keyframe은 가중 pooling으로 1토큰 압축 (10K 프레임, A100 1장) — encoder 자체는 표준 그대로</span><span class="en">On frozen SigLIP outputs: query relevance + temporal distinctness (τ=0.85) pick keyframes; non-keyframes collapse to 1 token via weighted pooling (10K frames, 1×A100) — the encoder itself is standard</span></td>
   <td class="small">Qwen2-7B + SigLIP-so400m</td>
   <td class="nowrap"><a href="https://github.com/steven-ccq/ViLAMP">GitHub</a></td>
 </tr>
@@ -617,10 +959,132 @@ html[data-lang="en"] .ko{display:none}
   <td class="small">Qwen2.5-VL-3B/7B, LLaVA-OneVision-1.5-8B</td>
   <td class="nowrap"><a href="https://github.com/JulietChoo/VisionSelector">GitHub</a></td>
 </tr>
+<tr data-tags="FT ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2508.17686">LGTTP</a><span class="venue">arXiv 2025.08</span></td>
+  <td class="stage"><span class="ko">encoder 뒤·projection 앞 temporal adapter</span><span class="en">temporal adapter after the encoder, before projection</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">adapter+classifier만 학습</span><span class="en">adapter+classifier only</span></div></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small">R = αN·softmax(L_temp)</div></td>
+  <td><span class="ko">query의 시간 단서를 추출해 시간적으로 관련된 구간에 높은 토큰 밀도 유지</span><span class="en">Extracts temporal cues from the query to keep higher token density in relevant segments</span></td>
+  <td class="small">TimeChat, LLaVA-Video</td>
+  <td class="nowrap"><a href="https://github.com/yogesh-iitj/LGTTP">GitHub</a><div class="small"><span class="ko">내용 미검증</span><span class="en">contents unverified</span></div></td>
+</tr>
+<tr data-tags="FT ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2602.01649">CaCoVID</a><span class="venue">AAAI 2026</span></td>
+  <td class="stage"><span class="ko">pre-LLM 토큰 선택 policy 네트워크</span><span class="en">pre-LLM token-selection policy network</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">RL policy만 학습 (encoder·projector·LLM frozen)</span><span class="en">RL policy only (encoder/projector/LLM frozen)</span></div></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">프레임 기여도 softmax로 프레임별 개수 배분</span><span class="en">per-frame counts from contribution softmax</span></div></td>
+  <td><span class="ko">attention 점수 대신 "정답 기여도"를 RL로 학습해 토큰 조합 선택</span><span class="en">RL learns to select token combinations by contribution to correct answers, not attention scores</span></td>
+  <td class="small">LLaVA-OneVision-7B, Qwen2.5-VL-3B</td>
+  <td class="nowrap"><a href="https://github.com/LivingFutureLab/CaCoVID">GitHub</a><div class="small"><span class="ko">내용 미검증</span><span class="en">contents unverified</span></div></td>
+</tr>
+<tr data-tags="FT ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2608.01644">CRAFT</a><span class="venue">arXiv 2026.08</span></td>
+  <td class="stage"><span class="ko">pre-LLM 재귀적 토큰 병합 (경량 fusion 학습)</span><span class="en">pre-LLM recursive token merging (light learnable fusion)</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">선택은 무파라미터, 융합만 학습</span><span class="en">parameter-free selection; learned fusion</span></div></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small">~8×</div></td>
+  <td><span class="ko">전역 유사도로 병합 대상을 고르고, 위치 인지 가중 + 채널별 gate로 융합 방법을 학습</span><span class="en">Global similarity picks what to merge; position-aware weighting + channel-wise gates learn how to fuse</span></td>
+  <td class="small"><span class="ko">초록 미기재</span><span class="en">not named in abstract</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="FT ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2604.08120">Tempo</a><span class="venue">arXiv 2026.04 (Meta+KAUST)</span></td>
+  <td class="stage"><span class="ko">보조 소형 VLM(~6B)이 메인 LLM 앞에서 시간 압축기 역할</span><span class="en">an auxiliary small VLM (~6B) acts as a temporal compressor before the main LLM</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">early cross-modal distillation</span><span class="en">early cross-modal distillation</span></div></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">프레임당 0.5–16토큰 query-adaptive</span><span class="en">0.5–16 tokens/frame, query-adaptive</span></div></td>
+  <td><span class="ko">Adaptive Token Allocation이 쿼리 기준으로 프레임별 토큰 수를 라우팅</span><span class="en">Adaptive Token Allocation routes per-frame token counts by query</span></td>
+  <td class="small"><span class="ko">SVLM 압축기 + 메인 LLM</span><span class="en">SVLM compressor + main LLM</span></td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 미확인</span><span class="en">code unconfirmed</span></span></td>
+</tr>
+<tr data-tags="FT ALLOC">
+  <td class="m"><a href="https://arxiv.org/abs/2512.10324">EchoingPixels</a><span class="venue">ICML 2026 (audio-visual)</span></td>
+  <td class="stage"><span class="ko">pre-LLM: 오디오+비디오 결합 스트림에서 초기 추출 선택</span><span class="en">pre-LLM: early extractive selection on the joint audio-visual stream</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">압축 모델 SFT 필요</span><span class="en">requires SFT of the compressed model</span></div></td>
+  <td><span class="badge b-alloc">BUDGET+ALLOC</span><div class="small"><span class="ko">총 5–20% budget, 모달리티 간 배분 dynamic</span><span class="en">5–20% total; dynamic cross-modal split</span></div></td>
+  <td><span class="ko">Cross-Modal Semantic Sieve로 공동 salient 토큰 선택 + Sync-RoPE로 시간 aliasing 방지</span><span class="en">Cross-Modal Semantic Sieve selects jointly salient tokens; Sync-RoPE prevents temporal aliasing</span></td>
+  <td class="small">Qwen2.5-Omni-3B</td>
+  <td class="nowrap"><a href="https://github.com/CharlesGong12/EchoingPixels">GitHub</a></td>
+</tr>
+<tr data-tags="FT ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2605.05848">VideoRouter</a><span class="venue">arXiv 2026.05</span></td>
+  <td class="stage"><span class="ko">주로 pre-LLM (Semantic Router; Image Router는 LLM 초기 층 사용 — 부분 in-LLM)</span><span class="en">mostly pre-LLM (Semantic Router; Image Router uses early LLM layers — partially in-LLM)</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small">Video-QTR-10K/FLR-200K</div></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">프레임별 압축 vs 고해상 보존 라우팅</span><span class="en">routes per frame: compression vs. high-res preservation</span></div></td>
+  <td><span class="ko">query 기준으로 프레임별 처리 정책을 선택하는 학습형 라우터</span><span class="en">A trained router picks per-frame allocation policies by query</span></td>
+  <td class="small">InternVL</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
 </tbody></table></div>
 
-<!-- ============ SECTION 4 ============ -->
-<h2><span class="num">4</span><span class="ko">입력 크기 기반 가변 (content saliency가 아닌 해상도/길이/지정 비율)</span><span class="en">Input-size-driven variability (resolution/length/on-demand ratio, not content saliency)</span></h2>
+<!-- ============ SECTION 4 (encoder-internal) ============ -->
+<h2><span class="num">4</span><span class="ko">Encoder 내부를 고친 계열 (encoder-internal)</span><span class="en">Encoder-internal methods (the compression lives inside the encoder)</span></h2>
+<p class="sec-desc">
+  <span class="ko">압축/선택이 encoder backbone 안(또는 그 앞의 patch 선택)에서 일어나 encoder 연산 자체가 줄어드는 계열 — LLM뿐 아니라 ViT 병목까지 해결한다. 이 표 외에 TESTA(§3, 블록 내 aggregation 학습), DyMU(§1, ViT 층 내 TF 병합), EarlyTom(§1, encoder 층 내 프레임 병합), Qwen2-VL/Oryx(§5, native-resolution ViT)도 encoder 내부/자체 개입에 해당.</span>
+  <span class="en">Compression/selection happens inside the encoder backbone (or as patch selection before it), so the encoder's own compute shrinks — addressing the ViT bottleneck, not just the LLM's. Beyond this table, TESTA (§3, trained in-block aggregation), DyMU (§1, TF merging in ViT layers), EarlyTom (§1, frame merging inside encoder layers), and Qwen2-VL/Oryx (§5, native-resolution ViTs) also qualify.</span>
+</p>
+<div class="tbl-wrap"><table>
+<thead><tr>
+  <th><span class="ko">방법</span><span class="en">Method</span></th>
+  <th><span class="ko">encoder의 어디를 고치나</span><span class="en">What changes in the encoder</span></th>
+  <th><span class="ko">학습</span><span class="en">Training</span></th>
+  <th><span class="ko">토큰 수</span><span class="en">Token count</span></th>
+  <th><span class="ko">메커니즘</span><span class="en">Mechanism</span></th>
+  <th><span class="ko">LLM + Encoder</span><span class="en">LLM + encoder</span></th>
+  <th><span class="ko">코드</span><span class="en">Code</span></th>
+</tr></thead>
+<tbody>
+<tr data-tags="FT FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2605.17260">LiteFrame</a><span class="venue">arXiv 2026.05 (GDM+SNU)</span></td>
+  <td class="stage"><span class="ko">backbone 자체를 교체: 압축을 내재화한 compact student encoder</span><span class="en">replaces the backbone: a compact student encoder with compression internalized</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">CTD distillation, teacher(InternViT-300M) 가중치로 초기화</span><span class="en">CTD distillation; initialized from teacher (InternViT-300M) weights</span></div></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">프레임당 256→16토큰 (최대 16×: 공간 4×4 + 시간 4×)</span><span class="en">256→16 tokens/frame (up to 16×: 4×4 spatial + 4× temporal)</span></div></td>
+  <td><span class="ko">teacher의 시공간 압축 표현(WAP)을 student가 직접 예측하도록 distillation — depth-wise temporal conv + strided conv 내장; LMA와 결합해 8× 프레임에서 E2E 지연 35%↓</span><span class="en">Distills the teacher's spatio-temporally compressed (WAP) representations into a ViT-Base student with built-in temporal/strided convs; with LMA, 35% lower E2E latency at 8× frames</span></td>
+  <td class="small">InternVL3-8B (LLM frozen, LMA 후)</td>
+  <td class="nowrap"><a href="https://github.com/jjihwan/LiteFrame">GitHub</a><div class="small"><span class="ko">placeholder ("release soon")</span><span class="en">placeholder ("release soon")</span></div></td>
+</tr>
+<tr data-tags="FT ADAPTIVE">
+  <td class="m"><a href="https://arxiv.org/abs/2603.12254">AutoGaze</a><span class="venue">CVPR 2026 (NVIDIA/Berkeley)</span></td>
+  <td class="stage"><span class="ko">ViT 앞단에 ~3M "gazing" 모듈 — encoder가 중복 patch를 아예 처리하지 않음</span><span class="en">a ~3M "gazing" module before the ViT — the encoder never processes redundant patches</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">next-token 예측 + RL(재구성 보상); 하류 MLLM은 기존 pretrained</span><span class="en">next-token prediction + RL (reconstruction reward); downstream MLLM pretrained</span></div></td>
+  <td><span class="badge b-adapt">ADAPTIVE</span><div class="small"><span class="ko">4–100× 가변 — 새로 등장한 내용만 처리</span><span class="en">4–100× variable — only newly emerged content</span></div></td>
+  <td><span class="ko">multi-scale patch를 autoregressive하게 선택("gaze")한 뒤에만 ViT attention 수행 — NVILA-8B를 1K프레임 4K 영상까지 확장</span><span class="en">Autoregressively selects multi-scale patches to "gaze" at before ViT attention runs — scales NVILA-8B to 1K-frame 4K video</span></td>
+  <td class="small">NVILA-8B(-Video) + <span class="ko">해당 ViT</span><span class="en">its ViT</span></td>
+  <td class="nowrap"><a href="https://github.com/NVlabs/AutoGaze">GitHub</a></td>
+</tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2512.18747">IPCV</a><span class="venue">arXiv 2025.12</span></td>
+  <td class="stage"><span class="ko">ViT 층 내부 pruning (가중치 학습 없음)</span><span class="en">pruning inside ViT layers (no weights trained)</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small">50/35/20%</div></td>
+  <td><span class="ko">pruning된 토큰을 이웃으로 임시 재구성해 attention에 계속 참여시키고(K/V 근사) LLM 입력에서 최종 제거</span><span class="en">Pruned tokens are temporarily reconstructed from neighbors to ghost-participate in attention (K/V approximation), removed finally at LLM input</span></td>
+  <td class="small">Qwen2-VL-7B, InternVL3-38B</td>
+  <td class="nowrap"><a href="https://github.com/Perkzi/IPCV">GitHub</a></td>
+</tr>
+<tr data-tags="TF FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2512.09010">LUVC</a><span class="venue">arXiv 2025.12</span></td>
+  <td class="stage"><span class="ko">encoder forward 중 반복 병합 + LLM 층에서 spectrum pruning</span><span class="en">iterative merging during the encoder forward + spectrum pruning through LLM layers</span></td>
+  <td><span class="badge b-tf">TF</span></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">비디오 ~35–40% in-encoder 병합 (aspect ratio 따라 조정)</span><span class="en">~35–40% merged in-encoder for video (adjusted by aspect ratio)</span></div></td>
+  <td><span class="ko">공간축에 직교하는 반복 병합을 인코딩 중 수행, 이후 주파수 영역 pruning으로 마지막 층에서 완전 제거 (~2× LLM 가속)</span><span class="en">In-encoder iterative spatial merging, then frequency-domain pruning until full elimination at the last LLM layer (~2× LLM speedup)</span></td>
+  <td class="small">LLaVA-OV-0.5B/7B, InternVL2.5-8B/26B, Qwen2-VL-7B</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+<tr data-tags="FT FIXED">
+  <td class="m"><a href="https://arxiv.org/abs/2507.02279">LaCo</a><span class="venue">arXiv 2025.07</span></td>
+  <td class="stage"><span class="ko">encoder 중간 층에 pixel-shuffle 병합 층 삽입 (+residual)</span><span class="en">pixel-shuffle merging layers inserted at intermediate encoder depths (+residual)</span></td>
+  <td><span class="badge b-ft">FT</span><div class="small"><span class="ko">PML+projector 학습 — 기존 체크포인트에 drop-in은 아님</span><span class="en">PML+projector trained — not a drop-in for existing checkpoints</span></div></td>
+  <td><span class="badge b-fixed">FIXED</span><div class="small"><span class="ko">space-to-channel 비율 고정</span><span class="en">fixed space-to-channel ratio</span></div></td>
+  <td><span class="ko">layer-wise pixel-shuffle로 인접 토큰을 encoder 중간에서 병합, residual로 정보 보존</span><span class="en">Layer-wise pixel-shuffle merges adjacent tokens mid-encoder; residual connections preserve information</span></td>
+  <td class="small">AIMv2/SigLIP/InternViT + Qwen2.5-0.5B</td>
+  <td class="nowrap"><span class="badge b-warn"><span class="ko">코드 없음</span><span class="en">no code</span></span></td>
+</tr>
+</tbody></table></div>
+<p class="sec-desc">
+  <span class="ko"><b>인접 계열 (참고):</b> <a href="https://arxiv.org/abs/2512.16975">InfoTok</a> (ICLR 2026, NVIDIA/Stanford) — Cosmos tokenizer 위에 ELBO 라우터를 학습해 영상별 가변 토큰 수를 내는 elastic tokenizer이나 아직 reconstruction 평가만 있음 (<a href="https://github.com/YWolfeee/InfoTok">code</a>) · <a href="https://arxiv.org/abs/2603.22387">EUPE</a> (Meta FAIR) — LiteFrame과 유사한 multi-teacher distillation의 compact encoder, 이미지 중심 (<a href="https://github.com/facebookresearch/EUPE">code</a>).</span>
+  <span class="en"><b>Adjacent (reference):</b> <a href="https://arxiv.org/abs/2512.16975">InfoTok</a> (ICLR 2026, NVIDIA/Stanford) — an elastic tokenizer with a learned ELBO router yielding variable per-video token counts on top of the Cosmos tokenizer, but evaluated on reconstruction only (<a href="https://github.com/YWolfeee/InfoTok">code</a>) · <a href="https://arxiv.org/abs/2603.22387">EUPE</a> (Meta FAIR) — a compact multi-teacher-distilled encoder in LiteFrame's spirit, image-focused (<a href="https://github.com/facebookresearch/EUPE">code</a>).</span>
+</p>
+
+<!-- ============ SECTION 5 (input-size) ============ -->
+<h2><span class="num">5</span><span class="ko">입력 크기 기반 가변 (content saliency가 아닌 해상도/길이/지정 비율)</span><span class="en">Input-size-driven variability (resolution/length/on-demand ratio, not content saliency)</span></h2>
 <p class="sec-desc">
   <span class="ko">토큰 수가 "가변"이긴 하지만 영상의 내용 중요도가 아니라 입력 기하(해상도·길이·FPS)나 사용자가 지정한 비율에 의해 정해지는 계열. content-adaptive 계열과 구분해야 한다.</span>
   <span class="en">Token counts vary, but driven by input geometry (resolution/length/FPS) or a user-set ratio rather than content saliency — a distinct regime from content-adaptive methods.</span>
@@ -669,8 +1133,8 @@ html[data-lang="en"] .ko{display:none}
 </tr>
 </tbody></table></div>
 
-<!-- ============ SECTION 5 ============ -->
-<h2><span class="num">5</span><span class="ko">이미지 전용 선례 (비디오로 계보가 이어지는 것만)</span><span class="en">Image-only precedents (only those with a video lineage)</span></h2>
+<!-- ============ SECTION 6 ============ -->
+<h2><span class="num">6</span><span class="ko">이미지 전용 선례 (비디오로 계보가 이어지는 것만)</span><span class="en">Image-only precedents (only those with a video lineage)</span></h2>
 <div class="tbl-wrap"><table>
 <thead><tr>
   <th><span class="ko">방법</span><span class="en">Method</span></th>
@@ -739,10 +1203,10 @@ html[data-lang="en"] .ko{display:none}
 </tr>
 </tbody></table></div>
 
-<!-- ============ SECTION 6 ============ -->
-<h2><span class="num">6</span><span class="ko">경계 및 제외 목록 (범위를 명확히 하기 위한 기록)</span><span class="en">Boundary & excluded lists (recorded to make the scope explicit)</span></h2>
+<!-- ============ SECTION 7 ============ -->
+<h2><span class="num">7</span><span class="ko">경계 및 제외 목록 (범위를 명확히 하기 위한 기록)</span><span class="en">Boundary & excluded lists (recorded to make the scope explicit)</span></h2>
 
-<p class="sec-desc"><b><span class="ko">6a. Prefill 중(LLM layer 내부) 압축 — "prefill 전" 아님.</span><span class="en">6a. Compression during prefill (inside LLM layers) — not "before prefill."</span></b>
+<p class="sec-desc"><b><span class="ko">7a. Prefill 중(LLM layer 내부) 압축 — "prefill 전" 아님.</span><span class="en">7a. Compression during prefill (inside LLM layers) — not "before prefill."</span></b>
 <span class="ko">그중 주목할 경계 사례:</span><span class="en">Notable boundary cases among them:</span></p>
 <div class="tbl-wrap"><table>
 <thead><tr>
@@ -805,27 +1269,27 @@ html[data-lang="en"] .ko{display:none}
 </tbody></table></div>
 
 <p class="sec-desc" style="margin-top:18px">
-  <span class="ko"><b>그 외 prefill 중/후 방법 (제외):</b> FastV (ECCV 2024), SparseVLM (ICML 2025), PyramidDrop (CVPR 2025), VTW (AAAI 2025), FitPrune, ST3, ATP-LLaVA, ZipVL, TopV (CVPR 2025), VScan, CDPruner, FiCoCo, MustDrop, CoreMatching, VoCo-LLaMA (CVPR 2025 — LLM이 직접 압축), VideoLLM-MoD · <b>KV/decoding 단계:</b> MEDA (NAACL 2025), StreamMem, StreamingTOM, InfiniPot-V, SpecVLM, DyCoke 2단계, Video-XL-2의 KV sparsification.</span>
-  <span class="en"><b>Other during/after-prefill methods (excluded):</b> FastV (ECCV 2024), SparseVLM (ICML 2025), PyramidDrop (CVPR 2025), VTW (AAAI 2025), FitPrune, ST3, ATP-LLaVA, ZipVL, TopV (CVPR 2025), VScan, CDPruner, FiCoCo, MustDrop, CoreMatching, VoCo-LLaMA (CVPR 2025 — the LLM itself compresses), VideoLLM-MoD · <b>KV/decoding stage:</b> MEDA (NAACL 2025), StreamMem, StreamingTOM, InfiniPot-V, SpecVLM, DyCoke stage 2, Video-XL-2's KV sparsification.</span>
+  <span class="ko"><b>그 외 prefill 중/후 방법 (제외):</b> FastV (ECCV 2024), SparseVLM (ICML 2025), PyramidDrop (CVPR 2025), VTW (AAAI 2025), FitPrune, ST3, ATP-LLaVA, ZipVL, TopV (CVPR 2025), VScan, CDPruner, FiCoCo, MustDrop, CoreMatching, VoCo-LLaMA (CVPR 2025 — LLM이 직접 압축), VideoLLM-MoD, <a href="https://arxiv.org/abs/2508.17857">VISA</a> (ACM MM 2025 — LLM 층 그룹 말미에서 text-guided 집약, TF, <a href="https://github.com/mobiushy/VISA">code</a>), <a href="https://arxiv.org/abs/2512.06866">DyToK</a> (NeurIPS 2025 — LLM attention 기반 프레임별 가변 비율, TF, <a href="https://github.com/yu-lin-li/DyToK">code</a>), <a href="https://arxiv.org/abs/2604.14149">One-Token-per-Frame</a> (NeurIPS 2025), <a href="https://arxiv.org/abs/2608.08630">VLZip</a> (ECCV 2026), <a href="https://arxiv.org/abs/2603.00198">Stateful Token Reduction</a> (hybrid Mamba VLM), <a href="https://arxiv.org/abs/2604.07812">HAWK</a> (CVPR 2026, head 중요도 pruning) · <b>KV/decoding 단계:</b> MEDA (NAACL 2025), StreamMem, InfiniPot-V, SpecVLM, DyCoke 2단계, Video-XL-2의 KV sparsification · <b>보완 연산자:</b> <a href="https://arxiv.org/abs/2510.22936">PPE</a> (ICLR 2026) — pruning 방법이 아니라 병합 토큰이 원본들의 3D 위치를 보존하게 하는 무파라미터 positional embedding (<a href="https://github.com/MouxiaoHuang/PPE">code</a>).</span>
+  <span class="en"><b>Other during/after-prefill methods (excluded):</b> FastV (ECCV 2024), SparseVLM (ICML 2025), PyramidDrop (CVPR 2025), VTW (AAAI 2025), FitPrune, ST3, ATP-LLaVA, ZipVL, TopV (CVPR 2025), VScan, CDPruner, FiCoCo, MustDrop, CoreMatching, VoCo-LLaMA (CVPR 2025 — the LLM itself compresses), VideoLLM-MoD, <a href="https://arxiv.org/abs/2508.17857">VISA</a> (ACM MM 2025 — text-guided aggregation at LLM layer-group ends, TF, <a href="https://github.com/mobiushy/VISA">code</a>), <a href="https://arxiv.org/abs/2512.06866">DyToK</a> (NeurIPS 2025 — LLM-attention-driven per-frame ratios, TF, <a href="https://github.com/yu-lin-li/DyToK">code</a>), <a href="https://arxiv.org/abs/2604.14149">One-Token-per-Frame</a> (NeurIPS 2025), <a href="https://arxiv.org/abs/2608.08630">VLZip</a> (ECCV 2026), <a href="https://arxiv.org/abs/2603.00198">Stateful Token Reduction</a> (hybrid Mamba VLMs), <a href="https://arxiv.org/abs/2604.07812">HAWK</a> (CVPR 2026, head-importance pruning) · <b>KV/decoding stage:</b> MEDA (NAACL 2025), StreamMem, InfiniPot-V, SpecVLM, DyCoke stage 2, Video-XL-2's KV sparsification · <b>Complementary operator:</b> <a href="https://arxiv.org/abs/2510.22936">PPE</a> (ICLR 2026) — not a pruning method but a parameter-free positional embedding letting merged tokens carry their sources' 3D positions (<a href="https://github.com/MouxiaoHuang/PPE">code</a>).</span>
 </p>
 <p class="sec-desc">
-  <span class="ko"><b>6b. 고정 압축 (dynamic 아님 — 개수·내용 모두 사전 결정 또는 고정 pooling/query):</b> PLLaVA (고정 pooling), LLaMA-VID (프레임당 2토큰, <a href="https://github.com/dvlab-research/LLaMA-VID">code</a>), Video-ChatGPT, Video-LLaMA/VideoLLaMA 2, LLaVA-Mini (1토큰), BLIP-3-Video (16–32토큰), LinVT, STORM (Mamba projector + 고정 비율 pooling, Qwen2-VL LLM + SigLIP), SlowFast-LLaVA(-1.5), TS-LLaVA (고정 thumbnail, <a href="https://github.com/tingyu215/TS-LLaVA">code</a>), Koala, Slow-Fast Architecture (SHI-Labs), PVC (프레임당 64토큰, <a href="https://github.com/OpenGVLab/PVC">code</a>), NVILA, CrossLMM (프레임당 9토큰), Flash-VStream, Token Turing Machines (고정 메모리, pre-LLM 시대), Flamingo/Qwen-VL resampler 계열.</span>
-  <span class="en"><b>6b. Static compression (not dynamic — count and schedule preset, or fixed pooling/queries):</b> PLLaVA (fixed pooling), LLaMA-VID (2 tokens/frame, <a href="https://github.com/dvlab-research/LLaMA-VID">code</a>), Video-ChatGPT, Video-LLaMA/VideoLLaMA 2, LLaVA-Mini (1 token), BLIP-3-Video (16–32 tokens), LinVT, STORM (Mamba projector + fixed-ratio pooling; Qwen2-VL LLM + SigLIP), SlowFast-LLaVA(-1.5), TS-LLaVA (fixed thumbnail, <a href="https://github.com/tingyu215/TS-LLaVA">code</a>), Koala, Slow-Fast Architecture (SHI-Labs), PVC (64 tokens/frame, <a href="https://github.com/OpenGVLab/PVC">code</a>), NVILA, CrossLMM (9 tokens/frame), Flash-VStream, Token Turing Machines (fixed memory; pre-LLM era), Flamingo/Qwen-VL-style resamplers.</span>
+  <span class="ko"><b>7b. 고정 압축 (dynamic 아님 — 개수·내용 모두 사전 결정 또는 고정 pooling/query):</b> PLLaVA (고정 pooling), LLaMA-VID (프레임당 2토큰, <a href="https://github.com/dvlab-research/LLaMA-VID">code</a>), Video-ChatGPT, Video-LLaMA/VideoLLaMA 2, LLaVA-Mini (1토큰), BLIP-3-Video (16–32토큰), LinVT, STORM (Mamba projector + 고정 비율 pooling, Qwen2-VL LLM + SigLIP), SlowFast-LLaVA(-1.5), TS-LLaVA (고정 thumbnail, <a href="https://github.com/tingyu215/TS-LLaVA">code</a>), Koala, Slow-Fast Architecture (SHI-Labs), PVC (프레임당 64토큰, <a href="https://github.com/OpenGVLab/PVC">code</a>), NVILA, CrossLMM (프레임당 9토큰), Flash-VStream, Token Turing Machines (고정 메모리, pre-LLM 시대), Flamingo/Qwen-VL resampler 계열.</span>
+  <span class="en"><b>7b. Static compression (not dynamic — count and schedule preset, or fixed pooling/queries):</b> PLLaVA (fixed pooling), LLaMA-VID (2 tokens/frame, <a href="https://github.com/dvlab-research/LLaMA-VID">code</a>), Video-ChatGPT, Video-LLaMA/VideoLLaMA 2, LLaVA-Mini (1 token), BLIP-3-Video (16–32 tokens), LinVT, STORM (Mamba projector + fixed-ratio pooling; Qwen2-VL LLM + SigLIP), SlowFast-LLaVA(-1.5), TS-LLaVA (fixed thumbnail, <a href="https://github.com/tingyu215/TS-LLaVA">code</a>), Koala, Slow-Fast Architecture (SHI-Labs), PVC (64 tokens/frame, <a href="https://github.com/OpenGVLab/PVC">code</a>), NVILA, CrossLMM (9 tokens/frame), Flash-VStream, Token Turing Machines (fixed memory; pre-LLM era), Flamingo/Qwen-VL-style resamplers.</span>
 </p>
 
 <!-- ============ TAKEAWAYS ============ -->
-<h2><span class="num">7</span><span class="ko">핵심 관찰</span><span class="en">Key takeaways</span></h2>
+<h2><span class="num">8</span><span class="ko">핵심 관찰</span><span class="en">Key takeaways</span></h2>
 <ul class="compact" style="max-width:1050px">
-  <li><span class="ko"><b>"진짜" content-adaptive한 토큰 수(threshold·클러스터·그래프가 개수를 결정)는 소수다:</b> training-free 쪽은 STTM, DynTok, LLaVA-Scissor, DyMU, METok, PruneVid(병합 단계), TimeChat-Online DTD 정도, 학습 쪽은 LongVU, Quicksviewer, DynFocus, LangDC, VQToken(adaptive 모드), AdaCM², SlowFocus(query 구간 기준) 정도.</span><span class="en"><b>Genuinely content-adaptive counts (threshold/cluster/graph decides how many) are the minority:</b> training-free — STTM, DynTok, LLaVA-Scissor, DyMU, METok, PruneVid (merging stage), TimeChat-Online DTD; trained — LongVU, Quicksviewer, DynFocus, LangDC, VQToken (adaptive mode), AdaCM², SlowFocus (query-segment).</span></li>
+  <li><span class="ko"><b>"진짜" content-adaptive한 토큰 수(threshold·클러스터·그래프가 개수를 결정)는 여전히 소수다:</b> training-free 쪽은 STTM, DynTok, LLaVA-Scissor, DyMU, METok, PruneVid(병합 단계), TimeChat-Online DTD에 2026년의 GSTEP, ST-SimDiff, TTF, AOT, FlashVID, KTV, AdaptToken, MeToM이 더해졌고, 학습 쪽은 LongVU, Quicksviewer, DynFocus, LangDC, VQToken(adaptive 모드), AdaCM², SlowFocus에 AutoGaze, ONCE, CRAFT, Tempo가 더해졌다.</span><span class="en"><b>Genuinely content-adaptive counts (threshold/cluster/graph decides how many) remain the minority:</b> training-free — STTM, DynTok, LLaVA-Scissor, DyMU, METok, PruneVid (merging stage), TimeChat-Online DTD, joined in 2026 by GSTEP, ST-SimDiff, TTF, AOT, FlashVID, KTV, AdaptToken, MeToM; trained — LongVU, Quicksviewer, DynFocus, LangDC, VQToken (adaptive mode), AdaCM², SlowFocus, joined by AutoGaze, ONCE, CRAFT, Tempo.</span></li>
   <li><span class="ko"><b>제목의 "dynamic"은 대부분 "어떤 토큰인지"가 dynamic이라는 뜻이다:</b> DyCoke·VisionZip·ToDRE·AKS·BOLT는 개수/비율 고정, VidCom²·FastVID·HoliTom·QuoTA·KVTP·Q-Frame은 총 budget 고정 + 할당만 dynamic. Chat-UniVi·TESTA도 클러스터/비율 하이퍼파라미터가 개수를 고정한다.</span><span class="en"><b>"Dynamic" in titles usually means which tokens, not how many:</b> DyCoke, VisionZip, ToDRE, AKS, BOLT fix the count/ratio; VidCom², FastVID, HoliTom, QuoTA, KVTP, Q-Frame fix the total budget and adapt only allocation. Chat-UniVi and TESTA also pin the count via cluster/ratio hyperparameters.</span></li>
-  <li><span class="ko"><b>encoder를 실제로 고치는 경우는 드물다:</b> post-hoc 계열은 전부 encoder 밖(출력)에서 동작하고, 학습 계열도 대부분 encoder는 frozen인 채 connector/projector만 학습한다. encoder 내부까지 들어가는 것은 TESTA(블록 내 aggregation), DyMU(ViT 층 병합, TF), Qwen2-VL/Oryx(native-resolution ViT) 정도.</span><span class="en"><b>Few methods actually modify the encoder:</b> post-hoc methods all operate at/after the encoder output, and most trained methods keep the encoder frozen and train only the connector/projector. Inside-the-encoder work is limited to TESTA (in-block aggregation), DyMU (ViT-layer merging, TF), and Qwen2-VL/Oryx (native-resolution ViTs).</span></li>
+  <li><span class="ko"><b>encoder 내부 개입은 2023–25년엔 드물었지만(TESTA, DyMU 정도) 2025 말–2026년에 하나의 흐름이 됐다 (§4):</b> LiteFrame(압축 내재화 distillation), AutoGaze(ViT 앞 patch 선택, content-adaptive), IPCV·LUVC(ViT 층 내 TF pruning/병합), LaCo(층간 pixel-shuffle), EarlyTom(encoder 층 내 병합). 논거도 공통적이다 — post-hoc으로 LLM 쪽을 줄이면 병목이 ViT의 프레임당 연산으로 옮겨간다는 것.</span><span class="en"><b>Encoder-internal work was rare in 2023–25 (TESTA, DyMU) but became a real wave in late 2025–2026 (§4):</b> LiteFrame (compression internalized via distillation), AutoGaze (patch selection before the ViT, content-adaptive), IPCV/LUVC (TF pruning/merging in ViT layers), LaCo (inter-layer pixel-shuffle), EarlyTom (merging inside encoder layers). The shared argument: post-hoc LLM-side reduction just shifts the bottleneck to the ViT's per-frame compute.</span></li>
   <li><span class="ko"><b>세 번째 가변 유형을 혼동하지 말 것:</b> Qwen2-VL/2.5-VL·Oryx·Dynamic-VLM의 토큰 수 가변은 입력 크기/길이/지정 비율 기반이지 내용 중요도 기반이 아니다.</span><span class="en"><b>Don't conflate the third regime:</b> the variable counts of Qwen2-VL/2.5-VL, Oryx, and Dynamic-VLM come from input size/length/on-demand ratios, not content saliency.</span></li>
   <li><span class="ko"><b>호스트 모델 관례:</b> training-free 계열의 사실상 표준 테스트베드는 LLaVA-OneVision/LLaVA-Video(Qwen2 + SigLIP)와 Qwen2-VL/2.5-VL이다.</span><span class="en"><b>Host-model convention:</b> the de-facto testbeds for training-free methods are LLaVA-OneVision / LLaVA-Video (Qwen2 + SigLIP) and Qwen2-VL / 2.5-VL.</span></li>
 </ul>
 
 <div class="footnote">
-  <span class="ko">방법론: 2026-08-19 기준, 각 논문의 arXiv 초록/본문과 공식 저장소를 개별 확인했고, TMLR 2026 서베이 "When Tokens Talk Too Much" (<a href="https://arxiv.org/abs/2507.20198">arXiv:2507.20198</a>)와 <a href="https://github.com/cokeshao/Awesome-Multimodal-Token-Compression">Awesome-Multimodal-Token-Compression</a> 등 4개 목록과 교차 검증함. 코드 링크는 HTTP 응답까지 확인. 주의: DynTok의 학습 필요 여부는 출처 간 표기가 갈림(적용 메커니즘 자체는 유사도 병합) · KeyVideoLLM 저장소는 공식 여부 미확인 · KVTP의 ICCV 2025 표기는 README 기준 · 일부 분류는 초록 수준 정보에 근거함. 빠진 최신 방법(2025 하반기 스트리밍 계열 등): LGTTP, VISA, LaCo, PPE, STC, MMG-Vid, HFS, EgoPrune 등은 미검증 상태라 표에서 제외.</span>
-  <span class="en">Methodology: as of 2026-08-19, each paper's arXiv abstract/body and official repository were checked individually, then cross-validated against the TMLR 2026 survey "When Tokens Talk Too Much" (<a href="https://arxiv.org/abs/2507.20198">arXiv:2507.20198</a>) and four curated lists incl. <a href="https://github.com/cokeshao/Awesome-Multimodal-Token-Compression">Awesome-Multimodal-Token-Compression</a>. Code links verified to respond over HTTP. Caveats: sources disagree on whether DynTok requires training (its mechanism itself is similarity merging) · KeyVideoLLM's repo is unconfirmed as official · KVTP's ICCV 2025 claim is README-only · some classifications rest on abstract-level information. Recent unverified methods (late-2025 streaming wave: LGTTP, VISA, LaCo, PPE, STC, MMG-Vid, HFS, EgoPrune) are omitted from the tables.</span>
+  <span class="ko">방법론: 2026-08-19 기준(v2), 각 논문의 arXiv 초록/본문과 공식 저장소를 개별 확인했고, TMLR 2026 서베이 "When Tokens Talk Too Much" (<a href="https://arxiv.org/abs/2507.20198">arXiv:2507.20198</a>)와 <a href="https://github.com/cokeshao/Awesome-Multimodal-Token-Compression">Awesome-Multimodal-Token-Compression</a> 등 4개 목록과 교차 검증한 뒤, 2026년 1–8월 arXiv를 별도 스윕해 신규 ~35편을 추가함. 주의: DynTok의 학습 필요 여부는 출처 간 표기가 갈림 · KeyVideoLLM 저장소는 공식 여부 미확인 · KVTP의 ICCV 2025 표기는 README 기준 · MeToM은 arXiv 없이 CVF 공개본만 존재 · ForestPrune은 CVPR 2026 "Findings" 트랙 · LGTTP·CaCoVID·STC의 저장소는 URL만 확인(내용 미검증) · 2026년 신규 항목 다수는 초록 수준 정보에 근거하며 venue 미정 preprint가 섞여 있음.</span>
+  <span class="en">Methodology: as of 2026-08-19 (v2), each paper's arXiv abstract/body and official repository were checked individually, cross-validated against the TMLR 2026 survey "When Tokens Talk Too Much" (<a href="https://arxiv.org/abs/2507.20198">arXiv:2507.20198</a>) and four curated lists incl. <a href="https://github.com/cokeshao/Awesome-Multimodal-Token-Compression">Awesome-Multimodal-Token-Compression</a>, then a dedicated Jan–Aug 2026 arXiv sweep added ~35 new entries. Caveats: sources disagree on whether DynTok requires training · KeyVideoLLM's repo is unconfirmed as official · KVTP's ICCV 2025 claim is README-only · MeToM exists only as a CVF openaccess paper (no arXiv) · ForestPrune is in the CVPR 2026 "Findings" track · LGTTP/CaCoVID/STC repos verified by URL only · many 2026 entries rest on abstract-level information and include venue-less preprints.</span>
 </div>
 
 </div>
