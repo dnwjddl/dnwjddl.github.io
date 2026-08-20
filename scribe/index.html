@@ -242,6 +242,19 @@ kbd{background:var(--drop-bg);border-radius:4px;padding:1px 6px;font-size:.85em}
   <li><b>Query-aware 압축 전반</b>: 질문을 미리 알아야 함. 우리의 필기는 question-agnostic이라 KV 재사용이 가능하고, query 의존성은 재열람 단계에만 국한.</li>
 </ul>
 
+<h3>Video-as-Text 계보의 흥망 — 그리고 우리가 얻는 교훈</h3>
+<div class="card">
+<p class="small">"영상을 텍스트로 바꿔 텍스트만으로 이해"하는 계보는 <a href="https://arxiv.org/abs/2205.10747">VidIL</a>(NeurIPS 2022) · <a href="https://arxiv.org/abs/2204.00598">Socratic Models</a>(ICLR 2023)에서 출발해 2024년에 정점을 찍었다 — <a href="https://arxiv.org/abs/2312.17235">LLoVi</a>(EMNLP 2024), <a href="https://arxiv.org/abs/2311.13627">Vamos</a>(ECCV 2024, "텍스트 표현이 비주얼 embedding과 대등"을 명시 검증), <a href="https://arxiv.org/abs/2402.13250">Video ReCap</a>(CVPR 2024), VideoAgent×2(ECCV 2024), <a href="https://arxiv.org/abs/2404.06511">MoReVQA</a>(CVPR 2024), <a href="https://arxiv.org/abs/2310.19773">MM-Vid</a>. 그러나 2025년 이후 <b>순수 캡션 파이프라인은 급감</b>했다. 이유는 다섯 가지다:</p>
+<ol class="small">
+  <li><b>존재 이유였던 격차의 소멸</b> — 이 계보의 실질 동력은 "약한 오픈 video LLM 대신 GPT-4의 추론을 빌리기"였는데, Qwen2.5-VL·LLaVA-Video급 native 모델이 나오며 우회로의 이유가 사라졌다.</li>
+  <li><b>벤치마크의 역습</b> — <a href="https://arxiv.org/abs/2403.16998">MVU</a>(ICLR 2025) 스스로 보여줬듯 EgoSchema류는 LLM-only 베이스라인도 점수가 나오는 벤치마크였고, TempCompass·TOMATO·Vinoground처럼 순서·미세 동작을 묻는 벤치마크가 나오자 캡션 기반은 구조적으로 무너졌다.</li>
+  <li><b>효율 서사의 역전</b> — "텍스트가 싸다"는 캡셔너(별도 VLM) 비용을 뺀 계산이었다. 클립마다 캡셔너를 돌리는 것이 encoder 1-pass보다 비싸다.</li>
+  <li><b>학습 불가</b> — 캡셔너→LLM 사이에 gradient가 없어 end-to-end 개선과 스케일링 서사가 없었다.</li>
+  <li><b>생존자들의 변형</b> — 살아남은 흐름은 형태를 바꿨다: 에이전틱 메모리(<a href="https://arxiv.org/abs/2510.12422">VideoLucy</a>, NeurIPS 2025), reasoning-LLM 결합(<a href="https://arxiv.org/abs/2505.24869">SiLVR</a>, TMLR 2026), 학습형 soft caption(<a href="https://arxiv.org/abs/2509.00969">LangDC</a>), 보조 텍스트 RAG(<a href="https://arxiv.org/abs/2411.13093">Video-RAG</a>, NeurIPS 2025).</li>
+</ol>
+<p class="small"><b>교훈:</b> 죽은 것은 "텍스트"가 아니라 <b>"전부-텍스트 × training-free × 벤치마크 취약"의 조합</b>이다. Scribe는 세 가지를 정확히 뒤집는다 — 텍스트는 서술 가능한 토큰에만(혼합), gradient가 흐르는 soft note(학습형), 세밀형 벤치는 비주얼 유지+재열람으로 방어(분리 평가 E2). 부가 발견: 시각 정보를 LLM <i>어휘 토큰</i>으로 인코딩하는 계열(<a href="https://arxiv.org/abs/2306.17842">SPAE</a> NeurIPS 2023 Spotlight, <a href="https://arxiv.org/abs/2403.07874">V2L Tokenizer</a> CVPR 2024)은 <b>비디오 전용 버전이 2026-08 현재 부재</b> — 필기 브랜치를 실제 단어 토큰으로 만드는 변형(해석 가능성 극대화)의 빈칸이다.</p>
+</div>
+
 <div class="card">
 <b>Contribution 후보 (논문 클레임 초안)</b>
 <ol>
@@ -260,6 +273,15 @@ kbd{background:var(--drop-bg);border-radius:4px;padding:1px 6px;font-size:.85em}
   <li><b>신호 2 — 언어화 가능성</b>: LangDC식 0.5B 캡셔닝 expert의 (i) caption 확신도/길이, (ii) caption으로부터의 feature 복원 오차. 복원 오차가 크면 "말로 안 되는" 토큰.</li>
   <li><b>라우터</b>: MoE++ (ICLR 2025 Oral)식 3-way 출구 — discard / textualize / copy(원위치 통과, M-RoPE 좌표 보존). 이산 게이트 gradient는 Rotation Trick, 붕괴 방지는 load-balancing loss.</li>
   <li><b>필기 형식</b>: timestamp가 붙은 soft caption 토큰 (이산 텍스트의 gradient 문제 회피, 해석은 부가 디코딩으로). LLM 입력은 시간 순 interleave: <kbd>[note t0–t14] [note t15–t20] [vis t21] [vis t21] [note t22–t60] …</kbd></li>
+  <li><b>필기 비용 설계 (텍스트화는 공짜가 아니다 — video-as-text 계보의 사망 원인 ③에 대한 답)</b>:
+    <ul class="small">
+      <li><b>캡셔너는 추론 시점에 없다.</b> 진짜 캡셔너(VLM)는 <i>학습 때만</i> offline teacher로 사용 — 학습 데이터에 dense caption을 미리 생성해 두고(또는 LLaVA-Video-178K·ShareGPT4Video의 기존 캡션 재활용), 추론 시 필기는 학습된 경량 헤드가 생성한다.</li>
+      <li><b>Non-autoregressive 1-pass readout.</b> 캡셔닝이 비싼 진짜 이유는 AR 디코딩(순차 생성)이다. 필기 헤드는 m개의 note slot이 구간의 SigLIP 중간층 feature에 cross-attention하는 <i>단일 forward</i>로 soft note를 뽑는다 — 픽셀 재인코딩도, 순차 생성도 없음.</li>
+      <li><b>헤드 크기와 초기화</b>: Qwen2.5-0.5B 초기화(host LLM인 Qwen2와 tokenizer/embedding 공간 공유 → note를 LLM embedding 공간에 정렬하는 비용 최소) 또는 2–4층 cross-attn 헤드. describability 점수는 같은 헤드의 confidence/재구성 오차에서 부산물로 나옴 — 별도 모듈 불필요.</li>
+      <li><b>FLOPs 수지</b>: 7B LLM prefill에서 비주얼 토큰 N개를 빼면 forward당 ≈2·7B·N FLOPs 절약. 0.5B 헤드가 구간 feature 위에서 m≪N개의 note를 1-pass로 만드는 비용은 ≈2·0.5B·(구간 토큰 수+m) — 14× 작은 모델 × AR 없음 × 서술 가능 구간에만 적용이라 큰 마진으로 남는 장사. E7에서 실측.</li>
+      <li><b>Amortization</b>: 필기는 question-agnostic → 영상당 1회 계산, 다중 질문/멀티턴에서 KV와 함께 재사용 (query-aware 압축과의 결정적 차이).</li>
+    </ul>
+  </li>
   <li><b>학습 목적함수</b>: InfoTok (ICLR 2026 Oral)식 rate–distortion — distortion = CTD distillation(teacher SigLIP 충실도) + LLM likelihood, rate = λ·기대 토큰 수. REPA 정렬로 가속, 약→강→adaptive curriculum (Progressive Distillation).</li>
   <li><b>재열람</b>: Faster Cascades (ICLR 2025 Oral)의 deferral 규칙 — LLM이 low-confidence이거나 질문이 세밀 유형이면 필기 timestamp 구간만 고 budget 재인코딩.</li>
 </ul>
@@ -333,6 +355,7 @@ kbd{background:var(--drop-bg);border-radius:4px;padding:1px 6px;font-size:.85em}
 <ul class="small">
   <li>E2E: TTFT, throughput, GPU 메모리, 1시간 영상 처리 비용 — host 원본 대비</li>
   <li>encoder 쪽 FLOPs 분리 측정 (LiteFrame의 "병목이 ViT로 이동" 논거 검증)</li>
+  <li>필기 헤드 비용 실측: 헤드 FLOPs/지연 vs 절약된 LLM prefill FLOPs 수지표 + LLoVi식 "클립마다 캡셔너 VLM 호출" 대비 비용 비교 (video-as-text 계보의 효율 역전을 우리는 피한다는 직접 증거)</li>
   <li>KV 재사용 실험: 필기는 question-agnostic → 같은 영상 다중 질문 시 amortize 효과</li>
 </ul>
 </div>
