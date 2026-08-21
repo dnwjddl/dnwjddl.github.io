@@ -71,7 +71,8 @@ kbd{background:var(--drop-bg);border-radius:4px;padding:1px 6px;font-size:.85em}
 
 <h1>Scribe <span style="color:var(--muted);font-weight:400">(working title)</span></h1>
 <p class="subtitle">Prune, Note, and Revisit: Watching Long Videos the Way Humans Do</p>
-<p class="meta">Research plan · 작성 2026-08-20 · 관련 서베이: <a href="https://dnwjddl.github.io/comparison/">dnwjddl.github.io/comparison</a></p>
+<p class="meta">Research plan · 작성 2026-08-20 · 관련 서베이: <a href="https://dnwjddl.github.io/comparison/">dnwjddl.github.io/comparison</a> ·
+파일럿 결과: <a href="https://dnwjddl.github.io/scribe/results/"><b>dnwjddl.github.io/scribe/results</b></a></p>
 
 <div class="tagline">
 사람은 긴 영상을 프레임으로 기억하지 않는다 — <b>버리고(망막), 사건으로 자르고(기억), 말로 적고(필기), 필요할 때만 다시 본다(재열람)</b>.
@@ -309,6 +310,14 @@ kbd{background:var(--drop-bg);border-radius:4px;padding:1px 6px;font-size:.85em}
 
 <!-- ================= EXPERIMENTS ================= -->
 <h2><span class="num">5</span>실험 계획</h2>
+
+<div class="tagline">
+<b>→ <a href="https://dnwjddl.github.io/scribe/results/">파일럿 결과 (training-free 상한 실험)</a></b><br>
+학습 전에 세 가정을 학습 없이 근사해 먼저 검증했다. 요약:
+<b>gist·objects는 텍스트로 압축되지만(+3.8 / +2.5%p) 모션은 텍스트화하면 손해(−1.3%p)</b>,
+질의 조건부 캡션은 환각으로 역효과(−3.8~−9.1%p), 자기신고 기반 재열람 라우터는 실패(−6~−18%p).
+짧은 클립 벤치마크(MVBench)는 8프레임에서 이미 포화라 압축 연구의 무대가 되지 못한다(결손 −1.0%p vs long −7.6%p).
+</div>
 
 <div class="exp">
 <h3>E1 — Main: 토큰 budget vs 정확도 Pareto</h3>
