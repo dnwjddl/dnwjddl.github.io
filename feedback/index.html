@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback — LLaVA-Video-178K for Thought Matryoshka</title>
+<style>
+:root{
+  --bg:#fbfbfd; --card:#ffffff; --ink:#1d2433; --muted:#5e6775; --line:#e2e6ee;
+  --accent:#2f6f5e; --accent-soft:#e9f5f1;
+  --blue:#1f5d99; --blue-soft:#e7f0fa;
+  --violet:#6741a7; --violet-soft:#f0e9fb;
+  --amber:#8a5a12; --amber-soft:#fff1d9;
+  --rose:#8b3458; --rose-soft:#f9edf3;
+  --warn:#9a3434; --warn-soft:#fff1f1;
+  --ok:#1d6b3a; --ok-soft:#e4f3e9;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#14161c; --card:#1c1f27; --ink:#e8ebf1; --muted:#9ba4b2; --line:#2c313d;
+    --accent:#7fd0ba; --accent-soft:#17342d;
+    --blue:#86bdf0; --blue-soft:#182d42;
+    --violet:#c5a8f5; --violet-soft:#2d2440;
+    --amber:#edbd6d; --amber-soft:#3b2d15;
+    --rose:#e69ac2; --rose-soft:#3a1e2e;
+    --warn:#e09090; --warn-soft:#301b1b;
+    --ok:#7fd39c; --ok-soft:#1b3526;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15.5px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Noto Sans KR",Roboto,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:42px 26px 88px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1{font-size:2.05rem;line-height:1.22;margin:0 0 8px}
+h2{font-size:1.32rem;margin:48px 0 14px;padding-top:16px;border-top:2px solid var(--line)}
+h2 .num{color:var(--accent);margin-right:8px}
+h3{font-size:1.02rem;margin:22px 0 8px}
+p{margin:8px 0}
+ul{padding-left:22px}
+li{margin:6px 0}
+.subtitle{color:var(--muted);font-size:1.04rem;margin:0}
+.meta{color:var(--muted);font-size:.85rem;margin-top:4px}
+.tagline{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:10px;padding:16px 18px;margin:24px 0;font-size:1.03rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin:14px 0}
+.small{font-size:.86rem;color:var(--muted)}
+.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.92em}
+pre{margin:12px 0;padding:14px 16px;border:1px solid var(--line);border-radius:9px;background:var(--bg);overflow-x:auto;color:var(--ink);font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.83rem;line-height:1.55}
+.badge{display:inline-block;border-radius:6px;padding:2px 9px;font-size:.75rem;font-weight:750;white-space:nowrap}
+.b-ok{background:var(--ok-soft);color:var(--ok)}
+.b-warn{background:var(--warn-soft);color:var(--warn)}
+.b-blue{background:var(--blue-soft);color:var(--blue)}
+.b-violet{background:var(--violet-soft);color:var(--violet)}
+.b-amber{background:var(--amber-soft);color:var(--amber)}
+.b-rose{background:var(--rose-soft);color:var(--rose)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.stage{border-left:4px solid var(--accent);background:var(--card);border-radius:10px;padding:18px 20px;margin:14px 0;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stage h3{margin-top:0}
+.stage .goal{color:var(--muted);font-size:.9rem;margin:0 0 10px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);margin:14px 0}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:.88rem}
+th{font-size:.76rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:2px solid var(--line)}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.key{font-weight:750;white-space:nowrap}
+.flow{display:grid;grid-template-columns:1fr 32px 1fr 32px 1fr;gap:8px;align-items:stretch;margin:16px 0}
+.node{border:1.4px solid var(--line);border-radius:9px;padding:12px 11px;background:var(--bg);min-height:88px}
+.node b{display:block;margin-bottom:5px}
+.node span{display:block;color:var(--muted);font-size:.79rem;line-height:1.35}
+.n-blue{border-color:var(--blue);background:var(--blue-soft)}
+.n-violet{border-color:var(--violet);background:var(--violet-soft)}
+.n-amber{border-color:var(--amber);background:var(--amber-soft)}
+.arrow{display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:800;font-size:1.1rem}
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.check{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--card)}
+.check.good{border-left:4px solid var(--ok)}
+.check.less{border-left:4px solid var(--warn)}
+.footnote{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);margin-top:54px;padding-top:18px}
+@media (max-width:760px){
+  .wrap{padding:30px 18px 68px}
+  h1{font-size:1.7rem}
+  .grid-2,.grid-3,.checklist{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr}
+  .arrow{min-height:22px;transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Training Data Feedback</h1>
+<p class="subtitle">LLaVA-Video-178K를 Thought Matryoshka 학습 데이터로 쓰는 법</p>
+<p class="meta">Research note · 작성 2026-08-23 · 관련 페이지: <a href="https://dnwjddl.github.io/thought-matryoshka2/">Thought Matryoshka 2</a></p>
+
+<div class="tagline">
+결론은 단순하다. <b>다른 데이터셋을 꼭 새로 찾자는 말이 아니라, LLaVA-Video-178K를 main training data로 쓰되 random mixing하지 말고 내부 sample type을 나눠서 curriculum으로 쓰자.</b>
+Caption, open-ended QA, multiple-choice QA, temporal-heavy QA를 stage별로 다르게 써야 thought register가 static image summary가 아니라 video state를 배운다.
+</div>
+
+<h2><span class="num">1</span>Verdict</h2>
+<div class="grid-2">
+  <div class="card">
+    <span class="badge b-ok">Use it</span>
+    <h3>LLaVA-Video-178K는 좋은 시작점</h3>
+    <p class="small">QA/caption format이 이미 instruction tuning 형태이고, open-ended QA와 multiple-choice QA가 같이 있어 TM2-lite의 first training data로 적합하다.</p>
+  </div>
+  <div class="card">
+    <span class="badge b-warn">Do not random mix</span>
+    <h3>그냥 전체를 섞으면 claim이 약해짐</h3>
+    <p class="small">Static scene/object QA가 너무 많으면 register가 video thought가 아니라 image summary token처럼 배울 수 있다.</p>
+  </div>
+</div>
+
+<div class="card">
+<p><b>정확한 framing.</b></p>
+<pre><code>Main training data = LLaVA-Video-178K
+
+But split it internally:
+caption
+open-ended QA
+multiple-choice QA
+temporal-heavy QA
+static/object/scene QA</code></pre>
+</div>
+
+<h2><span class="num">2</span>Dataset Facts to Cite</h2>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Item</th><th>Number / detail</th><th>Why it matters for TM2</th></tr></thead>
+<tbody>
+<tr>
+  <td class="key">Caption entries</td>
+  <td>178,510</td>
+  <td>Useful for warm-up and semantic alignment, but not enough for temporal reasoning by itself.</td>
+</tr>
+<tr>
+  <td class="key">Open-ended QA</td>
+  <td>960,792</td>
+  <td>Main source for instruction tuning and answer CE.</td>
+</tr>
+<tr>
+  <td class="key">Multiple-choice QA</td>
+  <td>196,198</td>
+  <td>Useful for stable prefix-budget comparison and teacher distillation.</td>
+</tr>
+<tr>
+  <td class="key">Full HF repository</td>
+  <td>About 1.6M rows / 1.28TB including related public datasets</td>
+  <td>Large enough for 8×H100 experiments, but split control is required to avoid leakage.</td>
+</tr>
+<tr>
+  <td class="key">License / use</td>
+  <td>Academic research and education purpose noted in dataset card</td>
+  <td>Appropriate for research experiments, but keep usage notes explicit.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="small">Sources: <a href="https://huggingface.co/datasets/lmms-lab/LLaVA-Video-178K">Hugging Face dataset card</a>, <a href="https://llava-vl.github.io/blog/2024-09-30-llava-video/">LLaVA-Video project page</a>.</p>
+
+<h2><span class="num">3</span>Recommended Curriculum</h2>
+<div class="flow">
+  <div class="node n-blue"><b>Stage 1</b><span>Graft warm-up with captions + easy open-ended QA</span></div>
+  <div class="arrow">→</div>
+  <div class="node n-violet"><b>Stage 2</b><span>Nested prefix instruction tuning with open-ended + MC QA</span></div>
+  <div class="arrow">→</div>
+  <div class="node n-amber"><b>Stage 3</b><span>Temporal-heavy refinement with motion/order/state-change samples</span></div>
+</div>
+
+<div class="stage">
+<h3>Stage 1: Graft warm-up</h3>
+<p class="goal">목표: Frozen SigLIP feature 위에 temporal thought graft와 projector가 LLM input으로 안정적으로 붙게 만든다.</p>
+<pre><code>data: captions + easy open-ended QA
+loss: L_answer + L_semantic
+encoder: Frozen SigLIP
+LLM: Frozen
+train: temporal thought graft + registers + projector</code></pre>
+</div>
+
+<div class="stage">
+<h3>Stage 2: Nested prefix instruction tuning</h3>
+<p class="goal">목표: z1:z8, z1:z16, z1:z32, z1:z64가 모두 answer 가능한 prefix-valid thought가 되게 만든다.</p>
+<pre><code>data: open-ended QA + multiple-choice QA
+k ∈ {8,16,32,64}
+loss: L_answer + L_teacher_KL + L_order</code></pre>
+</div>
+
+<div class="stage">
+<h3>Stage 3: Temporal-heavy refinement</h3>
+<p class="goal">목표: thought token이 단순 visual summary가 아니라 temporal video state를 담게 만든다.</p>
+<pre><code>data: motion/order/counting/state-change/causal questions 중심 filtering
+sampling: temporal-heavy samples oversampled
+loss: L_answer + L_teacher_KL + L_pred + L_order</code></pre>
+</div>
+
+<h2><span class="num">4</span>Which Samples Matter Most</h2>
+<div class="checklist">
+  <div class="check good">
+    <span class="badge b-ok">good</span>
+    <h3>TM2-lite에 중요한 subset</h3>
+    <ul>
+      <li>temporal order</li>
+      <li>action transition</li>
+      <li>object state change</li>
+      <li>counting over time</li>
+      <li>before/after</li>
+      <li>causal relation</li>
+      <li>multi-event summarization</li>
+    </ul>
+  </div>
+  <div class="check less">
+    <span class="badge b-warn">less useful</span>
+    <h3>너무 많이 섞으면 약해지는 subset</h3>
+    <ul>
+      <li>static scene description</li>
+      <li>single-frame object recognition</li>
+      <li>generic caption-only samples</li>
+    </ul>
+  </div>
+</div>
+
+<h2><span class="num">5</span>Loss Design</h2>
+<div class="card">
+<p>데이터 curriculum과 loss는 같이 가야 한다. LLaVA-Video-178K는 thought token 자체를 supervise하지 않으므로, teacher distillation과 prefix-order pressure가 필요하다.</p>
+<pre><code>L = L_answer
+  + λ_kl L_teacher
+  + λ_order L_prefix_order
+  + λ_sem L_semantic
+  + λ_pred L_temporal_prediction</code></pre>
+</div>
+
+<div class="grid-3">
+  <div class="card">
+    <span class="badge b-blue">CE</span>
+    <h3>Answer loss</h3>
+    <p class="small">Video understanding task의 main objective. 답을 못하면 thought가 의미 없다.</p>
+  </div>
+  <div class="card">
+    <span class="badge b-violet">KL</span>
+    <h3>Teacher distillation</h3>
+    <p class="small">Dense visual-token teacher의 판단을 few thought tokens로 압축하게 만든다.</p>
+  </div>
+  <div class="card">
+    <span class="badge b-amber">Order</span>
+    <h3>Prefix order loss</h3>
+    <p class="small">긴 prefix가 짧은 prefix보다 더 못하면 penalty를 준다.</p>
+  </div>
+</div>
+
+<h2><span class="num">6</span>Train / Eval Split</h2>
+<div class="card">
+<p><b>Training은 LLaVA-Video-178K 하나로 시작해도 된다.</b> 다만 evaluation은 별도 benchmark로 보고, LLaVA-Video-178K repo 안에 포함된 public QA split과 겹치지 않게 관리해야 한다.</p>
+<pre><code>Train:
+LLaVA-Video-178K
+
+Eval:
+VideoMME
+MLVU
+MVBench
+EgoSchema
+LongVideoBench
+NExT-QA held-out
+ActivityNetQA held-out</code></pre>
+</div>
+
+<div class="card">
+<p><span class="badge b-warn">Leakage risk</span></p>
+<p class="small">LLaVA-Video-178K repository에는 NeXT-QA, ActivityNetQA, PerceptionTest 같은 public QA도 재현용으로 같이 들어가 있다. train에 쓴 split과 eval benchmark가 겹치면 결과가 방어되지 않는다. 논문에서는 train source, held-out split, evaluation-only benchmark를 명확히 적어야 한다.</p>
+</div>
+
+<h2><span class="num">7</span>Final Recommendation</h2>
+<div class="tagline">
+<b>LLaVA-Video-178K 하나로 시작해도 된다.</b>
+대신 random mixing이 아니라 caption/openQA/MCQA/temporal-heavy로 curriculum을 짜고,
+후반에는 temporal-heavy sample을 oversampling한다. 이 위에 teacher distillation, nested prefix loss, temporal prediction loss를 같이 걸어야 Thought Matryoshka의 핵심 claim이 살아난다.
+</div>
+
+<div class="footnote">
+Short version: use LLaVA-Video-178K as the main instruction-alignment data, not as an unstructured random pool. Split it by task type, over-sample temporal-heavy QA late in training, and evaluate on clean held-out video understanding benchmarks.
+</div>
+
+</div>
+</body>
+</html>
