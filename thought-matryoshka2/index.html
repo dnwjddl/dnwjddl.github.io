@@ -74,6 +74,8 @@ ol li{margin:8px 0}
 .exp h3{margin:0 0 6px}
 .exp .goal{color:var(--muted);font-size:.9rem;margin:0 0 8px}
 .mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.92em}
+pre{margin:12px 0;padding:14px 16px;border:1px solid var(--line);border-radius:9px;background:var(--bg);overflow-x:auto;color:var(--ink);font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.82rem;line-height:1.55}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
 .footnote{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);margin-top:60px;padding-top:18px}
 .variant-note{background:var(--ok-bg);border-left:4px solid var(--ok);border-radius:10px;padding:14px 18px;margin:18px 0}
 .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
@@ -581,6 +583,134 @@ LLM은 frozen으로 두며, 학습 파라미터를 thought registers, temporal g
 <div class="card">
 <b>내 판단</b>
 <p class="small tight">Matryoshka 2는 더 fancy하고 근본적인 아이디어다. 다만 first submission 전략은 둘을 경쟁시키기보다, <b>Matryoshka 1 = immediately testable adapter</b>, <b>Matryoshka 2 = pretrained-encoder graft inspired by flexible tokenization</b>으로 두는 게 안전하다. 2가 잘 되면 논문 제목은 "Encoder-Native Thought Tokenization" 쪽으로 가도 된다.</p>
+</div>
+
+<!-- ================= IMPLEMENTATION DETAIL ================= -->
+<h2><span class="num">10</span>Temporal Thought Graft and Nested Prefix Loss</h2>
+<div class="card">
+<p>여기서 paper quality는 거의 <b>Temporal Thought Graft 설계 + nested prefix loss</b>에서 갈린다.</p>
+<p>추천하는 TM2-lite 구현은 이거다.</p>
+<pre><code>Video frames
+→ Frozen SigLIP
+→ X ∈ R^{B × T × N_patch × d_v}
+
+learnable registers R ∈ R^{M × d}
++ temporal thought graft, L layers
+→ z1...zM
+
+sample k ∈ {8,16,32,64}
+→ use z1...zk only
+→ projector
+→ frozen LLM
+→ answer loss</code></pre>
+
+<p>중요한 점은 <b>nested dropout을 output에서만 자르면 약하다</b>는 거다. 좋은 구현은 training forward 자체에서 suffix register를 없애야 한다.</p>
+<pre><code>k = sample([8, 16, 32, 64])
+R = R_bank[:k]  # only prefix registers exist in this forward
+Z = temporal_thought_graft(X, R)
+llm_emb = projector(Z)
+loss = answer_ce(frozen_llm(llm_emb, question), answer)</code></pre>
+<p>이렇게 해야 <span class="mono">z1...z8</span>이 뒤쪽 <span class="mono">z9...z64</span>에 의존하지 않는다. 즉 진짜 prefix-valid가 된다.</p>
+</div>
+
+<div class="card">
+<p>Temporal Thought Graft layer는 이렇게 잡는다.</p>
+<pre><code>for layer in 1...L:
+  R ← R + CrossAttn(
+        query = R + register_order_pos,
+        key/value = video_patch_features + temporal_pos + spatial_pos
+      )
+
+  R ← R + CausalRegisterSelfAttn(R)
+      # r_i can attend only to r_1...r_i
+      # early thought cannot leak from later thought
+
+  R ← R + FFN(R)</code></pre>
+
+<p>여기서 <span class="mono">CausalRegisterSelfAttn</span>이 꽤 중요하다. 그냥 full self-attention을 쓰면 <span class="mono">z1</span>이 <span class="mono">z64</span> 정보를 미리 볼 수 있어서 nested prefix claim이 깨진다. 그래서 register self-attention은:</p>
+<pre><code>r1 sees r1
+r2 sees r1,r2
+r8 sees r1...r8
+r64 sees r1...r64</code></pre>
+<p>이렇게 해야 한다.</p>
+</div>
+
+<div class="card">
+<p>Loss는 최소 3개, strong 버전은 5개가 좋다.</p>
+<pre><code>L =
+  L_answer
++ λ_kl L_teacher
++ λ_sem L_semantic
++ λ_order L_prefix_order
++ λ_pred L_temporal_prediction</code></pre>
+
+<p><b>1. Answer CE, 필수</b></p>
+<pre><code>L_answer = CE(LLM([project(z1...zk), question]), answer)</code></pre>
+<p>이게 main task loss다. Video understanding task니까 결국 답을 잘해야 한다.</p>
+
+<p><b>2. Full-token teacher distillation, 강력 추천</b></p>
+<p>full visual-token VLM이나 dense-feature baseline을 teacher로 둔다.</p>
+<pre><code>L_teacher = KL(
+  p_teacher(answer | dense video tokens, question)
+  ||
+  p_student(answer | z1...zk, question)
+)</code></pre>
+<p>이게 있어야 thought token이 단순히 dataset shortcut만 배우지 않고, dense visual model의 판단을 압축하게 된다.</p>
+
+<p><b>3. Semantic loss, 추천</b></p>
+<p>early thought가 semantic state를 담게 만든다.</p>
+<pre><code>mean_pool(z1...zk) → predict teacher video embedding</code></pre>
+<p>teacher target은 SigLIP global embedding, DINO feature, InternVideo feature, CLIP text-aligned embedding 등으로 둘 수 있다.</p>
+<pre><code>L_semantic = 1 - cosine(g(z1...zk), stopgrad(video_semantic_target))</code></pre>
+
+<p><b>4. Prefix order loss, 매우 중요</b></p>
+<p><span class="mono">k=8</span>이 coarse, <span class="mono">k=64</span>가 detail이 되게 만들어야 한다. 가장 단순한 방식은 prefix가 길어질수록 teacher에 가까워지도록 하는 것이다.</p>
+<pre><code>D_k = KL(p_teacher || p_student_k)
+
+want:
+D_8 ≥ D_16 ≥ D_32 ≥ D_64</code></pre>
+<p>loss:</p>
+<pre><code>L_order = Σ max(0, margin + D_{larger_k} - D_{smaller_k})</code></pre>
+<p>즉 더 긴 prefix가 더 못하면 penalty.</p>
+
+<p><b>5. Temporal prediction, 있으면 novelty가 좋아짐</b></p>
+<p>thought가 frame reconstruction이 아니라 <b>video state</b>를 담게 만들려면 다음 segment feature를 예측하게 하는 게 좋다.</p>
+<pre><code>z1...zk from segment t
+→ predict semantic feature of segment t+1</code></pre>
+<pre><code>L_pred = MSE(pred_head(pool(Z)), stopgrad(semantic_target_next))</code></pre>
+<p>이건 “thinking-like streaming video understanding”과 연결하기 좋다.</p>
+</div>
+
+<div class="card">
+<p>최종으로 추천하는 학습 loop는:</p>
+<pre><code>X = frozen_siglip(video)              # [B,T,N,dv]
+X = visual_proj(X)                    # [B,T,N,d]
+
+k = sample_prefix([8,16,32,64])
+R = register_bank[:k]                 # [k,d]
+
+Z, attn_maps = graft(X, R)            # [B,k,d]
+P = projector(Z)                      # [B,k,d_llm]
+
+student_logits = frozen_llm(P, question)
+loss_answer = CE(student_logits, answer)
+
+with no_grad:
+    teacher_logits = teacher_model(video, question)
+
+loss_kl = KL(teacher_logits, student_logits)
+loss_sem = cosine_loss(pool(Z), semantic_target)
+loss_pred = mse(pred_head(pool(Z)), next_segment_target)
+
+loss = loss_answer + λ_kl*loss_kl + λ_sem*loss_sem + λ_pred*loss_pred</code></pre>
+
+<p>핵심 설계 원칙은 이거다.</p>
+<pre><code>nested dropout = first k registers만 살아남는다
+causal register self-attn = early thought가 later thought를 못 본다
+teacher KL = dense visual understanding을 latent thought로 증류한다
+semantic/predictive loss = thought가 caption이 아니라 video state가 되게 한다</code></pre>
+
+<p>이렇게 하면 원하는 “Frozen SigLIP 위에 trainable temporal thought graft를 붙이고, nested prefix로 instruction tune해서 LLM이 읽는 thought token을 만든다”가 가장 깔끔하게 구현된다.</p>
 </div>
 
 <div class="footnote">
