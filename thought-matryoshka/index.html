@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thought Matryoshka — Prefix-Valid Latent Video Thoughts</title>
+<style>
+:root{
+  --bg:#fbfbfd; --card:#ffffff; --ink:#1d2433; --muted:#5c6470; --line:#e4e7ee;
+  --accent:#255f85; --accent-soft:#e8f3f8;
+  --thought:#5f3aa3; --thought-bg:#efe7fa;
+  --prefix:#1d6b3a; --prefix-bg:#e3f3e8;
+  --teach:#8a5a12; --teach-bg:#fdf1dc;
+  --patch:#1a5da0; --patch-bg:#e5f0fb;
+  --drop:#6b7280; --drop-bg:#eceef2;
+  --warn:#9a3434; --warn-bg:#fff3f3;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#14161c; --card:#1c1f27; --ink:#e6e8ee; --muted:#9aa2af; --line:#2c303b;
+    --accent:#86c5e8; --accent-soft:#162d3a;
+    --thought:#c1a3f2; --thought-bg:#2d2340;
+    --prefix:#7fd39c; --prefix-bg:#1c3526;
+    --teach:#e8b566; --teach-bg:#3a2d14;
+    --patch:#7db4e8; --patch-bg:#182c40;
+    --drop:#aab2bf; --drop-bg:#272b33;
+    --warn:#e09090; --warn-bg:#301b1b;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15.5px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Noto Sans KR",Roboto,sans-serif;}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 26px 90px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1{font-size:2.08rem;line-height:1.25;margin:0 0 6px}
+h2{font-size:1.35rem;margin:54px 0 14px;padding-top:16px;border-top:2px solid var(--line)}
+h2 .num{color:var(--accent);margin-right:8px}
+h3{font-size:1.05rem;margin:26px 0 8px}
+.subtitle{color:var(--muted);margin:0 0 4px;font-size:1.05rem}
+.meta{color:var(--muted);font-size:.85rem}
+.tagline{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:10px;padding:15px 18px;margin:22px 0;font-size:1.02rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 24px;margin:14px 0}
+.abstract-en{font-family:Georgia,"Times New Roman",serif;font-size:1.0rem;line-height:1.75}
+.badge{display:inline-block;border-radius:6px;padding:2px 9px;font-size:.75rem;font-weight:700;white-space:nowrap}
+.b-thought{background:var(--thought-bg);color:var(--thought)}
+.b-prefix{background:var(--prefix-bg);color:var(--prefix)}
+.b-teach{background:var(--teach-bg);color:var(--teach)}
+.b-patch{background:var(--patch-bg);color:var(--patch)}
+.b-drop{background:var(--drop-bg);color:var(--drop)}
+.b-warn{background:var(--warn-bg);color:var(--warn)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);margin:14px 0}
+table{border-collapse:collapse;width:100%;min-width:860px;font-size:.88rem}
+th{font-size:.76rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:2px solid var(--line)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.m{font-weight:700;white-space:nowrap}
+td.m .v{display:block;font-weight:400;font-size:.76rem;color:var(--muted)}
+.small{font-size:.83rem;color:var(--muted)}
+.tight{margin-top:6px}
+ul{padding-left:22px}
+li{margin:6px 0}
+ol li{margin:8px 0}
+.exp{border-left:3px solid var(--accent);padding:2px 0 2px 16px;margin:18px 0}
+.exp h3{margin:0 0 6px}
+.exp .goal{color:var(--muted);font-size:.9rem;margin:0 0 8px}
+.fig{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:18px 0;overflow-x:auto}
+.fig figcaption{color:var(--muted);font-size:.85rem;margin-top:10px;text-align:center}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.claim{display:grid;grid-template-columns:160px 1fr;gap:12px;border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.claim:first-child{border-top:0;padding-top:0;margin-top:0}
+.claim b{color:var(--accent)}
+.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.92em}
+.footnote{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);margin-top:60px;padding-top:18px}
+kbd{background:var(--drop-bg);border-radius:4px;padding:1px 6px;font-size:.85em}
+@media (max-width:760px){
+  .wrap{padding:30px 18px 70px}
+  h1{font-size:1.75rem}
+  .grid-2{grid-template-columns:1fr}
+  .claim{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Thought Matryoshka <span style="color:var(--muted);font-weight:400">(working title)</span></h1>
+<p class="subtitle">Prefix-Valid Latent Video Thoughts for Anytime Multimodal Reasoning</p>
+<p class="meta">Research plan · 작성 2026-08-23 · 출발점: <a href="https://dnwjddl.github.io/latentreasoning/">Ponder-B</a> · 관련 서베이: <a href="https://dnwjddl.github.io/comparison/">dynamic visual token comparison</a></p>
+
+<div class="tagline">
+비디오는 LLM에 들어가기 전에 이미 <b>생각 가능한 상태</b>로 접혀 있어야 한다. Thought Matryoshka는 영상을
+수천 개 patch token이 아니라 <b>중요도 순으로 정렬된 latent thought</b> <span class="mono">z1...zM</span>로 바꾼다.
+가장 중요한 조건은 하나다: <b>어떤 prefix를 잘라도 완성된 reasoning state</b>여야 한다.
+<span class="mono">z1</span>은 한 문장짜리 상황 이해, <span class="mono">z1:z8</span>은 줄거리, <span class="mono">z1:z64</span>는 세부 지각까지 담는다.
+</div>
+
+<!-- ================= OVERVIEW FIGURE ================= -->
+<h2><span class="num">1</span>Overview</h2>
+<figure class="fig">
+<svg viewBox="0 0 1000 520" width="100%" style="min-width:900px" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Apple SD Gothic Neo',sans-serif">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
+    </marker>
+    <marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+
+  <!-- Input video -->
+  <text x="68" y="32" fill="var(--ink)" font-size="14" font-weight="700" text-anchor="middle">Video</text>
+  <g>
+    <rect x="22" y="54" width="42" height="30" rx="4" fill="var(--patch-bg)" stroke="var(--patch)"/>
+    <rect x="49" y="64" width="42" height="30" rx="4" fill="var(--patch-bg)" stroke="var(--patch)"/>
+    <rect x="76" y="74" width="42" height="30" rx="4" fill="var(--patch-bg)" stroke="var(--patch)"/>
+    <text x="70" y="134" fill="var(--muted)" font-size="11" text-anchor="middle">frames / patches</text>
+    <text x="70" y="151" fill="var(--muted)" font-size="11" text-anchor="middle">4K-64K visual tokens</text>
+  </g>
+  <line x1="126" y1="82" x2="190" y2="82" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#ah)"/>
+
+  <!-- Encoder -->
+  <g>
+    <rect x="196" y="32" width="190" height="100" rx="10" fill="var(--card)" stroke="var(--patch)" stroke-width="1.7"/>
+    <text x="291" y="59" fill="var(--patch)" font-size="13" font-weight="700" text-anchor="middle">Frozen / lightly tuned</text>
+    <text x="291" y="78" fill="var(--patch)" font-size="13" font-weight="700" text-anchor="middle">video encoder</text>
+    <text x="291" y="102" fill="var(--muted)" font-size="10.5" text-anchor="middle">SigLIP / Qwen2.5-VL vision tower</text>
+    <text x="291" y="119" fill="var(--muted)" font-size="10.5" text-anchor="middle">dense spatio-temporal features X</text>
+  </g>
+  <line x1="386" y1="82" x2="450" y2="82" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#ah)"/>
+
+  <!-- Thought reader -->
+  <g>
+    <rect x="456" y="20" width="260" height="132" rx="12" fill="var(--card)" stroke="var(--thought)" stroke-width="1.9"/>
+    <text x="586" y="46" fill="var(--thought)" font-size="14" font-weight="700" text-anchor="middle">Ordered Thought Reader</text>
+    <text x="586" y="65" fill="var(--muted)" font-size="10.5" text-anchor="middle">M_max learnable thought queries cross-attend to X</text>
+    <rect x="478" y="82" width="42" height="34" rx="7" fill="var(--thought-bg)" stroke="var(--thought)"/>
+    <text x="499" y="104" fill="var(--thought)" font-size="12" font-weight="700" text-anchor="middle">z1</text>
+    <rect x="530" y="82" width="42" height="34" rx="7" fill="var(--thought-bg)" stroke="var(--thought)"/>
+    <text x="551" y="104" fill="var(--thought)" font-size="12" font-weight="700" text-anchor="middle">z2</text>
+    <rect x="582" y="82" width="42" height="34" rx="7" fill="var(--thought-bg)" stroke="var(--thought)"/>
+    <text x="603" y="104" fill="var(--thought)" font-size="12" font-weight="700" text-anchor="middle">z3</text>
+    <text x="641" y="104" fill="var(--muted)" font-size="12">...</text>
+    <rect x="666" y="82" width="34" height="34" rx="7" fill="var(--thought-bg)" stroke="var(--thought)"/>
+    <text x="683" y="104" fill="var(--thought)" font-size="12" font-weight="700" text-anchor="middle">zM</text>
+    <text x="586" y="136" fill="var(--muted)" font-size="10.5" text-anchor="middle">attention gives soft timestamp + temporal span for each thought</text>
+  </g>
+
+  <!-- Prefix choices -->
+  <line x1="716" y1="82" x2="784" y2="82" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#ah)"/>
+  <g>
+    <text x="872" y="32" fill="var(--ink)" font-size="14" font-weight="700" text-anchor="middle">Anytime prefixes</text>
+    <rect x="792" y="48" width="160" height="34" rx="8" fill="var(--prefix-bg)" stroke="var(--prefix)"/>
+    <text x="872" y="70" fill="var(--prefix)" font-size="12" font-weight="700" text-anchor="middle">z1</text>
+    <rect x="792" y="92" width="160" height="34" rx="8" fill="var(--prefix-bg)" stroke="var(--prefix)"/>
+    <text x="872" y="114" fill="var(--prefix)" font-size="12" font-weight="700" text-anchor="middle">z1:z4</text>
+    <rect x="792" y="136" width="160" height="34" rx="8" fill="var(--prefix-bg)" stroke="var(--prefix)"/>
+    <text x="872" y="158" fill="var(--prefix)" font-size="12" font-weight="700" text-anchor="middle">z1:z16</text>
+    <rect x="792" y="180" width="160" height="34" rx="8" fill="var(--prefix-bg)" stroke="var(--prefix)"/>
+    <text x="872" y="202" fill="var(--prefix)" font-size="12" font-weight="700" text-anchor="middle">z1:z64</text>
+    <text x="872" y="234" fill="var(--muted)" font-size="10.5" text-anchor="middle">every prefix is trained as a valid video state</text>
+  </g>
+
+  <!-- Training box -->
+  <g>
+    <rect x="86" y="266" width="828" height="174" rx="12" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/>
+    <text x="500" y="294" fill="var(--accent)" font-size="14" font-weight="700" text-anchor="middle">Nested Prefix Training</text>
+
+    <rect x="116" y="320" width="160" height="72" rx="9" fill="var(--prefix-bg)" stroke="var(--prefix)"/>
+    <text x="196" y="343" fill="var(--prefix)" font-size="12" font-weight="700" text-anchor="middle">Random prefix</text>
+    <text x="196" y="361" fill="var(--prefix)" font-size="10.5" text-anchor="middle">sample k in {1,2,4,...,64}</text>
+    <text x="196" y="378" fill="var(--prefix)" font-size="10.5" text-anchor="middle">LLM sees only z1:zk</text>
+
+    <rect x="318" y="320" width="160" height="72" rx="9" fill="var(--teach-bg)" stroke="var(--teach)"/>
+    <text x="398" y="343" fill="var(--teach)" font-size="12" font-weight="700" text-anchor="middle">Full-token teacher</text>
+    <text x="398" y="361" fill="var(--teach)" font-size="10.5" text-anchor="middle">distill answer logits</text>
+    <text x="398" y="378" fill="var(--teach)" font-size="10.5" text-anchor="middle">and intermediate states</text>
+
+    <rect x="520" y="320" width="160" height="72" rx="9" fill="var(--thought-bg)" stroke="var(--thought)"/>
+    <text x="600" y="343" fill="var(--thought)" font-size="12" font-weight="700" text-anchor="middle">Marginal utility</text>
+    <text x="600" y="361" fill="var(--thought)" font-size="10.5" text-anchor="middle">earlier thoughts must help more</text>
+    <text x="600" y="378" fill="var(--thought)" font-size="10.5" text-anchor="middle">late slots carry residual detail</text>
+
+    <rect x="722" y="320" width="160" height="72" rx="9" fill="var(--patch-bg)" stroke="var(--patch)"/>
+    <text x="802" y="343" fill="var(--patch)" font-size="12" font-weight="700" text-anchor="middle">Anti-collapse</text>
+    <text x="802" y="361" fill="var(--patch)" font-size="10.5" text-anchor="middle">diversity + coverage</text>
+    <text x="802" y="378" fill="var(--patch)" font-size="10.5" text-anchor="middle">time-span regularization</text>
+
+    <line x1="276" y1="356" x2="318" y2="356" stroke="var(--muted)" stroke-width="1.3" marker-end="url(#ah)"/>
+    <line x1="478" y1="356" x2="520" y2="356" stroke="var(--muted)" stroke-width="1.3" marker-end="url(#ah)"/>
+    <line x1="680" y1="356" x2="722" y2="356" stroke="var(--muted)" stroke-width="1.3" marker-end="url(#ah)"/>
+    <text x="500" y="420" fill="var(--muted)" font-size="11" text-anchor="middle">The LLM never learns to depend on a hidden fixed budget: the same video representation can be stopped at any prefix.</text>
+  </g>
+
+  <!-- Inference bottom -->
+  <line x1="500" y1="440" x2="500" y2="476" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#aha)"/>
+  <g>
+    <rect x="292" y="476" width="416" height="34" rx="9" fill="var(--accent-soft)" stroke="var(--accent)"/>
+    <text x="500" y="498" fill="var(--accent)" font-size="12.5" font-weight="700" text-anchor="middle">Inference: compute thoughts once, choose a prefix by budget / confidence / novelty, amortize across all questions</text>
+  </g>
+</svg>
+<figcaption>Model architecture: a learned thought reader converts dense video features into an ordered latent sequence. Nested prefix training makes every prefix a usable video representation for the LLM.</figcaption>
+</figure>
+
+<!-- ================= ABSTRACT ================= -->
+<h2><span class="num">2</span>Abstract (초안)</h2>
+<div class="card abstract-en">
+<p>Video LLMs inherit the wrong interface from vision transformers: they pass thousands of patch tokens to a language model, then ask the language model to discover which fragments matter for reasoning. Token pruning and resampling reduce this cost, but they still treat the video representation as an unordered budget of visual evidence; choosing the budget remains an external systems decision. We propose <b>Thought Matryoshka</b>, a prefix-valid latent video interface for anytime multimodal reasoning. A lightweight ordered thought reader maps dense video features into a sequence of latent thoughts, sorted by marginal utility. The LLM consumes only a prefix of this sequence, and every prefix is trained to be a complete reasoning state through nested prefix supervision: random-prefix answer likelihood, distillation from full-token teachers, marginal-utility ordering, and anti-collapse coverage losses. As a result, a single question-agnostic video encoding supports multiple operating points — one thought for global gist, a few thoughts for storyline, dozens for fine-grained temporal evidence — without recomputing query-specific latent reasoning. This turns video compression from selecting fewer patches into learning an anytime hierarchy of non-verbal thoughts.</p>
+</div>
+<div class="card">
+<p class="small"><b>국문 요지.</b> 기존 압축 방법은 "어떤 visual token을 남길까"를 푼다. Thought Matryoshka는 질문을 바꾼다: <b>LLM이 읽어야 하는 비디오 표현은 애초에 patch가 아니라 latent thought의 prefix</b>여야 한다. 학습 중 매번 다른 prefix 길이 <span class="mono">k</span>를 잘라 앞 <span class="mono">z1:zk</span>만으로 답하게 만들면, 모델은 중요한 정보를 앞 slot으로 밀어 넣는다. 그래서 추론 시 <span class="mono">z1</span>, <span class="mono">z1:z8</span>, <span class="mono">z1:z64</span>가 각각 다른 예산의 완성된 비디오 이해가 된다.</p>
+</div>
+
+<div class="card">
+<b>Oral급으로 가져갈 핵심 주장</b>
+<div class="claim">
+  <b>Interface shift</b>
+  <div>우리는 visual token compression이 아니라 <b>visual-to-thought transduction</b>을 제안한다. LLM의 입력 단위가 patch evidence에서 latent reasoning state로 바뀐다.</div>
+</div>
+<div class="claim">
+  <b>Prefix-validity</b>
+  <div>토큰 개수를 정하는 별도 heuristic 없이, 모든 prefix가 유효한 표현이다. 이것이 fixed resampler, pruning, top-k token selection과 가장 큰 차이다.</div>
+</div>
+<div class="claim">
+  <b>Amortized video memory</b>
+  <div>thought는 질문 독립적으로 한 번 계산된다. 같은 긴 영상에 여러 질문을 던질수록 query-conditioned latent reasoning이나 pruning보다 비용 이득이 커진다.</div>
+</div>
+</div>
+
+<!-- ================= METHOD ================= -->
+<h2><span class="num">3</span>Method</h2>
+
+<h3>3.1 Ordered Thought Reader</h3>
+<ul>
+  <li><b>Input.</b> 비디오를 일정 segment로 샘플링하고 pretrained vision tower에서 dense feature <span class="mono">X ∈ R^(T×P×d)</span>를 얻는다. 초기 버전은 host encoder와 LLM을 freeze하고, thought reader와 projector만 학습한다.</li>
+  <li><b>Thought queries.</b> <span class="mono">M_max=64</span>개의 learnable query <span class="mono">q1...qM</span>가 spatio-temporal feature에 cross-attention한다. slot index embedding은 coarse-to-fine bias를 갖고, 앞 slot은 넓은 시간 범위, 뒤 slot은 좁은 residual detail에 붙도록 유도한다.</li>
+  <li><b>Timestamp.</b> 각 thought의 attention distribution에서 soft center와 span을 추출해 M-RoPE 좌표 또는 time embedding으로 LLM에 넘긴다. event boundary detector 없이도 <span class="mono">z_i@t_i</span>가 생긴다.</li>
+  <li><b>LLM interface.</b> projector가 thought를 LLM embedding space로 보내고, 입력은 <span class="mono">[VIDEO_THOUGHT] z1 ... zk [/VIDEO_THOUGHT] question</span> 형태가 된다. raw patch token은 기본 경로에서 LLM에 들어가지 않는다.</li>
+</ul>
+
+<h3>3.2 Nested Prefix Training</h3>
+<div class="card">
+<p class="small">핵심은 thought slot을 "나열"하는 게 아니라 <b>정렬</b>시키는 것이다. 매 step prefix 길이 <span class="mono">k</span>를 log-uniform하게 샘플하고, LLM은 앞 <span class="mono">k</span>개 thought만 본다. 뒤 slot이 언제든 잘릴 수 있으므로, 중요한 정보는 앞쪽으로 이동한다.</p>
+<p class="mono small">L = E_k [ CE(y | z1:zk, q) + α KL(p_teacher || p_k) ] + β L_order + γ L_div + δ L_coverage</p>
+</div>
+<ul>
+  <li><b>Random-prefix answer CE.</b> <span class="mono">k∈{1,2,4,8,16,32,64}</span>를 랜덤 샘플해 모든 budget에서 답변이 가능하게 한다.</li>
+  <li><b>Full-token teacher distillation.</b> full visual-token host 또는 high-budget thought model의 answer distribution을 teacher로 사용한다. 낮은 budget prefix가 "어떤 정보를 먼저 담아야 하는지"를 배운다.</li>
+  <li><b>Marginal utility ordering.</b> <span class="mono">z_i</span>를 추가했을 때의 loss 감소가 앞 slot에서 더 크도록 monotone utility regularization을 둔다. 뒤 slot은 앞 prefix가 놓친 residual detail을 담당한다.</li>
+  <li><b>Diversity and coverage.</b> slot collapse를 막기 위해 thought 간 cosine similarity를 벌점화하고, attention coverage가 시간 전체를 적당히 덮도록 한다. 단, coverage는 강제 균등이 아니라 질문 독립 video memory를 위한 약한 prior로 둔다.</li>
+</ul>
+
+<h3>3.3 Inference Modes</h3>
+<div class="tbl-wrap"><table>
+<thead><tr><th>Mode</th><th>사용 prefix</th><th>목적</th><th>결정 규칙</th></tr></thead>
+<tbody>
+<tr>
+  <td class="m">Budget mode</td>
+  <td><span class="mono">z1:zk</span></td>
+  <td>서빙 비용을 고정해야 할 때</td>
+  <td class="small">시스템이 <span class="mono">k=4/8/16/32</span>를 지정. 가장 단순하고 baseline 비교에 좋음.</td>
+</tr>
+<tr>
+  <td class="m">Novelty mode</td>
+  <td>자동 절단</td>
+  <td>영상별 내용 밀도에 맞춤</td>
+  <td class="small">slot energy, attention entropy, residual novelty가 threshold 아래로 떨어지는 지점에서 cut.</td>
+</tr>
+<tr>
+  <td class="m">Confidence mode</td>
+  <td>점진 prefix</td>
+  <td>어려운 질문에만 더 읽기</td>
+  <td class="small">작은 prefix로 답변 entropy가 높거나 self-consistency가 낮으면 더 긴 prefix로 재-prefill.</td>
+</tr>
+<tr>
+  <td class="m">Multi-query cache</td>
+  <td>한 번 계산한 <span class="mono">z1:zM</span> 재사용</td>
+  <td>긴 영상에 여러 질문</td>
+  <td class="small">비디오 thought cache를 저장하고 질문마다 prefix만 선택. amortization claim의 핵심.</td>
+</tr>
+</tbody></table></div>
+
+<!-- ================= RELATED ================= -->
+<h2><span class="num">4</span>관련 연구와의 차별점</h2>
+<div class="tbl-wrap"><table>
+<thead><tr><th>계열</th><th>대표 연구</th><th>무엇을 줄이나</th><th>개수/순서</th><th>Thought Matryoshka의 차이</th></tr></thead>
+<tbody>
+<tr>
+  <td class="m">Learned visual resampler</td>
+  <td><a href="https://arxiv.org/abs/2204.14198">Flamingo Perceiver Resampler</a>, LLaMA-VID류</td>
+  <td>visual feature를 고정 개수 latent token으로 압축</td>
+  <td><span class="badge b-drop">FIXED</span></td>
+  <td class="small">latent query는 있지만 prefix 의미가 없다. 우리는 <b>z1, z1:z4, z1:z16</b>이 모두 독립적으로 답 가능한 계층 표현이 되게 학습한다.</td>
+</tr>
+<tr>
+  <td class="m">Adaptive token selection</td>
+  <td><a href="https://arxiv.org/abs/2106.11297">TokenLearner</a>, FastVID, VisionZip, pruning/merging 계열</td>
+  <td>중요한 patch/token을 선택하거나 병합</td>
+  <td>budget 또는 threshold</td>
+  <td class="small">이들은 여전히 visual evidence의 subset이다. 우리는 LLM이 읽는 단위를 <b>비언어 latent thought</b>로 바꾸며, slot 순서 자체를 학습 목표로 만든다.</td>
+</tr>
+<tr>
+  <td class="m">Matryoshka representation</td>
+  <td><a href="https://arxiv.org/abs/2205.13147">Matryoshka Representation Learning</a>, nested embedding 계열</td>
+  <td>embedding dimension / token budget을 nested하게 사용</td>
+  <td><span class="badge b-prefix">PREFIX</span></td>
+  <td class="small">MRL은 일반 embedding의 nested dimension이고, 우리는 <b>video-to-LLM thought sequence</b>를 nested prefix로 만든다. 단순 이름 차용이 아니라 prefix가 reasoning interface다.</td>
+</tr>
+<tr>
+  <td class="m">Decode-time latent reasoning</td>
+  <td><a href="https://arxiv.org/abs/2606.22870">VideoLatent</a>, <a href="https://arxiv.org/abs/2608.04124">DyLaR</a>, COCONUT/PLUME 계열</td>
+  <td>LLM이 답을 만들기 전 내부 latent step을 사용</td>
+  <td>대체로 질문 조건부</td>
+  <td class="small">이들은 질문을 받은 뒤 output-side reasoning을 줄인다. Thought Matryoshka는 <b>질문 전 encoder-side video memory</b>라서 여러 질문에 amortize되고, decode-time latent와 결합 가능하다.</td>
+</tr>
+<tr>
+  <td class="m">Textual note / caption memory</td>
+  <td><a href="https://dnwjddl.github.io/scribe/">Scribe</a>, LLoVi, VideoTree, LangDC류</td>
+  <td>영상을 언어 note/caption으로 재부호화</td>
+  <td>텍스트 길이에 의존</td>
+  <td class="small">언어화 가능한 내용에는 강하지만 공간, OCR, 미세 동작, 관계 구조를 잃기 쉽다. 우리는 말 이전의 continuous thought로 남기고, 필요하면 late slot이 세부 지각을 담는다.</td>
+</tr>
+</tbody></table></div>
+
+<div class="card">
+<b>Positioning 한 줄</b>
+<p class="small tight">Token compression은 <b>LLM에게 덜 보이기</b>이고, decode-time latent reasoning은 <b>LLM이 덜 말하며 생각하기</b>다. Thought Matryoshka는 둘 사이의 빈칸: <b>encoder가 먼저 생각을 만들어두고, LLM은 필요한 만큼만 읽기</b>.</p>
+</div>
+
+<!-- ================= EXPERIMENTS ================= -->
+<h2><span class="num">5</span>실험 계획</h2>
+
+<div class="exp">
+<h3>E1 — Main Pareto: accuracy vs prefill tokens</h3>
+<p class="goal">주장: 1/4/8/16/32/64 thought prefix가 full visual-token host 대비 훨씬 낮은 prefill에서 경쟁력 있는 성능을 낸다.</p>
+<ul class="small">
+  <li>Benchmarks: VideoMME, MLVU, LongVideoBench, MVBench, TempCompass, VideoMathQA, MMVU.</li>
+  <li>Baselines: full tokens, fixed Perceiver-style resampler, LLaMA-VID류 fixed token, FastVID/VisionZip/pruning 계열, text-note baseline(Scribe/LLoVi식), VideoLatent류 output-side latent.</li>
+  <li>핵심 plot: x축 prefill token 또는 TTFT, y축 accuracy. 모든 점은 <span class="mono">k</span> prefix 하나로 생성.</li>
+</ul>
+</div>
+
+<div class="exp">
+<h3>E2 — Prefix validity and monotonicity</h3>
+<p class="goal">주장: 같은 thought sequence의 prefix가 길어질수록 성능이 부드럽게 증가하고, 특정 budget에 overfit되지 않는다.</p>
+<ul class="small">
+  <li><span class="mono">z1</span>, <span class="mono">z1:z2</span>, <span class="mono">z1:z4</span>, ..., <span class="mono">z1:z64</span> curve를 모든 벤치마크에서 보고.</li>
+  <li>tail-drop 제거, fixed-k training, unordered slots와 비교해 prefix cliff와 slot scrambling을 측정.</li>
+  <li>prefix calibration: 낮은 prefix에서 답변 confidence가 실제 정답률과 맞는지 평가.</li>
+</ul>
+</div>
+
+<div class="exp">
+<h3>E3 — Multi-query amortization</h3>
+<p class="goal">주장: 질문 독립 thought cache는 긴 영상/다중 질문 setting에서 query-conditioned 방법보다 시스템적으로 유리하다.</p>
+<ul class="small">
+  <li>같은 비디오에 1, 5, 20, 100개 질문을 던지는 비용 곡선: encoding cost, prefill cost, TTFT, memory.</li>
+  <li>VideoLatent/DyLaR류는 질문마다 reasoning latent가 필요하고, Thought Matryoshka는 video thoughts를 재사용한다는 차이를 정량화.</li>
+</ul>
+</div>
+
+<div class="exp">
+<h3>E4 — Thought surgery</h3>
+<p class="goal">주장: thought는 단순 압축 artifact가 아니라 reasoning unit이다.</p>
+<ul class="small">
+  <li>Remove: <span class="mono">z_i</span> 하나를 제거했을 때 어떤 질문군이 무너지는지 측정.</li>
+  <li>Swap: 인접 thought 순서를 바꾸면 temporal/order 질문이 선택적으로 악화되는지 확인.</li>
+  <li>Probe: thought에서 action, object, place, temporal span, OCR 필요성 등을 linear probe로 복원.</li>
+  <li>Attention map: early slot은 전역 줄거리, late slot은 세부 사건/작은 물체/OCR에 집중하는지 시각화.</li>
+</ul>
+</div>
+
+<div class="exp">
+<h3>E5 — Ablations</h3>
+<ul class="small">
+  <li>Loss: prefix CE only / +teacher distill / +marginal utility / +diversity / +coverage.</li>
+  <li>Architecture: parallel cross-attention vs residual sequential readout, slot count <span class="mono">M_max</span>, thought dimension, temporal span embedding.</li>
+  <li>Training schedule: frozen LLM vs projector LoRA vs vision adapter LoRA.</li>
+  <li>Cut policy: fixed budget, novelty threshold, confidence-adaptive progressive prefix.</li>
+</ul>
+</div>
+
+<!-- ================= IMPLEMENTATION ================= -->
+<h2><span class="num">6</span>구현 계획</h2>
+<div class="grid-2">
+  <div class="card">
+    <b>Stage 0 — cheap prototype</b>
+    <ul class="small">
+      <li>Host: Qwen2.5-VL-7B 또는 LLaVA-OneVision-7B.</li>
+      <li>Vision features는 frozen으로 저장해서 thought reader 학습을 빠르게 반복.</li>
+      <li><span class="mono">M_max=64</span>, 2-layer cross-attention reader, 2-layer projector.</li>
+      <li>QA supervision만으로 prefix CE curve를 먼저 확인.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <b>Stage 1 — teacher-distilled model</b>
+    <ul class="small">
+      <li>Full-token host의 logits / hidden state를 teacher로 저장.</li>
+      <li>log-uniform prefix sampling으로 <span class="mono">k=1...64</span> 동시 학습.</li>
+      <li>각 prefix budget별 Pareto curve를 baseline과 비교.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <b>Stage 2 — ordering 강화</b>
+    <ul class="small">
+      <li>marginal utility loss와 residual readout variant 추가.</li>
+      <li>slot duplication을 diversity, attention coverage, prototype separation으로 제어.</li>
+      <li>Thought surgery 분석으로 "진짜 thought인가" 검증.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <b>Stage 3 — system claim</b>
+    <ul class="small">
+      <li>multi-query cache, confidence-adaptive prefix, TTFT 측정.</li>
+      <li>output-side latent reasoning과 결합해 입력/출력 비용의 곱셈 이득 확인.</li>
+      <li>긴 영상 streaming cache로 확장 가능성 제시.</li>
+    </ul>
+  </div>
+</div>
+
+<h3>초기 하이퍼파라미터</h3>
+<div class="tbl-wrap"><table style="min-width:760px">
+<thead><tr><th>항목</th><th>1차 값</th><th>이유</th></tr></thead>
+<tbody>
+<tr><td class="m">Thought slots</td><td><span class="mono">M_max=64</span></td><td class="small">Flamingo류 64 latent와 비교가 쉽고, 1/2/4/8/16/32/64 prefix curve를 만들 수 있음.</td></tr>
+<tr><td class="m">Prefix sampling</td><td>log-uniform</td><td class="small">작은 budget 성능을 과소학습하지 않도록 함. uniform은 큰 k에 너무 많은 질량을 둔다.</td></tr>
+<tr><td class="m">Reader</td><td>2-4 layer cross-attention transformer</td><td class="small">encoder/LLM을 freeze한 plug-in claim을 유지하면서 충분한 재조합 능력 확보.</td></tr>
+<tr><td class="m">Training data</td><td>LLaVA-Video-178K + long-video QA</td><td class="small">caption/CoT 감독 없이 QA와 teacher distillation만으로 시작 가능.</td></tr>
+<tr><td class="m">Primary budget</td><td><span class="mono">k=8,16</span></td><td class="small">"수천 patch → 한 자리/십여 thought"라는 punchline이 가장 강하게 보이는 구간.</td></tr>
+</tbody></table></div>
+
+<!-- ================= RISKS ================= -->
+<h2><span class="num">7</span>리스크와 방어선</h2>
+<ul>
+  <li><span class="badge b-warn">R1</span> <b>Slot order가 안 생김.</b> Tail-drop만으로 부족하면 marginal utility loss, prefix-wise teacher KL, slot-index dropout을 추가한다. 핵심 metric은 prefix monotonicity.</li>
+  <li><span class="badge b-warn">R2</span> <b>모든 thought가 비슷해지는 collapse.</b> Diversity loss만 믿지 말고, attention coverage와 residual readout ablation을 함께 둔다.</li>
+  <li><span class="badge b-warn">R3</span> <b>OCR/counting 등 세부 지각 질문에서 손실.</b> Late slot이 detail specialist가 되는지 probing하고, 필요하면 confidence mode에서 원본 visual token 재열람을 optional extension으로 둔다.</li>
+  <li><span class="badge b-warn">R4</span> <b>"그냥 resampler 아닌가?" 공격.</b> Fixed resampler + same slot count + same training data와 정면 비교하고, prefix-validity/Thought surgery/multi-query amortization을 차별 증거로 세운다.</li>
+  <li><span class="badge b-warn">R5</span> <b>질문 독립 representation이 QA supervision에 과적합.</b> held-out task family와 paraphrase/multi-query split을 따로 만들고, teacher distillation 비중을 높여 answer-label shortcut을 줄인다.</li>
+</ul>
+
+<div class="footnote">
+한 문장 버전: <b>Thought Matryoshka learns a reusable, prefix-valid hierarchy of latent video thoughts, so the LLM can reason from as many thoughts as the budget allows instead of rereading visual patches.</b> ·
+관련 축: <a href="https://arxiv.org/abs/2205.13147">Matryoshka Representation Learning</a>의 nested representation, <a href="https://arxiv.org/abs/2106.11297">TokenLearner</a>의 learned tokenization, <a href="https://arxiv.org/abs/2204.14198">Flamingo</a>의 learned visual resampling, <a href="https://dnwjddl.github.io/latentreasoning/">Ponder-B</a>의 ordered thought sketch를 결합하되, 최종 claim은 "prefix-valid latent thoughts as the video-to-LLM interface"로 분리한다.
+</div>
+
+</div>
+</body>
+</html>
