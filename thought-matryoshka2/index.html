@@ -255,9 +255,9 @@ patch token을 중간 계산에만 쓰다가 최종적으로 <b>prefix-valid tho
 
 <h3>2.1 Two practical variants: TM2-lite vs TM2-strong</h3>
 <div class="variant-note">
-<b>4×A100 40GB 기준의 현실적 claim.</b>
-처음부터 video foundation encoder를 pretrain하지 않는다. pretrained SigLIP 같은 frame/vision encoder를 쓰고,
-LLM은 frozen으로 두며, 학습 파라미터를 thought registers, temporal graft block, projector, 그리고 strong variant의 top-layer LoRA로 제한한다.
+<b>8×H100 기준의 현실적 claim.</b>
+처음부터 video foundation encoder를 pretrain하지는 않는다. pretrained SigLIP 같은 frame/vision encoder를 쓰고,
+TM2-lite는 빠른 sanity check, TM2-strong은 메인 실험으로 둔다. LLM은 frozen으로 두며, 학습 파라미터는 thought registers, temporal graft block, projector, 그리고 strong variant의 top-layer LoRA/adapters로 제한한다.
 </div>
 
 <div class="flow-grid">
@@ -267,7 +267,7 @@ LLM은 frozen으로 두며, 학습 파라미터를 thought registers, temporal g
         <div class="flow-title">TM2-lite · training</div>
         <div class="flow-caption">Frozen encoder feature 위에 trainable thought graft를 학습한다.</div>
       </div>
-      <span class="badge b-ok">most feasible</span>
+      <span class="badge b-ok">sanity check</span>
     </div>
     <div class="flow">
       <div class="node patch"><b>Video frames</b><span>sampled clips, frames, or frame patches</span></div>
@@ -573,7 +573,7 @@ LLM은 frozen으로 두며, 학습 파라미터를 thought registers, temporal g
 <!-- ================= RISKS ================= -->
 <h2><span class="num">9</span>리스크와 방어선</h2>
 <ul>
-  <li><span class="badge b-warn">R1</span> <b>Pretraining cost가 커진다.</b> Matryoshka 1은 adapter 학습이면 되지만, 2는 encoder-native라 더 비싸다. 그래서 retrofit path: 기존 encoder freeze + register path 학습부터 시작한다.</li>
+  <li><span class="badge b-warn">R1</span> <b>Adaptation cost가 커진다.</b> Matryoshka 1은 adapter 학습이면 되지만, 2는 encoder-native라 더 비싸다. 다만 8×H100이면 TM2-strong의 top-layer LoRA/register adaptation까지 메인 실험으로 둘 수 있다. from-scratch video foundation pretraining은 여전히 제외한다.</li>
   <li><span class="badge b-warn">R2</span> <b>VideoFlexTok와 너무 비슷해 보일 수 있다.</b> reconstruction tokenizer가 아니라 reasoning tokenizer임을 objective, benchmarks, LLM interface로 분리해야 한다.</li>
   <li><span class="badge b-warn">R3</span> <b>Patch 정보가 너무 빨리 사라질 수 있다.</b> patch는 내부 scratch token으로 충분히 유지하되, LLM export만 thought로 제한한다.</li>
   <li><span class="badge b-warn">R4</span> <b>Host-specific plugin성이 약해진다.</b> 대신 encoder 자체를 배포하는 tokenizer claim을 얻는다. Matryoshka 1은 plug-in baseline, 2는 native model variant로 포지셔닝한다.</li>
@@ -582,7 +582,7 @@ LLM은 frozen으로 두며, 학습 파라미터를 thought registers, temporal g
 
 <div class="card">
 <b>내 판단</b>
-<p class="small tight">Matryoshka 2는 더 fancy하고 근본적인 아이디어다. 다만 first submission 전략은 둘을 경쟁시키기보다, <b>Matryoshka 1 = immediately testable adapter</b>, <b>Matryoshka 2 = pretrained-encoder graft inspired by flexible tokenization</b>으로 두는 게 안전하다. 2가 잘 되면 논문 제목은 "Encoder-Native Thought Tokenization" 쪽으로 가도 된다.</p>
+<p class="small tight">Matryoshka 2는 더 fancy하고 근본적인 아이디어다. 8×H100 기준에서는 <b>Matryoshka 1 = post-hoc baseline</b>, <b>TM2-lite = sanity check</b>, <b>TM2-strong = main method</b>로 두는 게 좋다. 2가 잘 되면 논문 제목은 "Encoder-Native Thought Grafting" 또는 "Prefix-Valid Visual Thought Encoding" 쪽으로 가도 된다.</p>
 </div>
 
 <!-- ================= IMPLEMENTATION DETAIL ================= -->
