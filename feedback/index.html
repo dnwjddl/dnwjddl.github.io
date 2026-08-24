@@ -47,6 +47,7 @@ li{margin:6px 0}
 .small{font-size:.86rem;color:var(--muted)}
 .mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.92em}
 pre{margin:12px 0;padding:14px 16px;border:1px solid var(--line);border-radius:9px;background:var(--bg);overflow-x:auto;color:var(--ink);font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.83rem;line-height:1.55}
+pre.audit-md{white-space:pre-wrap;overflow-x:auto;font-size:.80rem;line-height:1.5}
 .badge{display:inline-block;border-radius:6px;padding:2px 9px;font-size:.75rem;font-weight:750;white-space:nowrap}
 .b-ok{background:var(--ok-soft);color:var(--ok)}
 .b-warn{background:var(--warn-soft);color:var(--warn)}
@@ -97,6 +98,142 @@ td.key{font-weight:750;white-space:nowrap}
 <div class="tagline">
 결론은 단순하다. <b>다른 데이터셋을 꼭 새로 찾자는 말이 아니라, LLaVA-Video-178K를 main training data로 쓰되 random mixing하지 말고 내부 sample type을 나눠서 curriculum으로 쓰자.</b>
 Caption, open-ended QA, multiple-choice QA, temporal-heavy QA를 stage별로 다르게 써야 thought register가 static image summary가 아니라 video state를 배운다.
+</div>
+
+<h2><span class="num">0</span>Implementation Audit Checklist</h2>
+<div class="card">
+<p><span class="badge b-warn">Read first</span></p>
+<p class="small">이 체크리스트는 TM2 실험이 "진짜 구현"인지 확인하기 위한 것이다. 하나라도 <b>STOP</b> 항목에 걸리면 결과를 논문/보고서 수치로 쓰지 말고 debug run으로만 표시한다.</p>
+<pre class="audit-md"><code># TM2 Implementation Audit Checklist
+
+## 0. Run Identity
+- [ ] Experiment name, date, machine, GPU count, code commit, config file path가 기록되어 있다.
+- [ ] 모든 표/그래프 값은 script가 만든 log/eval JSON에서 온다. 사람이 손으로 추정해서 적은 값이 아니다.
+- [ ] 아직 측정하지 않은 값은 "planned", "not measured", "N/A"로 표시한다. 실측값인 척하지 않는다.
+- [ ] output directory에 config.yaml, git commit, train log, eval log, dataset manifest, checkpoint path가 함께 저장된다.
+
+## 1. Dataset Integrity
+- [ ] Main train source는 LLaVA-Video-178K이며 실제 data root와 manifest path를 기록했다.
+- [ ] caption / openQA / MCQA / temporal-heavy / static-easy pool을 큰 pool로 나누었다. tiny subset 1k-2k개를 main training으로 쓰지 않는다.
+- [ ] 각 pool의 sample count를 출력했다: caption N, openQA N, MCQA N, temporal-heavy N, static-easy N.
+- [ ] Stage별 dataloader가 pool에서 비율대로 sample한다. 작은 filtered json 하나만 10 epoch 반복하지 않는다.
+- [ ] global batch 128 기준으로 steps_per_epoch = loaded_samples / 128 계산이 맞다.
+- [ ] "10 epochs = 125 steps"처럼 나오면 STOP: loaded_samples가 약 1,600개뿐이라는 뜻이다.
+- [ ] train/eval split leakage를 확인했다. VideoMME, MVBench, LongVideoBench, held-out NeXT-QA/ActivityNetQA가 train에 섞이지 않는다.
+- [ ] temporal-heavy filtering rule을 저장했다. keyword만 대충 고른 경우 sample 100개를 수동 검토했다.
+- [ ] failed/missing video 개수와 drop rate를 로그로 남겼다.
+
+## 2. Real Video Loading
+- [ ] 실제 video file을 decode한다. random tensor, blank frame, duplicated dummy image, synthetic placeholder를 쓰지 않는다.
+- [ ] dataloader에서 샘플 video 16개를 저장/시각화해서 실제 프레임이 들어오는지 확인했다.
+- [ ] frame count, sampled frames, fps/segment policy, resolution, crop policy가 config에 기록되어 있다.
+- [ ] feature cache를 쓴다면 cache가 실제 video에서 생성되었고, video id, encoder name, layer, feature shape, checksum을 가진다.
+- [ ] online encoder output과 cached feature output을 같은 video 8개에서 비교했다.
+
+## 3. Student Architecture
+- [ ] Student path는 Video -> frozen vision encoder -> temporal thought graft -> z1...zM -> projector -> frozen LLM -> answer 구조다.
+- [ ] Vision encoder checkpoint 이름을 기록했다. 예: SigLIP / Qwen2.5-VL vision tower / InternVideo 계열.
+- [ ] encoder의 어느 layer feature를 쓰는지 사전에 정했다. "그냥 아무 layer"를 쓰지 않는다.
+- [ ] 선택한 encoder layer의 feature shape가 로그에 출력된다: B, T, N_patch, d_v.
+- [ ] LLM checkpoint 이름을 기록했다. toy LM, random LM, tiny debugging LM을 main result로 쓰지 않는다.
+- [ ] LLM은 frozen이다. trainable parameter list에 LLM weight가 포함되지 않는다.
+- [ ] main run은 M_max=128 thought registers를 사용한다. M_max=64는 cheap sanity 또는 extreme compression ablation이다.
+- [ ] trainable modules는 thought registers, temporal graft, projector, optional temporal prediction head뿐이다.
+- [ ] trainable parameter count와 frozen parameter count가 출력된다.
+- [ ] Temporal graft는 video patch features를 cross-attention으로 읽는다. 단순 mean pooling만 하고 "thought"라고 부르지 않는다.
+- [ ] register self-attention은 causal/prefix-safe하다. early register가 later register 정보를 볼 수 없다.
+- [ ] nested prefix dropout은 output에서만 자르는 것이 아니라 forward 안에서 first k registers만 존재하게 한다.
+- [ ] TM2 thought-only path에서는 raw patch tokens가 LLM prefill로 들어가지 않는다.
+
+## 4. Prefix Training
+- [ ] Main training에서 k in {8,16,32,64,128}를 sample한다.
+- [ ] 각 k가 실제로 batch에 얼마나 나왔는지 histogram을 저장한다.
+- [ ] LLM input에는 z1:zk만 들어간다. z(k+1):zM 정보가 attention/mask를 통해 leak되지 않는다.
+- [ ] 같은 sample에서 k를 바꾸면 input token count가 실제로 바뀌는 unit test가 있다.
+- [ ] prefix별 loss/accuracy를 따로 로깅한다: k=8,16,32,64,128.
+
+## 5. Losses
+- [ ] L_answer: answer CE가 실제 ground-truth answer token에 걸린다.
+- [ ] L_teacher_KL: full visual-token teacher logits와 student logits 사이 KL이 계산된다.
+- [ ] L_order: 긴 prefix가 짧은 prefix보다 더 나쁘면 penalty가 생긴다.
+- [ ] L_semantic: thought pool이 frozen semantic target을 예측한다. target 모델과 layer를 기록했다.
+- [ ] L_pred: temporal prediction을 쓰는 경우 next segment target이 같은 video의 다음 segment에서 온다.
+- [ ] 각 loss weight lambda를 config에 기록했다.
+- [ ] per-loss scalar가 train log에 찍힌다. 항상 0이거나 NaN이면 STOP.
+- [ ] teacher 없이 학습한 run은 "no-teacher ablation"으로만 표시한다. main result로 쓰지 않는다.
+
+## 6. Teacher Model
+- [ ] Teacher는 no-grad eval mode의 full visual-token VLM이다. 예: Qwen2.5-VL or LLaVA-OneVision.
+- [ ] teacher는 dense/full visual input을 본다. student thought prefix만 보고 만든 output을 teacher로 쓰지 않는다.
+- [ ] teacher logits cache는 video id, question id, answer options, model checkpoint, timestamp를 포함한다.
+- [ ] teacher/student token alignment와 KL temperature를 기록했다.
+- [ ] teacher cache miss rate를 기록했다.
+
+## 7. Training Schedule
+- [ ] Stage 1 warm-up: 3k-5k steps, caption 64 + easy openQA 64 per global batch 128.
+- [ ] Stage 2 main prefix: 20k-30k steps, openQA 64 + MCQA 32 + caption/summary 16 + temporal QA 16.
+- [ ] Stage 3 temporal refine: 7k-10k steps, temporal/order/state-change/counting 중심 oversampling.
+- [ ] Stage 4 teacher-KL strengthen: 5k-10k steps, openQA 48 + MCQA 32 + temporal-heavy 32 + caption/summary 16.
+- [ ] trainer는 num_train_epochs보다 max_steps 중심으로 종료한다.
+- [ ] global batch = per_device_batch * grad_accum * num_gpus 계산이 맞다.
+- [ ] optimizer, LR, scheduler, warmup, precision, gradient clipping, seed가 config에 기록되어 있다.
+- [ ] total sample-visits = max_steps * global_batch가 보고된다.
+
+## 8. Pareto Evaluation
+- [ ] 같은 checkpoint 하나를 k=8,16,32,64,128로 여러 번 평가한다. budget마다 별도 모델을 train하지 않는다.
+- [ ] x축에는 actual prefill tokens를 둔다. 괄호로 full visual-token baseline 대비 percent를 같이 표시한다.
+- [ ] retention/pruning baseline과 비교할 때 label은 5%, 10%, 25%, 50%, 100%로 맞춘다.
+- [ ] TM2의 percent는 k/128 thought prefix ratio이고, retention baseline의 percent는 retained raw visual token ratio다. 둘을 혼동하지 않는다.
+- [ ] TTFT/latency/memory 값은 실제 timing script로 측정한다. FLOP 추정값이면 estimated라고 표시한다.
+- [ ] prefix monotonicity plot을 만든다: k가 커질수록 accuracy가 대체로 올라가는지 확인한다.
+
+## 9. Baselines
+- [ ] Full visual-token VLM baseline을 같은 eval split과 prompt로 돌렸다.
+- [ ] Fixed latent resampler baseline을 같은 thought/token budget으로 돌렸다.
+- [ ] Token pruning/retention baseline을 5%, 10%, 25%, 50% retention으로 돌렸다.
+- [ ] Caption/note baseline을 쓰면 caption 생성 비용과 LLM prefill 비용을 따로 보고한다.
+- [ ] 모든 baseline은 같은 decoding config를 사용한다: temperature, top_p, max_new_tokens, prompt template.
+
+## 10. Evaluation Integrity
+- [ ] Eval datasets: VideoMME, MLVU, MVBench, EgoSchema, LongVideoBench, held-out NeXT-QA/ActivityNetQA 등 버전과 split을 기록한다.
+- [ ] eval script path와 command를 저장했다.
+- [ ] raw prediction JSON, scored result JSON, aggregate CSV가 저장된다.
+- [ ] 정확도뿐 아니라 prefill tokens, TTFT, memory, encode time, LLM time을 분리 보고한다.
+- [ ] "best checkpoint" 선택 기준을 eval 전에 정했다.
+- [ ] 실패 사례를 최소 20개 확인해서 video loading / prompt / answer parsing 오류가 아닌지 본다.
+
+## 11. Sanity Tests
+- [ ] Random video / zero video를 넣으면 accuracy가 떨어진다.
+- [ ] 같은 question에 다른 video를 넣으면 answer가 바뀐다.
+- [ ] frame order를 shuffle/reverse하면 temporal-heavy QA 성능이 떨어진다.
+- [ ] z tokens를 제거할수록 성능이 떨어지는지 확인한다.
+- [ ] z1:z8과 z1:z128의 attention/activation이 실제로 다르다.
+- [ ] 256-sample overfit run에서 loss가 내려가는지 확인했다.
+- [ ] feature cache와 online encoder가 같은 answer를 낸다.
+
+## 12. STOP Conditions
+- [ ] STOP if 실제 video decode 없이 random/cached dummy tensor로 학습했다.
+- [ ] STOP if main training total steps가 1k 이하인데 main result라고 주장한다.
+- [ ] STOP if 10 epochs가 125 steps처럼 나온다.
+- [ ] STOP if encoder layer/checkpoint가 명시되어 있지 않다.
+- [ ] STOP if LLM이 random/tiny placeholder인데 real LLM result처럼 적었다.
+- [ ] STOP if teacher logits가 없는데 teacher distillation을 했다고 적었다.
+- [ ] STOP if Pareto/latency/TTFT가 실측이 아니라 추정인데 measured처럼 적었다.
+- [ ] STOP if eval split이 train data와 겹친다.
+- [ ] STOP if raw visual patch tokens가 LLM에 들어가는데 thought-only TM2라고 주장한다.
+
+## 13. Minimum Artifact Bundle
+- [ ] config.yaml
+- [ ] dataset_manifest.json with pool counts
+- [ ] train.log with step count, batch mix, prefix k histogram, per-loss scalars
+- [ ] model_summary.txt with trainable/frozen parameter counts
+- [ ] teacher_cache_manifest.json
+- [ ] eval_predictions.json
+- [ ] eval_scores.csv
+- [ ] latency_report.json
+- [ ] pareto_curve.csv
+- [ ] checkpoint path and git commit hash
+</code></pre>
 </div>
 
 <h2><span class="num">1</span>Verdict</h2>
