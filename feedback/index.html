@@ -195,7 +195,66 @@ sampling: temporal-heavy samples oversampled
 loss: L_answer + L_teacher_KL + L_pred + L_order</code></pre>
 </div>
 
-<h2><span class="num">4</span>Which Samples Matter Most</h2>
+<h2><span class="num">4</span>Concrete Step Schedule</h2>
+<div class="card">
+<p><b>TM2-lite first run 기준.</b> 1 optimizer step은 <span class="mono">global batch 128 video-text samples</span>로 둔다. 먼저 30k steps로 sanity check를 보고, prefix curve가 보이면 55k steps까지 확장한다.</p>
+</div>
+
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Stage</th><th>Steps</th><th>Train modules</th><th>Subtask mix per step, batch 128</th><th>Goal</th></tr></thead>
+<tbody>
+<tr>
+  <td class="key">1. Graft warm-up</td>
+  <td>5k</td>
+  <td>registers + temporal graft + projector</td>
+  <td class="small">caption 64<br>easy open-ended QA 64</td>
+  <td class="small">thought tokens가 frozen LLM input으로 안정적으로 붙게 만든다.</td>
+</tr>
+<tr>
+  <td class="key">2. Main nested prefix</td>
+  <td>30k</td>
+  <td>registers + temporal graft + projector</td>
+  <td class="small">open-ended QA 64<br>multiple-choice QA 32<br>caption / summary 16<br>temporal QA 16</td>
+  <td class="small"><span class="mono">k ∈ {8,16,32,64}</span>를 샘플해 모든 prefix가 answer 가능한 state가 되게 한다.</td>
+</tr>
+<tr>
+  <td class="key">3. Temporal-heavy refine</td>
+  <td>10k</td>
+  <td>same modules</td>
+  <td class="small">temporal order / before-after 48<br>action transition 32<br>state change 24<br>counting over time / motion detail 16<br>static/easy QA 8</td>
+  <td class="small">register가 static image summary가 아니라 temporal video state를 담게 만든다.</td>
+</tr>
+<tr>
+  <td class="key">4. Teacher-KL strengthen</td>
+  <td>10k</td>
+  <td>same modules</td>
+  <td class="small">open-ended QA 48<br>multiple-choice QA 32<br>temporal-heavy QA 32<br>caption / summary 16</td>
+  <td class="small">full visual-token teacher의 판단을 few thought tokens로 압축한다.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <span class="badge b-ok">Recommended</span>
+    <h3>Full first run</h3>
+    <pre><code>55k steps
+global batch 128
+about 7M sample-visits</code></pre>
+  </div>
+  <div class="card">
+    <span class="badge b-warn">Cheap sanity</span>
+    <h3>Minimum run</h3>
+    <pre><code>Stage 1: 3k
+Stage 2: 20k
+Stage 3: 7k
+total: 30k steps</code></pre>
+  </div>
+</div>
+
+<h2><span class="num">5</span>Which Samples Matter Most</h2>
 <div class="checklist">
   <div class="check good">
     <span class="badge b-ok">good</span>
@@ -221,7 +280,7 @@ loss: L_answer + L_teacher_KL + L_pred + L_order</code></pre>
   </div>
 </div>
 
-<h2><span class="num">5</span>Loss Design</h2>
+<h2><span class="num">6</span>Loss Design</h2>
 <div class="card">
 <p>데이터 curriculum과 loss는 같이 가야 한다. LLaVA-Video-178K는 thought token 자체를 supervise하지 않으므로, teacher distillation과 prefix-order pressure가 필요하다.</p>
 <pre><code>L = L_answer
@@ -249,7 +308,7 @@ loss: L_answer + L_teacher_KL + L_pred + L_order</code></pre>
   </div>
 </div>
 
-<h2><span class="num">6</span>Train / Eval Split</h2>
+<h2><span class="num">7</span>Train / Eval Split</h2>
 <div class="card">
 <p><b>Training은 LLaVA-Video-178K 하나로 시작해도 된다.</b> 다만 evaluation은 별도 benchmark로 보고, LLaVA-Video-178K repo 안에 포함된 public QA split과 겹치지 않게 관리해야 한다.</p>
 <pre><code>Train:
@@ -270,11 +329,11 @@ ActivityNetQA held-out</code></pre>
 <p class="small">LLaVA-Video-178K repository에는 NeXT-QA, ActivityNetQA, PerceptionTest 같은 public QA도 재현용으로 같이 들어가 있다. train에 쓴 split과 eval benchmark가 겹치면 결과가 방어되지 않는다. 논문에서는 train source, held-out split, evaluation-only benchmark를 명확히 적어야 한다.</p>
 </div>
 
-<h2><span class="num">7</span>Final Recommendation</h2>
+<h2><span class="num">8</span>Final Recommendation</h2>
 <div class="tagline">
 <b>LLaVA-Video-178K 하나로 시작해도 된다.</b>
 대신 random mixing이 아니라 caption/openQA/MCQA/temporal-heavy로 curriculum을 짜고,
-후반에는 temporal-heavy sample을 oversampling한다. 이 위에 teacher distillation, nested prefix loss, temporal prediction loss를 같이 걸어야 Thought Matryoshka의 핵심 claim이 살아난다.
+후반에는 temporal-heavy sample을 oversampling한다. 첫 sanity check는 30k steps, 제대로 된 first run은 55k steps로 두고, 이 위에 teacher distillation, nested prefix loss, temporal prediction loss를 같이 걸어야 Thought Matryoshka의 핵심 claim이 살아난다.
 </div>
 
 <div class="footnote">
