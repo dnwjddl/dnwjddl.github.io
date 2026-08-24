@@ -185,9 +185,9 @@ train: temporal thought graft + registers + projector</code></pre>
 
 <div class="stage">
 <h3>Stage 2: Nested prefix instruction tuning</h3>
-<p class="goal">목표: z1:z8, z1:z16, z1:z32, z1:z64가 모두 answer 가능한 prefix-valid thought가 되게 만든다.</p>
+<p class="goal">목표: z1:z8, z1:z16, z1:z32, z1:z64, z1:z128이 모두 answer 가능한 prefix-valid thought가 되게 만든다.</p>
 <pre><code>data: open-ended QA + multiple-choice QA
-k ∈ {8,16,32,64}
+k ∈ {8,16,32,64,128}
 loss: L_answer + L_teacher_KL + L_order</code></pre>
 </div>
 
@@ -202,6 +202,11 @@ loss: L_answer + L_teacher_KL + L_pred + L_order</code></pre>
 <h2><span class="num">4</span>Concrete Step Schedule</h2>
 <div class="card">
 <p><b>TM2-lite first run 기준.</b> 1 optimizer step은 <span class="mono">global batch 128 video-text samples</span>로 둔다. 학습 종료는 epoch보다 <span class="mono">max_steps</span>로 제어한다. 먼저 30k steps로 sanity check를 보고, prefix curve가 보이면 55k steps까지 확장한다.</p>
+</div>
+
+<div class="card">
+<p><span class="badge b-ok">Prefix size recommendation</span></p>
+<p class="small"><span class="mono">M_max=64</span>는 cheap sanity check에는 괜찮지만, main result에는 너무 aggressive하게 보일 수 있다. 메인 실험은 <span class="mono">M_max=128</span>로 두고, <span class="mono">k ∈ {8,16,32,64,128}</span>를 쓰는 것이 더 안전하다. 64-slot 결과는 "extreme compression" ablation으로 남기고, 128-slot 결과를 primary Pareto curve로 보고한다.</p>
 </div>
 
 <div class="card">
@@ -231,9 +236,9 @@ and whether only one small filtered json was loaded.</code></pre>
   <td class="key">2. Main nested prefix</td>
   <td>20k-30k</td>
   <td class="small">LLaVA-Video-178K open-ended QA + multiple-choice QA + caption/summary + temporal QA pools.</td>
-  <td class="small">Same student modules. Sample <span class="mono">k ∈ {8,16,32,64}</span> each step and expose only <span class="mono">z1:zk</span> to the frozen LLM.</td>
+  <td class="small">Same student modules. For the main run use <span class="mono">M_max=128</span>, sample <span class="mono">k ∈ {8,16,32,64,128}</span> each step, and expose only <span class="mono">z1:zk</span> to the frozen LLM.</td>
   <td class="small">open-ended QA 64<br>multiple-choice QA 32<br>caption / summary 16<br>temporal QA 16</td>
-  <td class="small"><span class="mono">k ∈ {8,16,32,64}</span>를 샘플해 모든 prefix가 answer 가능한 state가 되게 한다.</td>
+  <td class="small"><span class="mono">k ∈ {8,16,32,64,128}</span>를 샘플해 모든 prefix가 answer 가능한 state가 되게 한다.</td>
 </tr>
 <tr>
   <td class="key">3. Temporal-heavy refine</td>
@@ -289,7 +294,77 @@ train_dataset = tiny_filtered_subset_1600_samples
 trainer.num_train_epochs = 10  # gives about 125 total steps</code></pre>
 </div>
 
-<h2><span class="num">5</span>Which Samples Matter Most</h2>
+<h2><span class="num">5</span>Pareto Budget Evaluation</h2>
+<div class="card">
+<p><b>Accuracy vs token budget plot은 percentage로 보여주는 것이 좋다.</b> 다만 TM2는 prefix model이므로 실제 inference는 arbitrary token pruning이 아니라 <span class="mono">z1:zk</span> prefix 선택으로 한다. 메인 figure는 <span class="mono">M_max=128</span> 기준으로 <span class="mono">5%, 10%, 25%, 50%, 100%</span> budget label을 붙이고, 내부 구현은 가장 가까운 prefix 길이 <span class="mono">k</span>로 매핑한다.</p>
+</div>
+
+<div class="card">
+<p><b>Why percentage labels matter.</b></p>
+<p class="small">기존 token pruning / merging / retention 연구들은 보통 "retain 5%, 10%, 25% of visual tokens"처럼 보고한다. 그래서 TM2도 Pareto plot에서는 같은 언어를 써야 직접 비교가 쉽다. 차이는 이것이다: retention baseline의 10%는 raw visual evidence 중 10%를 남기는 것이고, TM2의 ~10%는 learned thought prefix 중 앞 10% 정도만 읽는 것이다. 따라서 table에는 <span class="mono">retention ratio</span>, <span class="mono">actual prefill tokens</span>, <span class="mono">accuracy</span>를 같이 보고한다.</p>
+</div>
+
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Plot label</th><th>TM2 prefix, M=128</th><th>Actual thought ratio</th><th>Use case</th><th>Note</th></tr></thead>
+<tbody>
+<tr>
+  <td class="key">~5%</td>
+  <td><span class="mono">z1:z8</span></td>
+  <td>6.25%</td>
+  <td class="small">Very cheap gist / fast answer</td>
+  <td class="small">5%에 가장 가까운 power-of-two prefix. <span class="mono">z1:z4</span>도 optional ultra-low point로 추가 가능.</td>
+</tr>
+<tr>
+  <td class="key">~10%</td>
+  <td><span class="mono">z1:z16</span></td>
+  <td>12.5%</td>
+  <td class="small">Main low-budget point</td>
+  <td class="small">논문 punchline에 좋은 구간. 수천 visual tokens 대비 십여 개 thought tokens.</td>
+</tr>
+<tr>
+  <td class="key">25%</td>
+  <td><span class="mono">z1:z32</span></td>
+  <td>25%</td>
+  <td class="small">Balanced accuracy / cost point</td>
+  <td class="small">많은 benchmark에서 가장 중요한 operating point가 될 가능성이 높다.</td>
+</tr>
+<tr>
+  <td class="key">50%</td>
+  <td><span class="mono">z1:z64</span></td>
+  <td>50%</td>
+  <td class="small">Careful reasoning</td>
+  <td class="small">세부 temporal/OCR/counting 질문에서 성능 회복을 확인한다.</td>
+</tr>
+<tr>
+  <td class="key">100%</td>
+  <td><span class="mono">z1:z128</span></td>
+  <td>100%</td>
+  <td class="small">Full thought budget</td>
+  <td class="small">TM2의 maximum thought representation. Full visual-token baseline과는 별도로 표시한다.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<p><b>Plotting rule.</b></p>
+<pre><code># Evaluate the same checkpoint multiple times.
+# Do not train a separate model for each budget.
+for k in [8, 16, 32, 64, 128]:
+    answer = frozen_llm(project(z[:, :k]), question)
+    report accuracy, TTFT, and prefill_tokens
+
+# Main x-axis:
+actual video prefill tokens = k + special_video_tokens
+
+# Also annotate:
+% of full visual-token baseline =
+100 * TM2_video_prefill_tokens / full_VLM_visual_prefill_tokens</code></pre>
+<p class="small">중요한 점은 두 percent를 헷갈리지 않는 것이다. <span class="mono">k/128</span>는 TM2 내부 thought budget ratio이고, <span class="mono">TM2 prefill / full visual-token prefill</span>은 full VLM 대비 실제 token 절감률이다. 논문 figure에는 absolute token count와 full-baseline percentage를 같이 쓰면 가장 방어하기 쉽다.</p>
+</div>
+
+<h2><span class="num">6</span>Which Samples Matter Most</h2>
 <div class="checklist">
   <div class="check good">
     <span class="badge b-ok">good</span>
@@ -315,7 +390,7 @@ trainer.num_train_epochs = 10  # gives about 125 total steps</code></pre>
   </div>
 </div>
 
-<h2><span class="num">6</span>Loss Design</h2>
+<h2><span class="num">7</span>Loss Design</h2>
 <div class="card">
 <p>데이터 curriculum과 loss는 같이 가야 한다. LLaVA-Video-178K는 thought token 자체를 supervise하지 않으므로, teacher distillation과 prefix-order pressure가 필요하다.</p>
 <pre><code>L = L_answer
@@ -343,7 +418,7 @@ trainer.num_train_epochs = 10  # gives about 125 total steps</code></pre>
   </div>
 </div>
 
-<h2><span class="num">7</span>Train / Eval Split</h2>
+<h2><span class="num">8</span>Train / Eval Split</h2>
 <div class="card">
 <p><b>Training은 LLaVA-Video-178K 하나로 시작해도 된다.</b> 다만 evaluation은 별도 benchmark로 보고, LLaVA-Video-178K repo 안에 포함된 public QA split과 겹치지 않게 관리해야 한다.</p>
 <pre><code>Train:
@@ -364,11 +439,11 @@ ActivityNetQA held-out</code></pre>
 <p class="small">LLaVA-Video-178K repository에는 NeXT-QA, ActivityNetQA, PerceptionTest 같은 public QA도 재현용으로 같이 들어가 있다. train에 쓴 split과 eval benchmark가 겹치면 결과가 방어되지 않는다. 논문에서는 train source, held-out split, evaluation-only benchmark를 명확히 적어야 한다.</p>
 </div>
 
-<h2><span class="num">8</span>Final Recommendation</h2>
+<h2><span class="num">9</span>Final Recommendation</h2>
 <div class="tagline">
 <b>LLaVA-Video-178K 하나로 시작해도 된다.</b>
 대신 random mixing이 아니라 caption/openQA/MCQA/temporal-heavy로 curriculum을 짜고,
-후반에는 temporal-heavy sample을 oversampling한다. 첫 sanity check는 30k steps, 제대로 된 first run은 55k steps로 두고, 이 위에 teacher distillation, nested prefix loss, temporal prediction loss를 같이 걸어야 Thought Matryoshka의 핵심 claim이 살아난다.
+후반에는 temporal-heavy sample을 oversampling한다. 첫 sanity check는 30k steps, 제대로 된 first run은 55k steps로 두고, evaluation은 <span class="mono">5/10/25/50/100%</span> budget-style Pareto curve로 보여준다. 이 위에 teacher distillation, nested prefix loss, temporal prediction loss를 같이 걸어야 Thought Matryoshka의 핵심 claim이 살아난다.
 </div>
 
 <div class="footnote">
