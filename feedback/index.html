@@ -60,7 +60,7 @@ pre{margin:12px 0;padding:14px 16px;border:1px solid var(--line);border-radius:9
 .stage h3{margin-top:0}
 .stage .goal{color:var(--muted);font-size:.9rem;margin:0 0 10px}
 .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);margin:14px 0}
-table{border-collapse:collapse;width:100%;min-width:820px;font-size:.88rem}
+table{border-collapse:collapse;width:100%;min-width:980px;font-size:.88rem}
 th{font-size:.76rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:2px solid var(--line)}
 td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 tr:last-child td{border-bottom:0}
@@ -117,12 +117,16 @@ Caption, open-ended QA, multiple-choice QA, temporal-heavy QA를 stage별로 다
 <p><b>정확한 framing.</b></p>
 <pre><code>Main training data = LLaVA-Video-178K
 
-But split it internally:
+But split it internally into large pools:
 caption
 open-ended QA
 multiple-choice QA
 temporal-heavy QA
-static/object/scene QA</code></pre>
+static/object/scene QA
+
+Important:
+"split" does not mean making a tiny 1k-2k subset.
+It means building samplers over the large internal pools.</code></pre>
 </div>
 
 <h2><span class="num">2</span>Dataset Facts to Cite</h2>
@@ -197,38 +201,53 @@ loss: L_answer + L_teacher_KL + L_pred + L_order</code></pre>
 
 <h2><span class="num">4</span>Concrete Step Schedule</h2>
 <div class="card">
-<p><b>TM2-lite first run 기준.</b> 1 optimizer step은 <span class="mono">global batch 128 video-text samples</span>로 둔다. 먼저 30k steps로 sanity check를 보고, prefix curve가 보이면 55k steps까지 확장한다.</p>
+<p><b>TM2-lite first run 기준.</b> 1 optimizer step은 <span class="mono">global batch 128 video-text samples</span>로 둔다. 학습 종료는 epoch보다 <span class="mono">max_steps</span>로 제어한다. 먼저 30k steps로 sanity check를 보고, prefix curve가 보이면 55k steps까지 확장한다.</p>
+</div>
+
+<div class="card">
+<p><span class="badge b-warn">Epoch warning</span></p>
+<p class="small"><b>10 epochs = 125 steps</b>처럼 보이면 full LLaVA-Video-178K를 학습하는 것이 아니다. epoch당 12.5 steps라는 뜻이고, global batch 128이면 dataloader에 실제로 들어간 데이터가 약 <span class="mono">12.5 × 128 = 1,600</span> samples뿐이라는 신호다. TM2 curriculum의 "나눠서 학습"은 작은 subset을 10 epoch 반복하라는 뜻이 아니라, 큰 caption/openQA/MCQA/temporal-heavy pool에서 정해진 비율로 계속 sample하라는 뜻이다.</p>
+<pre><code>steps_per_epoch = len(train_dataset_or_pool) / global_batch
+total_steps = steps_per_epoch × epochs
+
+If total_steps is tiny:
+check max_steps, limit_train_batches, debug_subset,
+and whether only one small filtered json was loaded.</code></pre>
 </div>
 
 <div class="tbl-wrap">
 <table>
-<thead><tr><th>Stage</th><th>Steps</th><th>Train modules</th><th>Subtask mix per step, batch 128</th><th>Goal</th></tr></thead>
+<thead><tr><th>Stage</th><th>Steps</th><th>Dataset pool</th><th>Model / train modules</th><th>Subtask mix per step, batch 128</th><th>Goal</th></tr></thead>
 <tbody>
 <tr>
   <td class="key">1. Graft warm-up</td>
-  <td>5k</td>
-  <td>registers + temporal graft + projector</td>
+  <td>3k-5k</td>
+  <td class="small">LLaVA-Video-178K caption pool + easy open-ended QA pool. Use the full pools or large filtered pools, not a tiny debug subset.</td>
+  <td class="small">Student: frozen SigLIP / vision tower + frozen LLM. Train only thought registers, temporal graft, projector.</td>
   <td class="small">caption 64<br>easy open-ended QA 64</td>
   <td class="small">thought tokens가 frozen LLM input으로 안정적으로 붙게 만든다.</td>
 </tr>
 <tr>
   <td class="key">2. Main nested prefix</td>
-  <td>30k</td>
-  <td>registers + temporal graft + projector</td>
+  <td>20k-30k</td>
+  <td class="small">LLaVA-Video-178K open-ended QA + multiple-choice QA + caption/summary + temporal QA pools.</td>
+  <td class="small">Same student modules. Sample <span class="mono">k ∈ {8,16,32,64}</span> each step and expose only <span class="mono">z1:zk</span> to the frozen LLM.</td>
   <td class="small">open-ended QA 64<br>multiple-choice QA 32<br>caption / summary 16<br>temporal QA 16</td>
   <td class="small"><span class="mono">k ∈ {8,16,32,64}</span>를 샘플해 모든 prefix가 answer 가능한 state가 되게 한다.</td>
 </tr>
 <tr>
   <td class="key">3. Temporal-heavy refine</td>
-  <td>10k</td>
-  <td>same modules</td>
+  <td>7k-10k</td>
+  <td class="small">Temporal-heavy filtered pool from LLaVA-Video-178K: before/after, order, transition, state change, counting over time, motion detail.</td>
+  <td class="small">Same student modules. Optionally add temporal prediction head during this stage.</td>
   <td class="small">temporal order / before-after 48<br>action transition 32<br>state change 24<br>counting over time / motion detail 16<br>static/easy QA 8</td>
   <td class="small">register가 static image summary가 아니라 temporal video state를 담게 만든다.</td>
 </tr>
 <tr>
   <td class="key">4. Teacher-KL strengthen</td>
-  <td>10k</td>
-  <td>same modules</td>
+  <td>5k-10k</td>
+  <td class="small">Same QA pools as Stage 2-3, preferably with cached teacher outputs for the sampled questions.</td>
+  <td class="small">Student stays the same. Teacher is a no-grad full visual-token VLM such as Qwen2.5-VL or LLaVA-OneVision; do not train the teacher.</td>
   <td class="small">open-ended QA 48<br>multiple-choice QA 32<br>temporal-heavy QA 32<br>caption / summary 16</td>
   <td class="small">full visual-token teacher의 판단을 few thought tokens로 압축한다.</td>
 </tr>
@@ -252,6 +271,22 @@ Stage 2: 20k
 Stage 3: 7k
 total: 30k steps</code></pre>
   </div>
+</div>
+
+<div class="card">
+<p><b>Implementation rule.</b></p>
+<pre><code># Do this
+train_loader = mixed_sampler({
+  "caption": caption_pool,
+  "openqa": openqa_pool,
+  "mcqa": mcqa_pool,
+  "temporal": temporal_pool,
+}, ratios_for_current_stage)
+trainer.max_steps = stage_steps
+
+# Do not do this for real training
+train_dataset = tiny_filtered_subset_1600_samples
+trainer.num_train_epochs = 10  # gives about 125 total steps</code></pre>
 </div>
 
 <h2><span class="num">5</span>Which Samples Matter Most</h2>
